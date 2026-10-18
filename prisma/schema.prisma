@@ -1,0 +1,379 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AccessRole {
+  student
+  admin
+}
+
+enum AccessStatus {
+  active
+  inactive
+}
+
+enum TrackState {
+  selected
+  not_selected
+  unknown
+}
+
+model User {
+  id            String         @id @default(uuid()) @db.Uuid
+  name          String
+  email         String         @unique
+  emailVerified Boolean        @default(false)
+  googleHostedDomain String?
+  image         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  access        AccountAccess?
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id @default(uuid()) @db.Uuid
+  accountId             String
+  providerId            String
+  userId                String    @db.Uuid
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id @default(uuid()) @db.Uuid
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@index([identifier])
+}
+
+model AccountAccess {
+  id                String              @id @default(uuid()) @db.Uuid
+  email             String              @unique
+  role              AccessRole
+  status            AccessStatus        @default(active)
+  canManageAccounts Boolean             @default(false)
+  authUserId        String?             @unique @db.Uuid
+  version           Int                 @default(1)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  authUser          User?               @relation(fields: [authUserId], references: [id], onDelete: Restrict)
+  enrollment        StudentEnrollment?
+  curriculumGrants  CurriculumAdmin[]
+  enrollmentRequests EnrollmentRequest[] @relation("EnrollmentOwner")
+  reviewedRequests EnrollmentRequest[] @relation("EnrollmentReviewer")
+}
+
+enum EnrollmentRequestStatus {
+  pending
+  approved
+  rejected
+}
+
+model EnrollmentRequest {
+  id String @id @default(uuid()) @db.Uuid
+  accountAccessId String @db.Uuid
+  studentCode String
+  curriculumVersionId String @db.Uuid
+  trackState TrackState @default(unknown)
+  trackId String? @db.Uuid
+  status EnrollmentRequestStatus @default(pending)
+  version Int @default(1)
+  reviewReason String?
+  submissionReason String?
+  reviewerAccountId String? @db.Uuid
+  reviewedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  owner AccountAccess @relation("EnrollmentOwner", fields: [accountAccessId], references: [id], onDelete: Restrict)
+  reviewer AccountAccess? @relation("EnrollmentReviewer", fields: [reviewerAccountId], references: [id], onDelete: Restrict)
+  curriculumVersion CurriculumVersion @relation(fields: [curriculumVersionId], references: [id], onDelete: Restrict)
+  track Track? @relation(fields: [trackId, curriculumVersionId], references: [id, curriculumVersionId], onDelete: Restrict)
+  @@index([accountAccessId, createdAt])
+}
+
+model Curriculum {
+  id          String              @id @default(uuid()) @db.Uuid
+  code        String              @unique
+  name        String
+  versions    CurriculumVersion[]
+  admins      CurriculumAdmin[]
+}
+
+model CurriculumVersion {
+  id           String              @id @default(uuid()) @db.Uuid
+  curriculumId String              @db.Uuid
+  code         String              @unique
+  state        String              @default("draft")
+  curriculum   Curriculum          @relation(fields: [curriculumId], references: [id], onDelete: Restrict)
+  tracks       Track[]
+  enrollments  StudentEnrollment[]
+  enrollmentRequests EnrollmentRequest[]
+  academicDatasets AcademicDataset[]
+  trackCriteria TrackCriteria[]
+}
+
+model Track {
+  id                  String              @id @default(uuid()) @db.Uuid
+  curriculumVersionId String              @db.Uuid
+  code                String
+  name                String
+  curriculumVersion   CurriculumVersion   @relation(fields: [curriculumVersionId], references: [id], onDelete: Restrict)
+  enrollments         StudentEnrollment[]
+  enrollmentRequests EnrollmentRequest[]
+  @@unique([curriculumVersionId, code])
+  @@unique([id, curriculumVersionId])
+}
+
+model StudentEnrollment {
+  id                  String            @id @default(uuid()) @db.Uuid
+  accountAccessId     String            @unique @db.Uuid
+  studentCode         String
+  curriculumVersionId String            @db.Uuid
+  trackState          TrackState        @default(unknown)
+  trackId             String?           @db.Uuid
+  confirmationSource  String            @default("admin_verified")
+  admissionYear       Int?
+  cohortVersion       Int               @default(1)
+  cohortSource        String?
+  accountAccess       AccountAccess     @relation(fields: [accountAccessId], references: [id], onDelete: Restrict)
+  curriculumVersion   CurriculumVersion @relation(fields: [curriculumVersionId], references: [id], onDelete: Restrict)
+  track               Track?            @relation(fields: [trackId, curriculumVersionId], references: [id, curriculumVersionId], onDelete: Restrict)
+  academicState StudentAcademicState?
+  transcriptDrafts TranscriptDraft[]
+  transcriptRevisions TranscriptRevision[]
+  @@unique([curriculumVersionId, studentCode])
+}
+
+// Criteria revisions are separate from catalogue revisions. Published payloads are immutable.
+model TrackCriteria {
+  id String @id @default(uuid()) @db.Uuid
+  curriculumVersionId String @db.Uuid
+  catalogueDatasetId String? @db.Uuid
+  admissionYears Int[]
+  track String
+  year Int
+  semester Int
+  version Int
+  editVersion Int @default(1)
+  status String @default("draft")
+  payload Json
+  basedOnId String? @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  events TrackCriteriaEvent[]
+  curriculumVersion CurriculumVersion @relation(fields: [curriculumVersionId], references: [id], onDelete: Restrict, map: "TrackCriteria_curriculum_fkey")
+  catalogue AcademicDataset? @relation(fields: [catalogueDatasetId], references: [id], onDelete: Restrict, map: "TrackCriteria_catalogue_fkey")
+  basedOn TrackCriteria? @relation("CriteriaCopies", fields: [basedOnId], references: [id], onDelete: Restrict, map: "TrackCriteria_basedOn_fkey")
+  copies TrackCriteria[] @relation("CriteriaCopies")
+  @@index([curriculumVersionId, year, semester, track, status])
+}
+
+model TrackCriteriaEvent {
+  id String @id @default(uuid()) @db.Uuid
+  criteriaId String @db.Uuid
+  actorAccountId String @db.Uuid
+  action String
+  reason String
+  snapshot Json
+  createdAt DateTime @default(now())
+  criteria TrackCriteria @relation(fields: [criteriaId], references: [id], onDelete: Restrict)
+  @@index([criteriaId, createdAt])
+}
+
+model CurriculumAdmin {
+  accountAccessId String        @db.Uuid
+  curriculumId    String        @db.Uuid
+  active          Boolean       @default(true)
+  accountAccess   AccountAccess @relation(fields: [accountAccessId], references: [id], onDelete: Restrict)
+  curriculum      Curriculum    @relation(fields: [curriculumId], references: [id], onDelete: Restrict)
+  @@id([accountAccessId, curriculumId])
+}
+
+model AuditEvent {
+  id              String   @id @default(uuid()) @db.Uuid
+  actorAccountId  String   @db.Uuid
+  targetAccountId String   @db.Uuid
+  action          String
+  changedFields   String[]
+  createdAt       DateTime @default(now())
+  @@index([targetAccountId, createdAt])
+}
+
+// Published datasets and confirmed revisions are append-only through the service.
+model AcademicDataset {
+  id String @id @default(uuid()) @db.Uuid
+  curriculumVersionId String @db.Uuid
+  version Int
+  status String @default("draft")
+  editVersion Int @default(1)
+  source String
+  policy Json
+  groups Json
+  unresolved Json
+  createdAt DateTime @default(now())
+  publishedAt DateTime?
+  curriculumVersion CurriculumVersion @relation(fields: [curriculumVersionId], references: [id], onDelete: Restrict)
+  courses CatalogCourse[]
+  offerings CourseOffering[]
+  analyses AnalysisRun[]
+  trackCriteria TrackCriteria[]
+  @@unique([curriculumVersionId, version])
+}
+
+model CatalogCourse {
+  id String @id @default(uuid()) @db.Uuid
+  datasetId String @db.Uuid
+  code String
+  name String
+  credits Int
+  category String
+  tracks String[]
+  grading String
+  specific Boolean @default(false)
+  prerequisite Json
+  requiresConsent Boolean @default(false)
+  source String
+  dataset AcademicDataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  @@unique([datasetId, code])
+}
+
+model CourseOffering {
+  id String @id @default(uuid()) @db.Uuid
+  datasetId String @db.Uuid
+  courseCode String
+  year Int // 0 denotes the recurring pattern, never a confirmed offering.
+  semester Int
+  availability String
+  confidence String
+  source String
+  dataset AcademicDataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  @@unique([datasetId, courseCode, year, semester])
+}
+
+model PrivateDocument {
+  id String @id @default(uuid()) @db.Uuid
+  ownerAccountId String @db.Uuid
+  content Bytes
+  sha256 String
+  createdAt DateTime @default(now())
+  drafts TranscriptDraft[]
+  @@index([ownerAccountId])
+}
+
+model TranscriptDraft {
+  id String @id @default(uuid()) @db.Uuid
+  ownerAccountId String @db.Uuid
+  enrollmentId String? @db.Uuid
+  documentId String @db.Uuid
+  baseRevisionId String? @db.Uuid
+  editVersion Int @default(1)
+  status String @default("draft")
+  header Json
+  extracted Json
+  pages Int
+  summaries Json
+  issues Json
+  createdAt DateTime @default(now())
+  enrollment StudentEnrollment? @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+  document PrivateDocument @relation(fields: [documentId], references: [id], onDelete: Restrict)
+  attempts DraftCourseAttempt[]
+  revision TranscriptRevision?
+  @@index([ownerAccountId, createdAt])
+}
+
+model DraftCourseAttempt {
+  id String @id @default(uuid()) @db.Uuid
+  draftId String @db.Uuid
+  ordinal Int
+  courseCode String
+  name String
+  credits Int?
+  grade String?
+  gradePoints Float?
+  year Int?
+  semester Int?
+  kind String
+  sourcePage Int
+  draft TranscriptDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  @@unique([draftId, ordinal])
+}
+
+model TranscriptRevision {
+  id String @id @default(uuid()) @db.Uuid
+  ownerAccountId String @db.Uuid
+  enrollmentId String @db.Uuid
+  draftId String @unique @db.Uuid
+  payload Json
+  confirmedAt DateTime @default(now())
+  enrollment StudentEnrollment @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+  draft TranscriptDraft @relation(fields: [draftId], references: [id], onDelete: Restrict)
+  currentState StudentAcademicState?
+  analyses AnalysisRun[]
+  @@index([ownerAccountId, confirmedAt])
+}
+
+model StudentAcademicState {
+  enrollmentId String @id @db.Uuid
+  currentRevisionId String? @unique @db.Uuid
+  enrollment StudentEnrollment @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+  currentRevision TranscriptRevision? @relation(fields: [currentRevisionId], references: [id], onDelete: Restrict)
+}
+
+model AnalysisRun {
+  id String @id @default(uuid()) @db.Uuid
+  ownerAccountId String @db.Uuid
+  revisionId String @db.Uuid
+  datasetId String @db.Uuid
+  engineVersion String
+  parameters Json
+  result Json
+  createdAt DateTime @default(now())
+  revision TranscriptRevision @relation(fields: [revisionId], references: [id], onDelete: Restrict)
+  dataset AcademicDataset @relation(fields: [datasetId], references: [id], onDelete: Restrict)
+  scenarios SimulationScenario[]
+  @@index([ownerAccountId, createdAt])
+}
+
+model SimulationScenario {
+  id String @id @default(uuid()) @db.Uuid
+  ownerAccountId String @db.Uuid
+  analysisId String @db.Uuid
+  events Json
+  comparison Json
+  createdAt DateTime @default(now())
+  analysis AnalysisRun @relation(fields: [analysisId], references: [id], onDelete: Restrict)
+  @@index([ownerAccountId, createdAt])
+}

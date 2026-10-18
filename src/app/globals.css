@@ -1,0 +1,43 @@
+:root {
+  --background: #f8f9fd;
+  --surface: #ffffff;
+  --text: #17233e;
+  --muted: #53627a;
+  --primary: #5345c9;
+  --primary-dark: #4034a5;
+  --primary-soft: #eeecff;
+  --border: #dfe3ef;
+  --focus: #9a3412;
+  --radius: 20px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-thai), "Noto Sans Thai", sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+button, input, select, textarea { font: inherit; }
+button { min-height: 44px; }
+button:disabled { cursor: not-allowed; }
+h1, h2, h3 { line-height: 1.45; letter-spacing: -0.025em; }
+input, select { min-height: 44px; }
+button, a { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 5px; }
+::selection { background: #dbeafe; color: #172b4d; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

@@ -1,0 +1,3399 @@
+{
+  "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; เป็นร่างที่ต้องตรวจทาน",
+  "courses": [
+    {
+      "code": "511100",
+      "name": "ความรู้พื้นฐานสำหรับแคลคูลัส",
+      "credits": 3,
+      "category": "non_degree",
+      "tracks": [],
+      "grading": "su",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 31; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "511108",
+      "name": "แคลคูลัสสำหรับนักวิทยาศาสตร์คณนา 1",
+      "credits": 3,
+      "category": "core_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "511100"
+        ],
+        "concurrent": true,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 31; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "511109",
+      "name": "แคลคูลัสสำหรับนักวิทยาศาสตร์คณนา 2",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "511108"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "511246",
+      "name": "พีชคณิตเชิงเส้นและการประยุกต์",
+      "credits": 3,
+      "category": "core_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "any",
+        "courses": [
+          "511101",
+          "511108",
+          "511110"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 31; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "514271",
+      "name": "อิเล็กทรอนิกส์สำหรับนักคอมพิวเตอร์",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "515104",
+      "name": "สถิติสำหรับคอมพิวเตอร์",
+      "credits": 3,
+      "category": "core_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 31; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "515232",
+      "name": "ความน่าจะเป็นสำหรับนักวิทยาการคอมพิวเตอร์",
+      "credits": 3,
+      "category": "core_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 31; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "515341",
+      "name": "การวิจัยดำเนินงาน",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "any",
+        "courses": [
+          "511108",
+          "511110"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "515342",
+      "name": "การวิจัยดำเนินงานสำหรับการจัดการโลจิสติกส์และโซ่อุปทาน",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "515341"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "515351",
+      "name": "ความรู้ทั่วไปเกี่ยวกับการบริหารความเสี่ยงและการประกันภัย",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "515352",
+      "name": "หลักคณิตศาสตร์ประกันภัย",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "515351"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517101",
+      "name": "ความรอบรู้และความเป็นพลเมืองดิจิทัล",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 31; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517112",
+      "name": "การออกแบบวงจรตรรกะเชิงเลข",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 31; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517121",
+      "name": "ทักษะการเขียนโปรแกรมคอมพิวเตอร์ 1",
+      "credits": 4,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 31; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517122",
+      "name": "ทักษะการเขียนโปรแกรมคอมพิวเตอร์ 2",
+      "credits": 4,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "any",
+        "courses": [
+          "517111",
+          "517121"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 31; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517211",
+      "name": "โครงสร้างข้อมูล",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517122"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 31; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517212",
+      "name": "โครงสร้างเชิงการคำนวณแบบไม่ต่อเนื่อง",
+      "credits": 3,
+      "category": "core_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "511108"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 31; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517221",
+      "name": "การพัฒนาซอฟต์แวร์เชิงวัตถุ",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517222",
+      "name": "โครงสร้างและสถาปัตยกรรมคอมพิวเตอร์",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517241",
+      "name": "การสื่อสารข้อมูลและเครือข่ายคอมพิวเตอร์",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517122"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517242",
+      "name": "การพัฒนาโปรแกรมประยุกต์บนเว็บ",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517261",
+      "name": "หลักการระบบฐานข้อมูลและการออกแบบ",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517121"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517300",
+      "name": "ภาษาอังกฤษสำหรับนักคอมพิวเตอร์",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517311",
+      "name": "การวิเคราะห์และการออกแบบขั้นตอนวิธี",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517211",
+          "517212"
+        ],
+        "concurrent": false,
+        "unresolved": "แผนปกติ APS ต้องผ่าน 517211 และ 517212 ก่อน; ไม่รองรับข้อยกเว้นเรียนพร้อมสิบสัปดาห์ (OPEN-03: รอรายละเอียดทางการ)"
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด; ข้อตกลงแผนปกติ APS 2026-10-17: ผ่าน 517211 และ 517212 ก่อน; ไม่ใช้ข้อยกเว้นเรียนพร้อมในการจัดแผนอัตโนมัติ"
+    },
+    {
+      "code": "517312",
+      "name": "ระบบปฏิบัติการ",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517222"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517321",
+      "name": "หลักการภาษาโปรแกรม",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517323",
+      "name": "ความชำนาญในการเขียนโปรแกรมด้วยภาษาจาวา",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517324",
+      "name": "การพัฒนาโปรแกรมประยุกต์บนอุปกรณ์เคลื่อนที่",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517325",
+      "name": "การพัฒนาโปรแกรมประยุกต์สำหรับหลายแพลตฟอร์ม",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517326",
+      "name": "ไพธอนกับเครื่องมือสำคัญ",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517327",
+      "name": "การเขียนโปรแกรมภาษาโคบอล",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517331",
+      "name": "ปัญญาประดิษฐ์",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517211"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517332",
+      "name": "การแทนความรู้และการให้เหตุผล",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517333",
+      "name": "การคำนวณเชิงวิวัฒนาการ",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517341",
+      "name": "โครงสร้างพื้นฐานและสถาปัตยกรรมเครือข่าย",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517241"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517342",
+      "name": "ความปลอดภัยในระบบคอมพิวเตอร์และเครือข่าย",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517241"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517351",
+      "name": "คอมพิวเตอร์กราฟิกส์",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517352",
+      "name": "การประมวลผลภาพดิจิทัล",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517353",
+      "name": "สื่อประสมดิจิทัล",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517354",
+      "name": "การประมวลผลสัญญาณดิจิทัล",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517355",
+      "name": "การออกแบบและพัฒนาแอนิเมชัน 3 มิติ",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517356",
+      "name": "การรวบรวมข้อมูลและสร้างจินตภาพ",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517361",
+      "name": "อินเทอร์เน็ตของทุกสรรพสิ่ง",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517362",
+      "name": "ฐานข้อมูลขั้นสูง",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517261"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517392",
+      "name": "การเตรียมความพร้อมสำหรับโครงงานวิจัย",
+      "credits": 1,
+      "category": "track_required",
+      "tracks": [
+        "project",
+        "cooperative"
+      ],
+      "grading": "su",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32,33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด; S/U ตามคำยืนยันผู้ใช้จากประสบการณ์ตนเองและเพื่อน CS2565; บันทึก 2026-10-17; ยังไม่มีประกาศทางการประกอบ"
+    },
+    {
+      "code": "517393",
+      "name": "การเตรียมความพร้อมสำหรับสหกิจศึกษา",
+      "credits": 1,
+      "category": "track_required",
+      "tracks": [
+        "cooperative"
+      ],
+      "grading": "su",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด; S/U ตามคำยืนยันผู้ใช้จากประสบการณ์ตนเองและเพื่อน CS2565; บันทึก 2026-10-17; ยังไม่มีประกาศทางการประกอบ"
+    },
+    {
+      "code": "517431",
+      "name": "การเรียนรู้ของเครื่อง",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517432",
+      "name": "การประมวลผลภาษาธรรมชาติ",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "any",
+        "courses": [
+          "517211",
+          "520213",
+          "517214"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517433",
+      "name": "การเรียนรู้เชิงลึกสำหรับคอมพิวเตอร์วิทัศน์",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517434",
+      "name": "ระบบช่วยสนับสนุนการตัดสินใจเชิงอัจฉริยะ",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517435",
+      "name": "ระบบแนะนำ",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517436",
+      "name": "ระบบคอมพิวเตอร์ช่วยวินิจฉัย",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517441",
+      "name": "การประมวลผลข้อมูลขนาดใหญ่",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517442",
+      "name": "การออกแบบและการบริหารเครือข่ายคอมพิวเตอร์",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517241"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517443",
+      "name": "การจัดการความมั่นคงปลอดภัยทางไซเบอร์",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517241"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517451",
+      "name": "คอมพิวเตอร์วิทัศน์",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517461",
+      "name": "ระบบปฏิบัติการหุ่นยนต์และการควบคุม",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517462",
+      "name": "การเริ่มต้นธุรกิจดิจิทัล",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517463",
+      "name": "การปรับเปลี่ยนสู่ดิจิทัล",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517481",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 1",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517482",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 2",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517483",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 3",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517484",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 4",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 37; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517485",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 5",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 37; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517486",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 6",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 37; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517487",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 7",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 37; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517488",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 8",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 37; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517489",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 9",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 37; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517493",
+      "name": "โครงงานวิจัย 1",
+      "credits": 1,
+      "category": "track_required",
+      "tracks": [
+        "project"
+      ],
+      "grading": "su",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517494",
+      "name": "โครงงานวิจัย 2",
+      "credits": 2,
+      "category": "track_required",
+      "tracks": [
+        "project"
+      ],
+      "grading": "su",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517493"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517495",
+      "name": "การฝึกงาน",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "su",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 37; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517496",
+      "name": "สหกิจศึกษา",
+      "credits": 6,
+      "category": "track_required",
+      "tracks": [
+        "cooperative"
+      ],
+      "grading": "su",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517393"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "517497",
+      "name": "สัมมนาโครงงานสหกิจศึกษา",
+      "credits": 2,
+      "category": "track_required",
+      "tracks": [
+        "cooperative"
+      ],
+      "grading": "su",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": true,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "519161",
+      "name": "คณิตศาสตร์ธุรกิจและการวิเคราะห์",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 37; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520231",
+      "name": "การวิเคราะห์ข้อมูล",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517121"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520251",
+      "name": "การปฏิสัมพันธ์ระหว่างมนุษย์กับคอมพิวเตอร์และการออกแบบประสบการณ์ผู้ใช้",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520311",
+      "name": "กฎหมายและจรรยาบรรณสำหรับเทคโนโลยีสารสนเทศ",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520321",
+      "name": "การบริหารจัดการระบบฐานข้อมูล",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517261"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520323",
+      "name": "การจัดการเนื้อหาและสินทรัพย์แบบดิจิทัล",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "any",
+        "courses": [
+          "517261",
+          "520221"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 37; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520333",
+      "name": "การทำเหมืองข้อมูล",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "any",
+        "courses": [
+          "517261",
+          "520221",
+          "522253"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520347",
+      "name": "เดฟออปส์และวิศวกรรมระบบคลาวด์เชิงปฏิบัต ิ",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520348",
+      "name": "เดฟเซคออปส์เชิงปฏิบัติ",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520353",
+      "name": "การพาณิชย์อิเล็กทรอนิกส์",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "any",
+        "courses": [
+          "517242",
+          "520112"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 35; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520361",
+      "name": "การวิเคราะห์และการออกแบบระบบงาน",
+      "credits": 3,
+      "category": "specific_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 32; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520362",
+      "name": "วิศวกรรมซอฟต์แวร์",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "520361"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 33; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520364",
+      "name": "การจัดการโครงการซอฟต์แวร์ร่วมสมัย",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "520361"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520421",
+      "name": "การจัดเก็บและค้นคืนสารสนเทศ",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "any",
+        "courses": [
+          "517261",
+          "520221"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520428",
+      "name": "โบราณคดีเชิงดิจิทัล",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 36; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520451",
+      "name": "การออกแบบและพัฒนาเกม",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "517122"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520463",
+      "name": "การทดสอบซอฟต์แวร์",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "520361"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 34; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "520464",
+      "name": "สกรัมเกม",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 37; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU101",
+      "name": "ศิลปะศิลปากร",
+      "credits": 3,
+      "category": "general_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 24; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU102",
+      "name": "ศิลปากรสร้างสรรค์",
+      "credits": 3,
+      "category": "general_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 24; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU201",
+      "name": "ภาษาอังกฤษในยุคดิจิทัล",
+      "credits": 3,
+      "category": "general_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 24; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU202",
+      "name": "ภาษาอังกฤษเพื่อการสื่อสารนานาชาติ",
+      "credits": 3,
+      "category": "general_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [
+          "SU201"
+        ],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 24; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU203",
+      "name": "ทักษะการสื่อสารอย่างสร้างสรรค์",
+      "credits": 3,
+      "category": "general_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 24; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU301",
+      "name": "พลเมืองตื่นรู้",
+      "credits": 3,
+      "category": "general_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU401",
+      "name": "ความเป็นผู้ประกอบการที่ขับเคลื่อนด้วยนวัตกรรม",
+      "credits": 3,
+      "category": "general_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU402",
+      "name": "นวัตกรรมและการออกแบบ",
+      "credits": 3,
+      "category": "general_required",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU110",
+      "name": "มนุษย์กับการสร้างสรรค์",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU111",
+      "name": "บ้าน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU112",
+      "name": "ความสุข",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU113",
+      "name": "การตั้งคำถามและวิธีการ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU114",
+      "name": "เทคโนโลยีเปลี่ยนโลก",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU115",
+      "name": "อาหารเพื่อสุขภาพ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU116",
+      "name": "ศิลปะสมัยใหม่และร่วมสมัยในประเทศไทย",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU117",
+      "name": "ศิลปะกับวัฒนธรรมทางการเห็น",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU118",
+      "name": "สถาปัตยกรรมและศิลปะในเอเชียตะวันออกเฉียงใต้",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU119",
+      "name": "การอ่านวรรณกรรมเพื่อการพัฒนาคุณภาพชีวิต",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 25; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU120",
+      "name": "ไทยศึกษา",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU121",
+      "name": "วิถีพุทธในประเทศไทยและอาเซียน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU122",
+      "name": "สมาธิเชิงประยุกต์",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU123",
+      "name": "วิถีชีวิตในสังคมพหุวัฒนธรรม",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU124",
+      "name": "เหตุการณ์โลกปัจจุบัน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU125",
+      "name": "มนุษย์กับการคิด",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU126",
+      "name": "ศิลปะและสื่อร่วมสมัยประยุกต์เพื่อชุมชน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU127",
+      "name": "กระบวนการเรียนรู้ระบบสัญลักษณ์ในศตวรรษที่ 21",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU128",
+      "name": "การตีความศิลปะ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU129",
+      "name": "ทักษะการรู้เท่าทันสารสนเทศและสื่อ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU130",
+      "name": "การพัฒนาการคิด",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU131",
+      "name": "การจัดการสารสนเทศเบื้องต้น",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU132",
+      "name": "โลกและดาราศาสตร์ในสหัสวรรษที่ 3",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU133",
+      "name": "การจัดการสิ่งแวดล้อมในครัวเรือน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU134",
+      "name": "ความรอบรู้ทางด้านคอมพิวเตอร์ เทคโนโลยีสารสนเทศ และการสื่อสาร",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU135",
+      "name": "ศิลปะการดำรงชีวิต",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 26; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU136",
+      "name": "เทคโนโลยีเครื่องมือเครื่องใช้ในชีวิตประจำวัน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU137",
+      "name": "เทคโนโลยีการสื่อสารกับมนุษย์",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU138",
+      "name": "ไฟฟ้ากับชีวิตประจำวัน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU139",
+      "name": "การพัฒนาภาวะผู้นำ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU140",
+      "name": "เทคโนโลยีพลังงานทดแทน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU141",
+      "name": "การแก้ปัญหาแบบสร้างสรรค์",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU142",
+      "name": "ดนตรีอาเซียน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU143",
+      "name": "สุนทรียภาพแห่งการฟัง",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU144",
+      "name": "สมาธิในชีวิตประจำวัน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU145",
+      "name": "สังคมและวัฒนธรรมไทย",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU146",
+      "name": "โครงการพระราชดำริ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU147",
+      "name": "ภาพและเสียงดิจิทัล",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU148",
+      "name": "พลวัตสังคมไทย",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU149",
+      "name": "การดูแลสุขภาพ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU150",
+      "name": "ภาพยนตร์วิจักษ์",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU151",
+      "name": "ความเข้าใจในอารยธรรมโลกยุคโบราณ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 27; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU152",
+      "name": "ภูมิปัญญาไทยกับการสร้างสรรค์",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU153",
+      "name": "สุนทรียศาสตร์เบื้องต้น",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU154",
+      "name": "การออกแบบและสร้างสรรค์ในศิลปะตะวันออก",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU155",
+      "name": "มองกรุงเทพผ่านศิลปะ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU156",
+      "name": "ศิลปกรรมกับสังคมวัฒนธรรมไทย",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU157",
+      "name": "วัฒนธรรมในชีวิตประจำวัน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU158",
+      "name": "การออกกำลังกายเพื่อคุณภาพชีวิต",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU210",
+      "name": "การใช้ภาษาไทยเพื่อการสื่อสารและการสืบค้น",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU211",
+      "name": "ความรู้เบื้องต้นเกี่ยวกับภาษาและภาษาในอาเซียน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU212",
+      "name": "ภาษาฝรั่งเศสเพื่อการสื่อสารด้านวัฒนธรรม",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU213",
+      "name": "ภาษาไทยเพื่อการพัฒนาชีวิต",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU214",
+      "name": "ภาษาจีนเพื่ออาชีพ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU215",
+      "name": "นิทานและการละเล่นพื้นบ้าน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU216",
+      "name": "การอ่านภาษาอังกฤษเพื่อการวิจารณ์",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU217",
+      "name": "การนำเสนอเชิงสร้างสรรค์ด้วยภาษาอังกฤษ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 28; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU218",
+      "name": "ภาษาอังกฤษสำหรับวิทยาศาสตร์และเทคโนโลยี",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU310",
+      "name": "การอนุรักษ์และการจัดการมรดกทางวัฒนธรรม",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU311",
+      "name": "งานสร้างสรรค์และนวัตกรรมในศตวรรษที่ 21",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU312",
+      "name": "เพศสภาพและเพศวิถี",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU313",
+      "name": "ธรรมชาติวิจักษ์",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU314",
+      "name": "รักษ์นก",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU315",
+      "name": "การอนุรักษ์สิ่งแวดล้อมธรรมชาติและศิลปกรรม",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU316",
+      "name": "โลกของจุลินทรีย์",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU317",
+      "name": "อินเทอร์เน็ตสีขาว",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU318",
+      "name": "สิ่งแวดล้อม มลพิษและพลังงาน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU319",
+      "name": "วิทยาศาสตร์และเทคโนโลยีเพื่อการพัฒนาอย่างยั่งยืน",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU320",
+      "name": "โลกแห่งนวัตกรรม",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU321",
+      "name": "วัสดุและผลกระทบต่อสิ่งแวดล้อม",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU322",
+      "name": "การดูแลสัตว์เลี้ยง",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU323",
+      "name": "จิตสาธารณะ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 29; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU324",
+      "name": "เทคโนโลยีสะอาดในอุตสาหกรรม",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 30; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU325",
+      "name": "ภูมิภาคโลก",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 30; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU410",
+      "name": "การจัดการเอกสารและจดหมายเหตุ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 30; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU411",
+      "name": "การเพาะเห็ดและการต่อยอดทางธุรกิจ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 30; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU412",
+      "name": "เทคโนโลยี เทคนิค และอุตสาหกรรมอีสปอร์ต",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 30; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU413",
+      "name": "มหัศจรรย์ผลิตภัณฑ์เทคโนโลยีชีวภาพ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 30; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU414",
+      "name": "ภูมิปัญญาท้องถิ่นสู่กระบวนการผลิต",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 30; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU415",
+      "name": "การตลาดและการเงินพื้นฐานสำหรับผู้ประกอบการ",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 30; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "SU416",
+      "name": "ธุรกิจดิจิทัล",
+      "credits": 3,
+      "category": "general_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS2565.pdf SHA256 de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963; PDF 30; ชื่อตรวจจากภาพ; CS-R/CS-P ตามตารางข้อกำหนด"
+    },
+    {
+      "code": "511101",
+      "name": "วิชาอ้างอิง 511101 (ยังไม่มีชื่อยืนยัน)",
+      "credits": 0,
+      "category": "unmapped",
+      "tracks": [],
+      "grading": "unknown",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS-P; รหัสอ้างอิงนอกทะเบียน CS2565; ชื่อ หน่วยกิตและหมวดยังไม่ยืนยัน"
+    },
+    {
+      "code": "511110",
+      "name": "วิชาอ้างอิง 511110 (ยังไม่มีชื่อยืนยัน)",
+      "credits": 0,
+      "category": "unmapped",
+      "tracks": [],
+      "grading": "unknown",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS-P; รหัสอ้างอิงนอกทะเบียน CS2565; ชื่อ หน่วยกิตและหมวดยังไม่ยืนยัน"
+    },
+    {
+      "code": "517111",
+      "name": "วิชาอ้างอิง 517111 (ยังไม่มีชื่อยืนยัน)",
+      "credits": 0,
+      "category": "unmapped",
+      "tracks": [],
+      "grading": "unknown",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS-P; รหัสอ้างอิงนอกทะเบียน CS2565; ชื่อ หน่วยกิตและหมวดยังไม่ยืนยัน"
+    },
+    {
+      "code": "520213",
+      "name": "วิชาอ้างอิง 520213 (ยังไม่มีชื่อยืนยัน)",
+      "credits": 0,
+      "category": "unmapped",
+      "tracks": [],
+      "grading": "unknown",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS-P; รหัสอ้างอิงนอกทะเบียน CS2565; ชื่อ หน่วยกิตและหมวดยังไม่ยืนยัน"
+    },
+    {
+      "code": "517214",
+      "name": "วิชาอ้างอิง 517214 (ยังไม่มีชื่อยืนยัน)",
+      "credits": 0,
+      "category": "unmapped",
+      "tracks": [],
+      "grading": "unknown",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS-P; รหัสอ้างอิงนอกทะเบียน CS2565; ชื่อ หน่วยกิตและหมวดยังไม่ยืนยัน"
+    },
+    {
+      "code": "520221",
+      "name": "วิชาอ้างอิง 520221 (ยังไม่มีชื่อยืนยัน)",
+      "credits": 0,
+      "category": "unmapped",
+      "tracks": [],
+      "grading": "unknown",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS-P; รหัสอ้างอิงนอกทะเบียน CS2565; ชื่อ หน่วยกิตและหมวดยังไม่ยืนยัน"
+    },
+    {
+      "code": "522253",
+      "name": "วิชาอ้างอิง 522253 (ยังไม่มีชื่อยืนยัน)",
+      "credits": 0,
+      "category": "unmapped",
+      "tracks": [],
+      "grading": "unknown",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS-P; รหัสอ้างอิงนอกทะเบียน CS2565; ชื่อ หน่วยกิตและหมวดยังไม่ยืนยัน"
+    },
+    {
+      "code": "520112",
+      "name": "วิชาอ้างอิง 520112 (ยังไม่มีชื่อยืนยัน)",
+      "credits": 0,
+      "category": "unmapped",
+      "tracks": [],
+      "grading": "unknown",
+      "specific": false,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "CS-P; รหัสอ้างอิงนอกทะเบียน CS2565; ชื่อ หน่วยกิตและหมวดยังไม่ยืนยัน"
+    },
+    {
+      "code": "517465",
+      "name": "วิศวกรรมคุณลักษณะ",
+      "credits": 3,
+      "category": "specific_elective",
+      "tracks": [],
+      "grading": "numeric",
+      "specific": true,
+      "prerequisite": {
+        "mode": "all",
+        "courses": [],
+        "concurrent": false,
+        "unresolved": null
+      },
+      "requiresConsent": false,
+      "source": "Feature Engineering; 3(2-2-5); ชื่อ/หน่วยกิต/หมวด/เกรด A–F/ไม่มีวิชาบังคับก่อน ตามคำยืนยันผู้ใช้ 2026-10-17; ไม่มีประกาศทางการประกอบ; เปิดสอนตามผู้สอน ต้องตรวจประกาศเป็นรายภาค ไม่ยืนยันเปิดซ้ำ"
+    }
+  ],
+  "groups": [
+    {
+      "category": "general_required",
+      "minimum": 24,
+      "track": "both",
+      "source": "CS-R03–17"
+    },
+    {
+      "category": "general_elective",
+      "minimum": 6,
+      "track": "both",
+      "source": "CS-R03–17"
+    },
+    {
+      "category": "core_required",
+      "minimum": 15,
+      "track": "both",
+      "source": "CS-R03–17"
+    },
+    {
+      "category": "specific_required",
+      "minimum": 56,
+      "track": "both",
+      "source": "CS-R03–17"
+    },
+    {
+      "category": "track_required",
+      "minimum": 4,
+      "track": "project",
+      "source": "CS-R03–17"
+    },
+    {
+      "category": "track_required",
+      "minimum": 10,
+      "track": "cooperative",
+      "source": "CS-R03–17"
+    },
+    {
+      "category": "specific_elective",
+      "minimum": 15,
+      "track": "project",
+      "source": "CS-R03–17"
+    },
+    {
+      "category": "specific_elective",
+      "minimum": 9,
+      "track": "cooperative",
+      "source": "CS-R03–17"
+    },
+    {
+      "category": "free_elective",
+      "minimum": 6,
+      "track": "both",
+      "source": "CS-R03–17"
+    }
+  ],
+  "offerings": [],
+  "policy": {
+    "degreeCredits": 126,
+    "gpaMinimum": 2,
+    "retakeCeiling": 1.5,
+    "repeat": "latest_numeric",
+    "rounding": "half_up_2",
+    "prerequisitePass": "latest_assessed",
+    "normalMin": 12,
+    "normalMax": 22,
+    "summerMax": 9,
+    "source": "CS-R03/20/21/22/29/32/33/34; ข้อตกลงเกรด/GPA สำหรับ APS ตามผู้ใช้ 2026-10-17; ไม่ใช่ประกาศรับรองมหาวิทยาลัย; สิทธิ์ตัวต่อใช้ผลล่าสุดเป็นนโยบายแผน APS; ข้อตกลง APS ตามผู้ใช้ 2026-10-17: วิชาเลือกเฉพาะถึงขั้นต่ำก่อน ส่วนเกินทั้งวิชาไปเลือกเสรี เรียงภาคที่ผ่านก่อนแล้วรหัส ไม่นับซ้ำ ไม่แบ่งหน่วยกิต",
+    "starGradeCourses": [
+      "511100"
+    ],
+    "gpaComparison": "raw",
+    "specificGpaBasis": "all_specific",
+    "electiveAllocation": "specific_then_free_earliest_pass"
+  },
+  "unresolved": [
+    "OPEN-01: APS ใช้รายวิชาเลือกครบ 5 กลุ่มตามผู้ใช้; ความขัดแย้งข้อความ 4/5 กลุ่มยังรอหลักฐานทางการ",
+    "OPEN-02: ฉบับข้อบังคับที่ใช้จริง",
+    "OPEN-03: แผนปกติ APS ใช้วิชาก่อนครบ; ข้อยกเว้นเรียนพร้อมสิบสัปดาห์ยังรอรายละเอียดทางการ",
+    "OPEN-04/10: เงื่อนไขโครงงานและสหกิจยังต้องยืนยัน",
+    "OPEN-05: APS ยืนยัน S*/U* เฉพาะ 511100 ตามผู้ใช้; วิชาอื่นและหลักฐานทางการยังรอยืนยัน",
+    "OPEN-16: 517392/517393 ใช้ S/U ตามคำยืนยันผู้ใช้; ยังไม่มีประกาศทางการประกอบ",
+    "OPEN-06: APS ใช้เกรดตัวเลขล่าสุดและสิทธิ์ตัวต่อตามผลล่าสุด; การรักษาสิทธิ์ตามมหาวิทยาลัยยังรอยืนยัน",
+    "OPEN-07: APS แสดงครึ่งขึ้นสองตำแหน่ง เทียบค่าก่อนปัด และรวมทุกวิชาเฉพาะด้าน; หลักฐานทางการยังรอยืนยัน",
+    "OPEN-08/09: ภาระเรียนและระยะเวลา",
+    "OPEN-11/12: ภาษาอังกฤษและการโอน",
+    "OPEN-14: ต้องเตรียมข้อมูลเปิดสอน",
+    "OPEN-15: APS จัดเลือกเฉพาะก่อนแล้วส่วนเกินทั้งวิชาไปเลือกเสรี เรียงภาคที่ผ่านก่อนแล้วรหัส ตามผู้ใช้; ยังรอหลักฐานทางการ",
+    "OPEN-17: APS รับ 517465 วิศวกรรมคุณลักษณะ 3 หน่วยกิต เลือกเฉพาะ เกรด A–F ไม่มีวิชาก่อน ตามผู้ใช้; ยังรอหลักฐานทางการ"
+  ]
+}

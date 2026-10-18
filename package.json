@@ -1,0 +1,70 @@
+{
+  "name": "aps-v2",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "ระบบช่วยวางแผนการเรียน APS-v2 — CS2565",
+  "engines": {
+    "node": ">=24.0.0 <25"
+  },
+  "overrides": {
+    "exceljs": {
+      "uuid": "11.1.1"
+    },
+    "@prisma/config": {
+      "deepmerge-ts": "8.0.2"
+    },
+    "prisma": {
+      "mysql2": "3.24.5"
+    }
+  },
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "prisma generate && next build",
+    "start": "next start --hostname 127.0.0.1",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "prisma generate && next typegen && tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "check": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "db:setup": "node scripts/setup-database.mjs",
+    "db:migrate": "prisma migrate deploy",
+    "db:bootstrap": "node scripts/bootstrap-admin.mjs",
+    "setup:check": "node scripts/check-setup.mjs",
+    "db:migrate:test": "node scripts/prepare-test-database.mjs",
+    "test:integration": "npm run db:migrate:test && vitest run --config vitest.integration.config.ts",
+    "test:e2e:auth": "npm run db:migrate:test && node --conditions=react-server --import tsx scripts/prepare-browser-tests.ts && playwright test --config playwright.auth.config.ts",
+    "demo:prepare": "node --conditions=react-server --import tsx scripts/demo/prepare.ts",
+    "demo:open": "node --conditions=react-server --import tsx scripts/demo/open.ts",
+    "test:e2e:demo": "playwright test --config playwright.demo.config.ts",
+    "test:e2e:pdf": "node --conditions=react-server --import tsx scripts/pdf-review/run.ts"
+  },
+  "dependencies": {
+    "@better-auth/prisma-adapter": "1.7.7",
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "better-auth": "1.7.7",
+    "dotenv": "17.4.2",
+    "exceljs": "4.4.0",
+    "jose": "6.2.12",
+    "next": "16.4.0",
+    "pdfjs-dist": "6.4.299",
+    "pg": "8.23.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "@types/node": "24.19.2",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.0",
+    "prisma": "7.10.0",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "5.0.4"
+  }
+}

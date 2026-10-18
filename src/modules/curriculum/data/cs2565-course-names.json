@@ -1,0 +1,2006 @@
+{
+  "curriculum": "CS2565",
+  "sourceFile": "CS2565.pdf",
+  "sourceSha256": "de1e50850ebb8b3e386034bb5b3672b1083caf254a46f0acf6888bc466e96963",
+  "reviewedPdfPages": [
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37
+  ],
+  "note": "Course names reviewed against rendered source catalog. No policy confirmation is implied.",
+  "courses": [
+    {
+      "code": "511100",
+      "name": "ความรู้พื้นฐานสำหรับแคลคูลัส",
+      "pdfPages": [
+        31
+      ],
+      "documentPages": [
+        28
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "511108",
+      "name": "แคลคูลัสสำหรับนักวิทยาศาสตร์คณนา 1",
+      "pdfPages": [
+        31
+      ],
+      "documentPages": [
+        28
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "511109",
+      "name": "แคลคูลัสสำหรับนักวิทยาศาสตร์คณนา 2",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "511246",
+      "name": "พีชคณิตเชิงเส้นและการประยุกต์",
+      "pdfPages": [
+        31
+      ],
+      "documentPages": [
+        28
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "514271",
+      "name": "อิเล็กทรอนิกส์สำหรับนักคอมพิวเตอร์",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "515104",
+      "name": "สถิติสำหรับคอมพิวเตอร์",
+      "pdfPages": [
+        31
+      ],
+      "documentPages": [
+        28
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "515232",
+      "name": "ความน่าจะเป็นสำหรับนักวิทยาการคอมพิวเตอร์",
+      "pdfPages": [
+        31
+      ],
+      "documentPages": [
+        28
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "515341",
+      "name": "การวิจัยดำเนินงาน",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "515342",
+      "name": "การวิจัยดำเนินงานสำหรับการจัดการโลจิสติกส์และโซ่อุปทาน",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "515351",
+      "name": "ความรู้ทั่วไปเกี่ยวกับการบริหารความเสี่ยงและการประกันภัย",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "515352",
+      "name": "หลักคณิตศาสตร์ประกันภัย",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517101",
+      "name": "ความรอบรู้และความเป็นพลเมืองดิจิทัล",
+      "pdfPages": [
+        31
+      ],
+      "documentPages": [
+        28
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517112",
+      "name": "การออกแบบวงจรตรรกะเชิงเลข",
+      "pdfPages": [
+        31
+      ],
+      "documentPages": [
+        28
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517121",
+      "name": "ทักษะการเขียนโปรแกรมคอมพิวเตอร์ 1",
+      "pdfPages": [
+        31
+      ],
+      "documentPages": [
+        28
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517122",
+      "name": "ทักษะการเขียนโปรแกรมคอมพิวเตอร์ 2",
+      "pdfPages": [
+        31
+      ],
+      "documentPages": [
+        28
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517211",
+      "name": "โครงสร้างข้อมูล",
+      "pdfPages": [
+        31
+      ],
+      "documentPages": [
+        28
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517212",
+      "name": "โครงสร้างเชิงการคำนวณแบบไม่ต่อเนื่อง",
+      "pdfPages": [
+        31
+      ],
+      "documentPages": [
+        28
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517221",
+      "name": "การพัฒนาซอฟต์แวร์เชิงวัตถุ",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517222",
+      "name": "โครงสร้างและสถาปัตยกรรมคอมพิวเตอร์",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517241",
+      "name": "การสื่อสารข้อมูลและเครือข่ายคอมพิวเตอร์",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517242",
+      "name": "การพัฒนาโปรแกรมประยุกต์บนเว็บ",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517261",
+      "name": "หลักการระบบฐานข้อมูลและการออกแบบ",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517300",
+      "name": "ภาษาอังกฤษสำหรับนักคอมพิวเตอร์",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517311",
+      "name": "การวิเคราะห์และการออกแบบขั้นตอนวิธี",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517312",
+      "name": "ระบบปฏิบัติการ",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517321",
+      "name": "หลักการภาษาโปรแกรม",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517323",
+      "name": "ความชำนาญในการเขียนโปรแกรมด้วยภาษาจาวา",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517324",
+      "name": "การพัฒนาโปรแกรมประยุกต์บนอุปกรณ์เคลื่อนที่",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517325",
+      "name": "การพัฒนาโปรแกรมประยุกต์สำหรับหลายแพลตฟอร์ม",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517326",
+      "name": "ไพธอนกับเครื่องมือสำคัญ",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517327",
+      "name": "การเขียนโปรแกรมภาษาโคบอล",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517331",
+      "name": "ปัญญาประดิษฐ์",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517332",
+      "name": "การแทนความรู้และการให้เหตุผล",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517333",
+      "name": "การคำนวณเชิงวิวัฒนาการ",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517341",
+      "name": "โครงสร้างพื้นฐานและสถาปัตยกรรมเครือข่าย",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517342",
+      "name": "ความปลอดภัยในระบบคอมพิวเตอร์และเครือข่าย",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517351",
+      "name": "คอมพิวเตอร์กราฟิกส์",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517352",
+      "name": "การประมวลผลภาพดิจิทัล",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517353",
+      "name": "สื่อประสมดิจิทัล",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517354",
+      "name": "การประมวลผลสัญญาณดิจิทัล",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517355",
+      "name": "การออกแบบและพัฒนาแอนิเมชัน 3 มิติ",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517356",
+      "name": "การรวบรวมข้อมูลและสร้างจินตภาพ",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517361",
+      "name": "อินเทอร์เน็ตของทุกสรรพสิ่ง",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517362",
+      "name": "ฐานข้อมูลขั้นสูง",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517392",
+      "name": "การเตรียมความพร้อมสำหรับโครงงานวิจัย",
+      "pdfPages": [
+        32,
+        33
+      ],
+      "documentPages": [
+        29,
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517393",
+      "name": "การเตรียมความพร้อมสำหรับสหกิจศึกษา",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517431",
+      "name": "การเรียนรู้ของเครื่อง",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517432",
+      "name": "การประมวลผลภาษาธรรมชาติ",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517433",
+      "name": "การเรียนรู้เชิงลึกสำหรับคอมพิวเตอร์วิทัศน์",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517434",
+      "name": "ระบบช่วยสนับสนุนการตัดสินใจเชิงอัจฉริยะ",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517435",
+      "name": "ระบบแนะนำ",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517436",
+      "name": "ระบบคอมพิวเตอร์ช่วยวินิจฉัย",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517441",
+      "name": "การประมวลผลข้อมูลขนาดใหญ่",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517442",
+      "name": "การออกแบบและการบริหารเครือข่ายคอมพิวเตอร์",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517443",
+      "name": "การจัดการความมั่นคงปลอดภัยทางไซเบอร์",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517451",
+      "name": "คอมพิวเตอร์วิทัศน์",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517461",
+      "name": "ระบบปฏิบัติการหุ่นยนต์และการควบคุม",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517462",
+      "name": "การเริ่มต้นธุรกิจดิจิทัล",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517463",
+      "name": "การปรับเปลี่ยนสู่ดิจิทัล",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517481",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 1",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517482",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 2",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517483",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 3",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517484",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 4",
+      "pdfPages": [
+        37
+      ],
+      "documentPages": [
+        34
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517485",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 5",
+      "pdfPages": [
+        37
+      ],
+      "documentPages": [
+        34
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517486",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 6",
+      "pdfPages": [
+        37
+      ],
+      "documentPages": [
+        34
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517487",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 7",
+      "pdfPages": [
+        37
+      ],
+      "documentPages": [
+        34
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517488",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 8",
+      "pdfPages": [
+        37
+      ],
+      "documentPages": [
+        34
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517489",
+      "name": "เรื่องคัดเฉพาะทางวิทยาการคอมพิวเตอร์ 9",
+      "pdfPages": [
+        37
+      ],
+      "documentPages": [
+        34
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517493",
+      "name": "โครงงานวิจัย 1",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517494",
+      "name": "โครงงานวิจัย 2",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517495",
+      "name": "การฝึกงาน",
+      "pdfPages": [
+        37
+      ],
+      "documentPages": [
+        34
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517496",
+      "name": "สหกิจศึกษา",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "517497",
+      "name": "สัมมนาโครงงานสหกิจศึกษา",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "519161",
+      "name": "คณิตศาสตร์ธุรกิจและการวิเคราะห์",
+      "pdfPages": [
+        37
+      ],
+      "documentPages": [
+        34
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520231",
+      "name": "การวิเคราะห์ข้อมูล",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520251",
+      "name": "การปฏิสัมพันธ์ระหว่างมนุษย์กับคอมพิวเตอร์และการออกแบบประสบการณ์ผู้ใช้",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520311",
+      "name": "กฎหมายและจรรยาบรรณสำหรับเทคโนโลยีสารสนเทศ",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520321",
+      "name": "การบริหารจัดการระบบฐานข้อมูล",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520323",
+      "name": "การจัดการเนื้อหาและสินทรัพย์แบบดิจิทัล",
+      "pdfPages": [
+        37
+      ],
+      "documentPages": [
+        34
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520333",
+      "name": "การทำเหมืองข้อมูล",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520347",
+      "name": "เดฟออปส์และวิศวกรรมระบบคลาวด์เชิงปฏิบัต ิ",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520348",
+      "name": "เดฟเซคออปส์เชิงปฏิบัติ",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520353",
+      "name": "การพาณิชย์อิเล็กทรอนิกส์",
+      "pdfPages": [
+        35
+      ],
+      "documentPages": [
+        32
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520361",
+      "name": "การวิเคราะห์และการออกแบบระบบงาน",
+      "pdfPages": [
+        32
+      ],
+      "documentPages": [
+        29
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520362",
+      "name": "วิศวกรรมซอฟต์แวร์",
+      "pdfPages": [
+        33
+      ],
+      "documentPages": [
+        30
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520364",
+      "name": "การจัดการโครงการซอฟต์แวร์ร่วมสมัย",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520421",
+      "name": "การจัดเก็บและค้นคืนสารสนเทศ",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520428",
+      "name": "โบราณคดีเชิงดิจิทัล",
+      "pdfPages": [
+        36
+      ],
+      "documentPages": [
+        33
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520451",
+      "name": "การออกแบบและพัฒนาเกม",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520463",
+      "name": "การทดสอบซอฟต์แวร์",
+      "pdfPages": [
+        34
+      ],
+      "documentPages": [
+        31
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "520464",
+      "name": "สกรัมเกม",
+      "pdfPages": [
+        37
+      ],
+      "documentPages": [
+        34
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU101",
+      "name": "ศิลปะศิลปากร",
+      "pdfPages": [
+        24
+      ],
+      "documentPages": [
+        21
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU102",
+      "name": "ศิลปากรสร้างสรรค์",
+      "pdfPages": [
+        24
+      ],
+      "documentPages": [
+        21
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU110",
+      "name": "มนุษย์กับการสร้างสรรค์",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU111",
+      "name": "บ้าน",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU112",
+      "name": "ความสุข",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU113",
+      "name": "การตั้งคำถามและวิธีการ",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU114",
+      "name": "เทคโนโลยีเปลี่ยนโลก",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU115",
+      "name": "อาหารเพื่อสุขภาพ",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU116",
+      "name": "ศิลปะสมัยใหม่และร่วมสมัยในประเทศไทย",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU117",
+      "name": "ศิลปะกับวัฒนธรรมทางการเห็น",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU118",
+      "name": "สถาปัตยกรรมและศิลปะในเอเชียตะวันออกเฉียงใต้",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU119",
+      "name": "การอ่านวรรณกรรมเพื่อการพัฒนาคุณภาพชีวิต",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU120",
+      "name": "ไทยศึกษา",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU121",
+      "name": "วิถีพุทธในประเทศไทยและอาเซียน",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU122",
+      "name": "สมาธิเชิงประยุกต์",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU123",
+      "name": "วิถีชีวิตในสังคมพหุวัฒนธรรม",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU124",
+      "name": "เหตุการณ์โลกปัจจุบัน",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU125",
+      "name": "มนุษย์กับการคิด",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU126",
+      "name": "ศิลปะและสื่อร่วมสมัยประยุกต์เพื่อชุมชน",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU127",
+      "name": "กระบวนการเรียนรู้ระบบสัญลักษณ์ในศตวรรษที่ 21",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU128",
+      "name": "การตีความศิลปะ",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU129",
+      "name": "ทักษะการรู้เท่าทันสารสนเทศและสื่อ",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU130",
+      "name": "การพัฒนาการคิด",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU131",
+      "name": "การจัดการสารสนเทศเบื้องต้น",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU132",
+      "name": "โลกและดาราศาสตร์ในสหัสวรรษที่ 3",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU133",
+      "name": "การจัดการสิ่งแวดล้อมในครัวเรือน",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU134",
+      "name": "ความรอบรู้ทางด้านคอมพิวเตอร์ เทคโนโลยีสารสนเทศ และการสื่อสาร",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU135",
+      "name": "ศิลปะการดำรงชีวิต",
+      "pdfPages": [
+        26
+      ],
+      "documentPages": [
+        23
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU136",
+      "name": "เทคโนโลยีเครื่องมือเครื่องใช้ในชีวิตประจำวัน",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU137",
+      "name": "เทคโนโลยีการสื่อสารกับมนุษย์",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU138",
+      "name": "ไฟฟ้ากับชีวิตประจำวัน",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU139",
+      "name": "การพัฒนาภาวะผู้นำ",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU140",
+      "name": "เทคโนโลยีพลังงานทดแทน",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU141",
+      "name": "การแก้ปัญหาแบบสร้างสรรค์",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU142",
+      "name": "ดนตรีอาเซียน",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU143",
+      "name": "สุนทรียภาพแห่งการฟัง",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU144",
+      "name": "สมาธิในชีวิตประจำวัน",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU145",
+      "name": "สังคมและวัฒนธรรมไทย",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU146",
+      "name": "โครงการพระราชดำริ",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU147",
+      "name": "ภาพและเสียงดิจิทัล",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU148",
+      "name": "พลวัตสังคมไทย",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU149",
+      "name": "การดูแลสุขภาพ",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU150",
+      "name": "ภาพยนตร์วิจักษ์",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU151",
+      "name": "ความเข้าใจในอารยธรรมโลกยุคโบราณ",
+      "pdfPages": [
+        27
+      ],
+      "documentPages": [
+        24
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU152",
+      "name": "ภูมิปัญญาไทยกับการสร้างสรรค์",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU153",
+      "name": "สุนทรียศาสตร์เบื้องต้น",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU154",
+      "name": "การออกแบบและสร้างสรรค์ในศิลปะตะวันออก",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU155",
+      "name": "มองกรุงเทพผ่านศิลปะ",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU156",
+      "name": "ศิลปกรรมกับสังคมวัฒนธรรมไทย",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU157",
+      "name": "วัฒนธรรมในชีวิตประจำวัน",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU158",
+      "name": "การออกกำลังกายเพื่อคุณภาพชีวิต",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU201",
+      "name": "ภาษาอังกฤษในยุคดิจิทัล",
+      "pdfPages": [
+        24
+      ],
+      "documentPages": [
+        21
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU202",
+      "name": "ภาษาอังกฤษเพื่อการสื่อสารนานาชาติ",
+      "pdfPages": [
+        24
+      ],
+      "documentPages": [
+        21
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU203",
+      "name": "ทักษะการสื่อสารอย่างสร้างสรรค์",
+      "pdfPages": [
+        24
+      ],
+      "documentPages": [
+        21
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU210",
+      "name": "การใช้ภาษาไทยเพื่อการสื่อสารและการสืบค้น",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU211",
+      "name": "ความรู้เบื้องต้นเกี่ยวกับภาษาและภาษาในอาเซียน",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU212",
+      "name": "ภาษาฝรั่งเศสเพื่อการสื่อสารด้านวัฒนธรรม",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU213",
+      "name": "ภาษาไทยเพื่อการพัฒนาชีวิต",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU214",
+      "name": "ภาษาจีนเพื่ออาชีพ",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU215",
+      "name": "นิทานและการละเล่นพื้นบ้าน",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU216",
+      "name": "การอ่านภาษาอังกฤษเพื่อการวิจารณ์",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU217",
+      "name": "การนำเสนอเชิงสร้างสรรค์ด้วยภาษาอังกฤษ",
+      "pdfPages": [
+        28
+      ],
+      "documentPages": [
+        25
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU218",
+      "name": "ภาษาอังกฤษสำหรับวิทยาศาสตร์และเทคโนโลยี",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU301",
+      "name": "พลเมืองตื่นรู้",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU310",
+      "name": "การอนุรักษ์และการจัดการมรดกทางวัฒนธรรม",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU311",
+      "name": "งานสร้างสรรค์และนวัตกรรมในศตวรรษที่ 21",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU312",
+      "name": "เพศสภาพและเพศวิถี",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU313",
+      "name": "ธรรมชาติวิจักษ์",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU314",
+      "name": "รักษ์นก",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU315",
+      "name": "การอนุรักษ์สิ่งแวดล้อมธรรมชาติและศิลปกรรม",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU316",
+      "name": "โลกของจุลินทรีย์",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU317",
+      "name": "อินเทอร์เน็ตสีขาว",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU318",
+      "name": "สิ่งแวดล้อม มลพิษและพลังงาน",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU319",
+      "name": "วิทยาศาสตร์และเทคโนโลยีเพื่อการพัฒนาอย่างยั่งยืน",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU320",
+      "name": "โลกแห่งนวัตกรรม",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU321",
+      "name": "วัสดุและผลกระทบต่อสิ่งแวดล้อม",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU322",
+      "name": "การดูแลสัตว์เลี้ยง",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU323",
+      "name": "จิตสาธารณะ",
+      "pdfPages": [
+        29
+      ],
+      "documentPages": [
+        26
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU324",
+      "name": "เทคโนโลยีสะอาดในอุตสาหกรรม",
+      "pdfPages": [
+        30
+      ],
+      "documentPages": [
+        27
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU325",
+      "name": "ภูมิภาคโลก",
+      "pdfPages": [
+        30
+      ],
+      "documentPages": [
+        27
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU401",
+      "name": "ความเป็นผู้ประกอบการที่ขับเคลื่อนด้วยนวัตกรรม",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU402",
+      "name": "นวัตกรรมและการออกแบบ",
+      "pdfPages": [
+        25
+      ],
+      "documentPages": [
+        22
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU410",
+      "name": "การจัดการเอกสารและจดหมายเหตุ",
+      "pdfPages": [
+        30
+      ],
+      "documentPages": [
+        27
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU411",
+      "name": "การเพาะเห็ดและการต่อยอดทางธุรกิจ",
+      "pdfPages": [
+        30
+      ],
+      "documentPages": [
+        27
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU412",
+      "name": "เทคโนโลยี เทคนิค และอุตสาหกรรมอีสปอร์ต",
+      "pdfPages": [
+        30
+      ],
+      "documentPages": [
+        27
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU413",
+      "name": "มหัศจรรย์ผลิตภัณฑ์เทคโนโลยีชีวภาพ",
+      "pdfPages": [
+        30
+      ],
+      "documentPages": [
+        27
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU414",
+      "name": "ภูมิปัญญาท้องถิ่นสู่กระบวนการผลิต",
+      "pdfPages": [
+        30
+      ],
+      "documentPages": [
+        27
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU415",
+      "name": "การตลาดและการเงินพื้นฐานสำหรับผู้ประกอบการ",
+      "pdfPages": [
+        30
+      ],
+      "documentPages": [
+        27
+      ],
+      "review": "visual_pdf_catalog"
+    },
+    {
+      "code": "SU416",
+      "name": "ธุรกิจดิจิทัล",
+      "pdfPages": [
+        30
+      ],
+      "documentPages": [
+        27
+      ],
+      "review": "visual_pdf_catalog"
+    }
+  ]
+}
