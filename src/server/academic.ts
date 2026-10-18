@@ -1,14 +1,15 @@
 import "server-only";
 import { createHash } from "node:crypto";
 import type { Prisma } from "@/generated/prisma/client";
-import type { AccountContext } from "@/modules/accounts/types";
+import type { AccountContext, EnrollmentContext } from "@/modules/accounts/types";
 import {
   requireCurriculumAdmin,
   requireStudent,
   requireStudentAccount,
 } from "@/modules/accounts/guards";
 import { AccessError } from "@/modules/accounts/errors";
-import type { Dataset, StudyTrack } from "@/modules/curriculum/types";
+import type { Dataset, DatasetHistory, StudyTrack } from "@/modules/curriculum/types";
+import { parseHistoryQuery, historyId } from "@/modules/curriculum/history";
 import {
   integer,
   parseCourse,
@@ -20,6 +21,7 @@ import {
   validateDataset,
 } from "@/modules/curriculum/validation";
 import seed from "@/modules/curriculum/data/cs2565.json";
+import { blankDraft } from "@/modules/curriculum/blank-draft";
 import type { DraftView, TranscriptPayload } from "@/modules/transcript/types";
 import {
   parsePayload,
@@ -418,19 +420,34 @@ export async function ownDocument(context: AccountContext, id: string) {
   if (!document) throw notFound();
   return document;
 }
-export async function listDatasets(context: AccountContext) {
+export async function listDatasets(context: AccountContext, value: unknown = {}): Promise<DatasetHistory> {
   if (context.role !== "admin")
     throw new AccessError(403, "ADMIN_REQUIRED", "เฉพาะผู้ดูแลหลักสูตร");
+  let query: ReturnType<typeof parseHistoryQuery>;
+  try { query = parseHistoryQuery(value); } catch (error) { validation(error); }
   const versions = await getDatabase().curriculumVersion.findMany({
     where: { curriculumId: { in: context.curriculumIds } },
     include: { curriculum: true },
+    orderBy: { code: "asc" },
   });
-  const rows = await getDatabase().academicDataset.findMany({
-    where: { curriculumVersionId: { in: versions.map((v) => v.id) } },
-    include: { courses: { orderBy: { code: "asc" } }, offerings: true },
-    orderBy: { createdAt: "desc" },
-    take: 30,
-  });
+  const selectedVersionId = query.versionId ?? versions[0]?.id ?? null;
+  if (selectedVersionId && !versions.some(v => v.id === selectedVersionId))
+    throw new AccessError(403, "CURRICULUM_FORBIDDEN", "ไม่มีสิทธิ์ดูประวัติของหลักสูตรนี้");
+  const page = selectedVersionId ? await getDatabase().$transaction(async db => {
+    const rows = await db.academicDataset.findMany({
+      where: { curriculumVersionId: selectedVersionId, ...(query.beforeVersion !== undefined ? { version: { lt: query.beforeVersion } } : query.afterVersion !== undefined ? { version: { gt: query.afterVersion } } : {}) },
+      select: { id: true, curriculumVersionId: true, version: true, status: true, createdAt: true, publishedAt: true },
+      orderBy: { version: query.afterVersion !== undefined ? "asc" : "desc" }, take: 30,
+    });
+    // Fetch the nearest newer window first; all displayed pages remain newest-first.
+    if (query.afterVersion !== undefined) rows.reverse();
+    const newestVersion = rows[0]?.version ?? null, oldestVersion = rows.at(-1)?.version ?? null;
+    const [older, newer] = rows.length ? await Promise.all([
+      db.academicDataset.findFirst({ where: { curriculumVersionId: selectedVersionId, version: { lt: oldestVersion! } }, select: { id: true } }),
+      db.academicDataset.findFirst({ where: { curriculumVersionId: selectedVersionId, version: { gt: newestVersion! } }, select: { id: true } }),
+    ]) : [null, null];
+    return { datasets: rows.map(r => ({ ...r, status: r.status as Dataset["status"], createdAt: r.createdAt.toISOString(), publishedAt: r.publishedAt?.toISOString() ?? null })), pageInfo: { hasOlder: Boolean(older), hasNewer: Boolean(newer), oldestVersion, newestVersion } };
+  }, { isolationLevel: "RepeatableRead" }) : { datasets: [], pageInfo: { hasOlder: false, hasNewer: false, oldestVersion: null, newestVersion: null } };
   return {
     versions: versions.map((v) => ({
       id: v.id,
@@ -438,17 +455,23 @@ export async function listDatasets(context: AccountContext) {
       curriculumCode: v.curriculum.code,
       name: v.curriculum.name,
     })),
-    datasets: rows.map(datasetView),
+    selectedVersionId,
+    ...page,
   };
 }
 async function datasetForAdmin(context: AccountContext, id: string) {
   const row = await getDatabase().academicDataset.findUnique({
     where: { id },
-    include: { curriculumVersion: true, courses: true, offerings: true },
+    include: { curriculumVersion: true, courses: { orderBy: { code: "asc" } }, offerings: true },
   });
   if (!row) throw notFound();
   requireCurriculumAdmin(context, row.curriculumVersion.curriculumId);
   return row;
+}
+export async function getDataset(context: AccountContext, id: string): Promise<Dataset> {
+  if (context.role !== "admin") throw new AccessError(403, "ADMIN_REQUIRED", "เฉพาะผู้ดูแลหลักสูตร");
+  try { historyId(id); } catch (error) { validation(error); }
+  return datasetView(await datasetForAdmin(context, id));
 }
 export async function createDataset(
   context: AccountContext,
@@ -470,13 +493,7 @@ export async function createDataset(
       "DATASET_SCOPE_MISMATCH",
       "สำเนาต้องอยู่ในฉบับหลักสูตรเดียวกัน",
     );
-  if (!copy && version.curriculum.code !== "CS2565")
-    throw new AccessError(
-      422,
-      "SEED_UNAVAILABLE",
-      "ยังไม่มีชุดเริ่มต้นสำหรับหลักสูตรนี้",
-    );
-  const source = copy ?? seed;
+  const source = copy ?? (version.curriculum.code === "CS2565" ? seed : blankDraft());
   const courses = source.courses.map(parseCourse),
     policy = parsePolicy(source.policy),
     groups = parseGroups(source.groups),
@@ -622,6 +639,15 @@ export interface AcademicResult {
   plans: ReturnType<typeof makePlan>[];
   catalogue: Dataset["courses"];
 }
+async function analysisMatchesEnrollment(result: AcademicResult, enrollment: EnrollmentContext) {
+  if (enrollment.trackState === "unknown" || result.trackState !== enrollment.trackState) return false;
+  if (enrollment.trackState === "not_selected")
+    return result.plans.length === 2 && ["project", "cooperative"].every(track => result.plans.some(p => p.track === track && p.basis === "alternative"));
+  const selected = enrollment.trackId
+    ? await getDatabase().track.findUnique({ where: { id: enrollment.trackId } })
+    : null;
+  return Boolean(selected && selected.curriculumVersionId === enrollment.curriculumVersionId && result.plans.length === 1 && result.plans[0].track === selected.code && result.plans[0].basis === "actual");
+}
 export async function runAnalysis(context: AccountContext, value: unknown) {
   const enrollment = requireStudent(context),
     database = getDatabase();
@@ -726,7 +752,7 @@ export async function runAnalysis(context: AccountContext, value: unknown) {
   return { id: row.id, result };
 }
 export async function runScenario(context: AccountContext, value: unknown) {
-  requireStudent(context);
+  const enrollment = requireStudent(context);
   let input: Record<string, unknown>;
   try {
     input = record(value);
@@ -747,9 +773,26 @@ export async function runScenario(context: AccountContext, value: unknown) {
       "ENGINE_UPDATED",
       "กลไกคำนวณเปลี่ยนฉบับแล้ว กรุณาคำนวณผลฐานใหม่ก่อนจำลอง",
     );
+  const [currentState, currentDataset] = await Promise.all([
+    getDatabase().studentAcademicState.findUnique({ where: { enrollmentId: enrollment.id } }),
+    getDatabase().academicDataset.findFirst({ where: { curriculumVersionId: enrollment.curriculumVersionId, status: "published" }, orderBy: { version: "desc" }, select: { id: true } }),
+  ]);
+  if (
+    currentState?.currentRevisionId !== analysis.revisionId ||
+    currentDataset?.id !== analysis.datasetId ||
+    analysis.revision.enrollmentId !== enrollment.id ||
+    analysis.revision.ownerAccountId !== context.accountId
+  )
+    throw new AccessError(409, "BASELINE_CHANGED", "ผลการเรียนหรือข้อมูลหลักสูตรเปลี่ยนฉบับแล้ว กรุณาคำนวณผลฐานใหม่ก่อนจำลอง");
   const basis = analysis.result as unknown as AcademicResult,
     dataset = datasetView(analysis.dataset),
     track = input.track as StudyTrack;
+  if (!await analysisMatchesEnrollment(basis, enrollment))
+    throw new AccessError(
+      409,
+      "ENROLLMENT_CHANGED",
+      "สถานะสายเปลี่ยนแล้ว กรุณาตรวจข้อมูลและคำนวณผลฐานใหม่ก่อนจำลอง",
+    );
   if (
     !basis.plans.some((p) => p.track === track) ||
     !Array.isArray(input.events)
@@ -769,6 +812,7 @@ export async function runScenario(context: AccountContext, value: unknown) {
       input.events as ScenarioEvent[],
       (input.offeringAssumptions ?? []) as OfferingAssumption[],
     );
+    comparison.baseline.basis = basis.plans.find(p => p.track === track)!.basis;
   } catch (error) {
     validation(error);
   }
@@ -853,7 +897,8 @@ export async function studentWorkspace(context: AccountContext) {
           stale:
             analysis.engineVersion !== ENGINE_VERSION ||
             analysis.revisionId !== state?.currentRevisionId ||
-            analysis.datasetId !== dataset?.id,
+            analysis.datasetId !== dataset?.id ||
+            !await analysisMatchesEnrollment(analysis.result as unknown as AcademicResult, enrollment),
         }
       : null,
   };

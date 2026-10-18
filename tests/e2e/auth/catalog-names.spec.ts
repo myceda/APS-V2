@@ -16,5 +16,5 @@ test("ชื่อ CS2565 ที่ตรวจแล้วค้นหาแล
     await expect(page.getByRole("cell", { name: `${code} · ${name}`, exact: true })).toBeVisible();
   }
   await search.fill("SU115");
-  await page.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/curriculum-correction/admin-${info.project.name}.png`, fullPage: true });
+  await page.screenshot({ path: info.outputPath(`curriculum-correction/admin-${info.project.name}.png`), fullPage: true });
 });

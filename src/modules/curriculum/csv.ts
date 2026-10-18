@@ -12,8 +12,9 @@ export const COURSE_COLUMNS = [
   "requires_consent",
   "source",
 ];
-export function parseCsv(text: string): string[][] {
-  const rows: string[][] = [];
+export function parseCsvRows(text: string): { row: number; values: string[] }[] {
+  const rows: { row: number; values: string[] }[] = [];
+  let line = 1, startLine = 1;
   let row: string[] = [],
     cell = "",
     quoted = false;
@@ -33,17 +34,26 @@ export function parseCsv(text: string): string[][] {
     } else if ((ch === "\n" || ch === "\r") && !quoted) {
       if (ch === "\r" && text[index + 1] === "\n") index++;
       row.push(cell);
-      if (row.some((c) => c.trim())) rows.push(row);
+      if (row.some((c) => c.trim())) rows.push({ row: startLine, values: row });
+      line++;
+      startLine = line;
       row = [];
       cell = "";
-    } else cell += ch;
+    } else {
+      cell += ch;
+      if (ch === "\n" || (ch === "\r" && text[index + 1] !== "\n")) line++;
+    }
     if (rows.length > 2000 || row.length > 30 || cell.length > 3000)
       throw new Error("CSV มีข้อมูลเกินที่รองรับ");
   }
   if (quoted) throw new Error("CSV ปิดเครื่องหมายคำพูดไม่ครบ");
   row.push(cell);
-  if (row.some((c) => c.trim())) rows.push(row);
+  if (row.some((c) => c.trim())) rows.push({ row: startLine, values: row });
+  if (rows.length > 2001) throw new Error("CSV มีข้อมูลเกินที่รองรับ");
   return rows;
+}
+export function parseCsv(text: string): string[][] {
+  return parseCsvRows(text).map(row => row.values);
 }
 export function csvCell(value: unknown): string {
   const text = String(value ?? "");

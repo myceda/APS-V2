@@ -12,10 +12,16 @@ import {
   saveDataset,
 } from "@/server/academic";
 import { integer, record, text } from "@/modules/curriculum/validation";
+import { AccessError } from "@/modules/accounts/errors";
 export async function GET(request: Request) {
   try {
+    const account = await requireAccount(request.headers);
+    const params = new URL(request.url).searchParams;
+    for (const key of ["versionId", "beforeVersion", "afterVersion"]) {
+      if (params.getAll(key).length > 1) throw new AccessError(422, "ACADEMIC_INVALID", "พารามิเตอร์ประวัติซ้ำ");
+    }
     return Response.json(
-      await listDatasets(await requireAccount(request.headers)),
+      await listDatasets(account, Object.fromEntries(params)),
       { headers: privateHeaders },
     );
   } catch (error) {

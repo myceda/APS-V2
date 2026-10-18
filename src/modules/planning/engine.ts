@@ -113,6 +113,7 @@ export function makePlan(
   const remaining = new Map<string, Course>();
   const limitations = [...audit.warnings];
   const assumptions = new Set<string>();
+  const unappliedEvents = new Map<string, string>();
   for (const event of events.filter((e) => e.action === "add")) {
     const course = dataset.courses.find((c) => c.code === event.courseCode);
     if (course) remaining.set(course.code, course);
@@ -238,7 +239,8 @@ export function makePlan(
           );
         if (
           course.prerequisite.unresolved &&
-          !course.prerequisite.courses.every((code) => passed.has(code))
+          (!course.prerequisite.courses.length ||
+            !course.prerequisite.courses.every((code) => passed.has(code)))
         )
           blocked.push(course.prerequisite.unresolved);
         const offering = resolveOffering(dataset, course.code, term);
@@ -258,9 +260,14 @@ export function makePlan(
           blocked.push("เกินภาระเรียนที่ตั้งไว้สำหรับภาคนี้");
         if (blocked.length) {
           reasons.set(course.code, blocked);
+          if (events.some(e => e.courseCode === course.code && e.action !== "drop" && termKey(e.term) === termKey(term))) {
+            const message = `${course.code} ${term.year}/${term.semester}: ไม่ได้ใช้เหตุการณ์ในภาคที่ขอ: ${blocked.join("; ")}`;
+            unappliedEvents.set(`${course.code}:${termKey(term)}`, message);
+          }
           continue;
         }
         selected.push(course);
+        unappliedEvents.delete(`${course.code}:${termKey(term)}`);
         selectedIds.add(course.code);
         credits += course.credits;
         conditional.forEach((message) => assumptions.add(message));
@@ -351,7 +358,7 @@ export function makePlan(
       "ยังจัดวิชาบางรายการไม่ได้ภายในช่วงค้นหา ไม่ใช่ข้อสรุปว่าไม่มีแผนทุกกรณี",
     );
   assumptions.add(
-    `ผลคาดการณ์ใช้เกรด ${parameters.targetGrade} สำหรับวิชาตัวเลข และ S สำหรับวิชา S/U`,
+    `ผลคาดการณ์ใช้เกรด ${parameters.targetGrade} สำหรับวิชาตัวเลข และ S สำหรับวิชา S/U${events.length ? "; วิชาที่ใช้เหตุการณ์ได้ในภาคที่ขอใช้เกรดตามเหตุการณ์แทน รวม F/U เมื่อจำลองไม่ผ่าน" : ""}`,
   );
   const uniqueLimitations = [...new Set(limitations)];
   return {
@@ -367,7 +374,9 @@ export function makePlan(
       reasons: reasons.get(code) ?? ["ยังไม่ได้จัดในแผน"],
     })),
     assumptions: [...assumptions],
-    limitations: uniqueLimitations,
+    // The automatic alternative can still have a forecast when a requested
+    // event was not applied. Report that separately from academic data limits.
+    limitations: [...uniqueLimitations, ...unappliedEvents.values()],
   };
 }
 export function validateParameters(

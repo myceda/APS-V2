@@ -26,7 +26,7 @@ test("ผู้ดูแลเก็บฉบับเกณฑ์ นักศ�
     await expect(studentPanel.getByRole("heading", { name: "โครงงานวิจัย — รอข้อมูลจากผู้ดูแล", exact: true })).toBeVisible();
     await expect(studentPanel.getByText("การอนุมัติจากภาควิชา: ยังไม่มีหลักฐานยืนยันใน APS", { exact: true })).toBeVisible();
     await expect(studentPage.getByRole("combobox", { name: "สายที่ดูผล", exact: true }).locator("option")).toHaveCount(2);
-    await studentPage.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/track-criteria/student-waiting-${info.project.name}.png`, fullPage: true });
+    await studentPage.screenshot({ path: info.outputPath(`track-criteria/student-waiting-${info.project.name}.png`), fullPage: true });
 
     await page.goto("/admin/track-criteria");
     await page.getByText("ยืนยันปีที่เข้าศึกษาจากหลักฐาน", { exact: true }).click();
@@ -38,7 +38,7 @@ test("ผู้ดูแลเก็บฉบับเกณฑ์ นักศ�
     await page.getByRole("button", { name: "บันทึกปีเข้าศึกษา", exact: true }).click();
     await expect(page.getByText("ยืนยันปีเข้าศึกษาแล้ว ไม่เปลี่ยนสายหรืออนุมัติสิทธิ์", { exact: true })).toBeVisible();
 
-    await page.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/track-criteria/admin-list-${info.project.name}.png`, fullPage: true });
+    await page.screenshot({ path: info.outputPath(`track-criteria/admin-list-${info.project.name}.png`), fullPage: true });
     await page.getByRole("button", { name: "สร้างร่างเกณฑ์", exact: true }).click();
     await page.getByLabel("ปีเข้าศึกษา คั่นด้วยจุลภาค", { exact: true }).fill("2565");
     await page.getByRole("combobox", { name: "ทะเบียนรายวิชาที่อ้างอิง", exact: true }).selectOption(draft.id);
@@ -46,7 +46,7 @@ test("ผู้ดูแลเก็บฉบับเกณฑ์ นักศ�
     await page.getByLabel("วันที่สิ้นสุดใช้", { exact: true }).fill("2099-12-31");
     await page.getByRole("group", { name: "วิชาที่เกณฑ์ใช้พิจารณาสิทธิ์", exact: true }).getByRole("checkbox", { name: "101001 Synthetic Course 1", exact: true }).check();
     await page.getByLabel("เหตุผลการดำเนินการ", { exact: true }).fill("Synthetic UI fixture only");
-    await page.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/track-criteria/admin-form-${info.project.name}.png`, fullPage: true });
+    await page.screenshot({ path: info.outputPath(`track-criteria/admin-form-${info.project.name}.png`), fullPage: true });
     await page.getByRole("button", { name: "บันทึกร่างเกณฑ์", exact: true }).click();
     await expect(page.getByText(/บันทึกร่างแล้ว ยังไม่เผยแพร่/)).toBeVisible();
     await page.getByRole("button", { name: "ตรวจทานเกณฑ์", exact: true }).click();
@@ -64,7 +64,7 @@ test("ผู้ดูแลเก็บฉบับเกณฑ์ นักศ�
     await page.getByRole("button", { name: "บันทึกร่างเกณฑ์", exact: true }).click();
     await expect(page.getByText(/บันทึกร่างแล้ว ยังไม่เผยแพร่/)).toBeVisible();
     await page.getByRole("button", { name: "ตรวจทานเกณฑ์", exact: true }).click();
-    await page.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/track-criteria/admin-review-${info.project.name}.png`, fullPage: true });
+    await page.screenshot({ path: info.outputPath(`track-criteria/admin-review-${info.project.name}.png`), fullPage: true });
     // Existing synthetic rule from another device/run is explicitly replaced, never silently reused.
     const listing = await (await page.request.get("/api/admin/track-criteria")).json();
     const active = listing.items.find((c: { status: string; track: string; year: number; semester: number; admissionYears: number[] }) => c.status === "published" && c.track === "project" && c.year === 2569 && c.semester === 1 && c.admissionYears.includes(2565));
@@ -79,7 +79,7 @@ test("ผู้ดูแลเก็บฉบับเกณฑ์ นักศ�
     await expect(studentPanel.getByText("การอนุมัติจากภาควิชา: ยังไม่มีหลักฐานยืนยันใน APS", { exact: true })).toBeVisible();
     await studentPage.getByRole("combobox", { name: "สายที่ดูผล", exact: true }).selectOption("cooperative");
     await expect(studentPage.getByRole("combobox", { name: "สายที่ดูผล", exact: true })).toHaveValue("cooperative");
-    await studentPage.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/track-criteria/student-preliminary-${info.project.name}.png`, fullPage: true });
+    await studentPage.screenshot({ path: info.outputPath(`track-criteria/student-preliminary-${info.project.name}.png`), fullPage: true });
     await page.getByRole("button", { name: "รายการเกณฑ์", exact: true }).click();
     const data = await (await page.request.get("/api/admin/track-criteria")).json();
     const newest = data.items.find((c: {status:string}) => c.status === "published");
@@ -88,6 +88,6 @@ test("ผู้ดูแลเก็บฉบับเกณฑ์ นักศ�
     const summary = page.locator("details summary").first();
     await summary.focus(); await page.keyboard.press("Enter");
     await expect(page.getByText("เหตุผล: Synthetic UI fixture only", { exact: true }).first()).toBeVisible();
-    await page.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/track-criteria/admin-history-${info.project.name}.png`, fullPage: true });
+    await page.screenshot({ path: info.outputPath(`track-criteria/admin-history-${info.project.name}.png`), fullPage: true });
   } finally { await student.close(); }
 });

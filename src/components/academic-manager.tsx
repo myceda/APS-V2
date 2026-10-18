@@ -1,18 +1,19 @@
 "use client";
-import { useState, type FormEvent } from "react";
-import type { listDatasets } from "@/server/academic";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import type { HistoryQuery } from "@/modules/curriculum/history";
 import {
   CATEGORY_NAMES,
   TRACK_NAMES,
   type Course,
   type Dataset,
+  type DatasetHistory,
   type StudyTrack,
   type CourseCategory,
 } from "@/modules/curriculum/types";
 import { csvCell, COURSE_COLUMNS } from "@/modules/curriculum/csv";
 import { parseCourse, validateDataset } from "@/modules/curriculum/validation";
 import styles from "./academic-ui.module.css";
-type State = Awaited<ReturnType<typeof listDatasets>>;
+type State = DatasetHistory;
 type Preview = {
   rows: { row: number; course: Course | null; error: string | null }[];
   valid: boolean;
@@ -36,12 +37,13 @@ const emptyCourse = (): Course => ({
   requiresConsent: false,
   source: "",
 });
-async function api<T>(body?: unknown): Promise<T> {
-  const response = await fetch("/api/admin/academic", {
+async function api<T>(body?: unknown, url = "/api/admin/academic", signal?: AbortSignal): Promise<T> {
+  const response = await fetch(url, {
     method: body ? "POST" : "GET",
     headers: body ? { "Content-Type": "application/json" } : undefined,
     body: body ? JSON.stringify(body) : undefined,
     cache: "no-store",
+    signal,
   });
   const output = await response.json();
   if (!response.ok)
@@ -50,13 +52,14 @@ async function api<T>(body?: unknown): Promise<T> {
 }
 export function AcademicManager({ initial }: { initial: State }) {
   const [state, setState] = useState(initial),
-    [versionId, setVersionId] = useState(initial.versions[0]?.id ?? ""),
-    [dataset, setDataset] = useState<Dataset | null>(
-      initial.datasets[0] ?? null,
-    );
+    [versionId, setVersionId] = useState(initial.selectedVersionId ?? ""),
+    [dataset, setDataset] = useState<Dataset | null>(null);
   const [tab, setTab] = useState(0),
     [dirty, setDirty] = useState(false),
-    [busy, setBusy] = useState("");
+    [busy, setBusy] = useState(initial.datasets.length ? "กำลังโหลดฉบับข้อมูล" : "");
+  const locked = useRef(Boolean(initial.datasets.length));
+  const requestNumber = useRef(0);
+  const readController = useRef<AbortController | null>(null);
   const [error, setError] = useState(""),
     [success, setSuccess] = useState("");
   const [form, setForm] = useState<Course>(emptyCourse()),
@@ -67,8 +70,20 @@ export function AcademicManager({ initial }: { initial: State }) {
     [offeringSource, setOfferingSource] = useState("");
   const [preview, setPreview] = useState<Preview | null>(null);
   const editable = dataset?.status === "draft" && !busy;
+  useEffect(() => {
+    const id = initial.datasets[0]?.id;
+    if (!id) return;
+    const controller = new AbortController(); readController.current = controller;
+    const number = ++requestNumber.current;
+    api<Dataset>(undefined, `/api/admin/academic/${id}`, controller.signal)
+      .then(data => { if (number === requestNumber.current) setDataset(data); })
+      .catch(e => { if (!controller.signal.aborted && number === requestNumber.current) setError(e instanceof Error ? e.message : "โหลดฉบับข้อมูลไม่สำเร็จ"); })
+      .finally(() => { if (!controller.signal.aborted && number === requestNumber.current) { setBusy(""); locked.current = false; } });
+    return () => { readController.current?.abort(); };
+  }, [initial]);
   async function run(label: string, action: () => Promise<void>) {
-    if (busy) return;
+    if (locked.current) return;
+    locked.current = true;
     setBusy(label);
     setError("");
     setSuccess("");
@@ -77,14 +92,36 @@ export function AcademicManager({ initial }: { initial: State }) {
     } catch (e) {
       setError(e instanceof Error ? e.message : "ทำรายการไม่สำเร็จ");
     } finally {
+      locked.current = false;
       setBusy("");
     }
   }
-  async function refresh(selectedId?: string) {
-    const next = await api<State>();
-    setState(next);
-    if (selectedId)
-      setDataset(next.datasets.find((d) => d.id === selectedId) ?? null);
+  function resetEditor() {
+    setPreview(null); setForm(emptyCourse()); setEditingCode(null); setSearch("");
+  }
+  function beginRead() {
+    readController.current?.abort();
+    const controller = new AbortController(); readController.current = controller;
+    return { controller, number: ++requestNumber.current };
+  }
+  async function loadHistory(query: HistoryQuery, selectedId?: string) {
+    const { controller, number } = beginRead();
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(query)) if (value !== undefined) params.set(key, String(value));
+    const next = await api<State>(undefined, `/api/admin/academic?${params}`, controller.signal);
+    const id = selectedId ?? next.datasets[0]?.id;
+    const detail = id ? await api<Dataset>(undefined, `/api/admin/academic/${id}`, controller.signal) : null;
+    if (number !== requestNumber.current) return;
+    setState(next); setVersionId(next.selectedVersionId ?? ""); setDataset(detail); resetEditor();
+  }
+  async function openDataset(id: string) {
+    const { controller, number } = beginRead();
+    const detail = id ? await api<Dataset>(undefined, `/api/admin/academic/${id}`, controller.signal) : null;
+    if (number === requestNumber.current) { setDataset(detail); resetEditor(); }
+  }
+  async function refresh(selectedId = dataset?.id) {
+    // Anchor the visible window so another admin's new draft cannot shift this page.
+    await loadHistory({ versionId, ...(state.pageInfo.newestVersion !== null ? { beforeVersion: state.pageInfo.newestVersion + 1 } : {}) }, selectedId);
   }
   function modify(change: (d: Dataset) => Dataset) {
     setDataset((previous) => (previous ? change(previous) : null));
@@ -101,7 +138,7 @@ export function AcademicManager({ initial }: { initial: State }) {
     });
     setDataset(output);
     setDirty(false);
-    await refresh();
+    await refresh(output.id);
     return output;
   }
   function courseSubmit(event: FormEvent<HTMLFormElement>) {
@@ -166,6 +203,7 @@ export function AcademicManager({ initial }: { initial: State }) {
     if (!dataset) return;
     const body = new FormData(event.currentTarget);
     body.set("datasetId", dataset.id);
+    setPreview(null);
     void run("กำลังตรวจไฟล์นำเข้า", async () => {
       const response = await fetch("/api/admin/academic/import", {
         method: "POST",
@@ -239,7 +277,7 @@ export function AcademicManager({ initial }: { initial: State }) {
             <select
               value={versionId}
               disabled={Boolean(busy) || dirty}
-              onChange={(e) => setVersionId(e.target.value)}
+              onChange={(e) => { const id = e.target.value; void run("กำลังโหลดประวัติหลักสูตร", () => loadHistory({ versionId: id })); }}
             >
               {state.versions.map((v) => (
                 <option key={v.id} value={v.id}>
@@ -253,47 +291,51 @@ export function AcademicManager({ initial }: { initial: State }) {
             <select
               value={dataset?.id ?? ""}
               disabled={Boolean(busy) || dirty}
-              onChange={(e) => {
-                setDataset(
-                  state.datasets.find((d) => d.id === e.target.value) ?? null,
-                );
-                setPreview(null);
-                setForm(emptyCourse());
-                setEditingCode(null);
-              }}
+              onChange={(e) => { const id = e.target.value; void run("กำลังโหลดฉบับข้อมูล", () => openDataset(id)); }}
             >
               <option value="">ยังไม่เลือก</option>
+              {dataset && !state.datasets.some(d => d.id === dataset.id) && <option value={dataset.id}>ฉบับ {dataset.version} · {dataset.status === "published" ? "เผยแพร่แล้ว" : "ร่าง"} · เปิดอยู่</option>}
               {state.datasets
                 .filter((d) => d.curriculumVersionId === versionId)
                 .map((d) => (
                   <option key={d.id} value={d.id}>
                     ฉบับ {d.version} ·{" "}
                     {d.status === "published" ? "เผยแพร่แล้ว" : "ร่าง"}
+                    {" · "}{new Date(d.createdAt).toLocaleDateString("th-TH")}
                   </option>
                 ))}
             </select>
           </label>
+        </div>
+        <div className={styles.actions} aria-label="เลื่อนประวัติชุดข้อมูล">
+          <button className={styles.secondary} disabled={Boolean(busy) || dirty || !state.pageInfo.hasNewer}
+            onClick={() => void run("กำลังโหลดฉบับที่ใหม่กว่า", () => loadHistory({ versionId, afterVersion: state.pageInfo.newestVersion! }))}>ใหม่กว่านี้</button>
+          <button className={styles.secondary} disabled={Boolean(busy) || dirty || !state.pageInfo.hasOlder}
+            onClick={() => void run("กำลังโหลดฉบับที่เก่ากว่า", () => loadHistory({ versionId, beforeVersion: state.pageInfo.oldestVersion! }))}>เก่ากว่านี้</button>
+          <p className={styles.note}>{state.datasets.length ? `แสดง ${state.datasets.length} ชุด · ฉบับ ${state.pageInfo.newestVersion}–${state.pageInfo.oldestVersion}` : "ยังไม่มีชุดข้อมูลของฉบับหลักสูตรนี้"}</p>
         </div>
         <div className={styles.actions}>
           <button
             className={styles.secondary}
             disabled={Boolean(busy) || dirty || !versionId}
             onClick={() =>
-              void run("กำลังสร้างร่าง CS2565", async () => {
+              void run("กำลังสร้างร่างหลักสูตร", async () => {
                 const created = await api<Dataset>({
                   action: "create",
                   versionId,
                 });
                 setDataset(created);
                 setDirty(false);
-                await refresh();
+                await loadHistory({ versionId }, created.id);
                 setSuccess(
-                  "สร้างร่าง CS2565 แล้ว ตรวจข้อมูลก่อนเผยแพร่",
+                  state.versions.find(v => v.id === versionId)?.curriculumCode === "CS2565"
+                    ? "สร้างร่าง CS2565 แล้ว ตรวจข้อมูลก่อนเผยแพร่"
+                    : "สร้างร่างแล้ว ตรวจข้อมูลและค่าเริ่มต้นก่อนเผยแพร่",
                 );
               })
             }
           >
-            สร้างร่าง CS2565 เริ่มต้น
+            {state.versions.find(v => v.id === versionId)?.curriculumCode === "CS2565" ? "สร้างร่าง CS2565 เริ่มต้น" : "สร้างร่างว่างของหลักสูตรนี้"}
           </button>
           <button
             className={styles.secondary}
@@ -307,7 +349,7 @@ export function AcademicManager({ initial }: { initial: State }) {
                 });
                 setDataset(created);
                 setDirty(false);
-                await refresh();
+                await loadHistory({ versionId: created.curriculumVersionId }, created.id);
                 setSuccess("สร้างร่างฉบับใหม่แล้ว ฉบับเดิมไม่เปลี่ยน");
               })
             }
@@ -1189,10 +1231,10 @@ export function AcademicManager({ initial }: { initial: State }) {
                 ระบบแสดงข้อผิดพลาดรายแถวก่อนนำข้อมูลเข้าสู่ร่าง
               </p>
               <div className={styles.actions}>
-                <a href="/api/admin/academic/template?format=xlsx">
+                <a href="/api/admin/academic/template?format=xlsx" download>
                   แม่แบบ Excel
                 </a>
-                <a href="/api/admin/academic/template">แม่แบบ CSV</a>
+                <a href="/api/admin/academic/template" download>แม่แบบ CSV</a>
                 <button className={styles.secondary} onClick={exportCourses}>
                   ส่งออกรายวิชาชุดนี้เป็น CSV
                 </button>
@@ -1221,6 +1263,7 @@ export function AcademicManager({ initial }: { initial: State }) {
                     accept=".csv,.xlsx"
                     required
                     disabled={!editable}
+                    onChange={() => setPreview(null)}
                   />
                 </label>
                 <button className={styles.secondary} disabled={!editable}>

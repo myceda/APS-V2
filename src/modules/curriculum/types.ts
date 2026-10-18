@@ -72,6 +72,20 @@ export interface Dataset {
   policy: AcademicPolicy;
   unresolved: string[];
 }
+export interface DatasetSummary {
+  id: string;
+  curriculumVersionId: string;
+  version: number;
+  status: "draft" | "published";
+  createdAt: string;
+  publishedAt: string | null;
+}
+export interface DatasetHistory {
+  versions: { id: string; code: string; curriculumCode: string; name: string }[];
+  selectedVersionId: string | null;
+  datasets: DatasetSummary[];
+  pageInfo: { hasOlder: boolean; hasNewer: boolean; oldestVersion: number | null; newestVersion: number | null };
+}
 export const CATEGORY_NAMES: Record<CourseCategory, string> = {
   general_required: "ศึกษาทั่วไปบังคับ",
   general_elective: "ศึกษาทั่วไปเลือก",

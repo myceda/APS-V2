@@ -37,7 +37,14 @@
     "demo:prepare": "node --conditions=react-server --import tsx scripts/demo/prepare.ts",
     "demo:open": "node --conditions=react-server --import tsx scripts/demo/open.ts",
     "test:e2e:demo": "playwright test --config playwright.demo.config.ts",
-    "test:e2e:pdf": "node --conditions=react-server --import tsx scripts/pdf-review/run.ts"
+    "test:e2e:pdf": "node --conditions=react-server --import tsx scripts/pdf-review/run.ts",
+    "verify:grades": "node --import tsx scripts/verification/round-4/run.ts",
+    "verify:plans": "node --import tsx scripts/verification/round-5/run.ts",
+    "verify:simulation": "node --import tsx scripts/verification/round-6/run.ts",
+    "test:e2e:simulation": "npm run db:migrate:test && node --conditions=react-server --import tsx scripts/verification/round-6/prepare-browser.ts && playwright test --config playwright.simulation.config.ts && node --conditions=react-server --import tsx scripts/verification/round-6/check-browser.ts",
+    "test:e2e:admin-history": "npm run db:migrate:test && node --conditions=react-server --import tsx scripts/verification/admin-history/prepare-browser.ts && playwright test --config playwright.admin-history.config.ts && node --conditions=react-server --import tsx scripts/verification/admin-history/check-browser.ts",
+    "test:e2e:admin": "npm run db:migrate:test && node --conditions=react-server --import tsx scripts/verification/round-7/prepare-browser.ts && playwright test --config playwright.admin-audit.config.ts && node --conditions=react-server --import tsx scripts/verification/round-7/check-browser.ts",
+    "test:e2e:plans": "npm run db:migrate:test && node --conditions=react-server --import tsx scripts/verification/round-5/prepare-browser.ts && playwright test --config playwright.plans.config.ts && node --conditions=react-server --import tsx scripts/verification/round-5/check-browser.ts"
   },
   "dependencies": {
     "@better-auth/prisma-adapter": "1.7.7",

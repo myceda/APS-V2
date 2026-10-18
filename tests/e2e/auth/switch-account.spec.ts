@@ -1,4 +1,81 @@
 import { expect, test } from "@playwright/test";
+import { readFile } from "node:fs/promises";
+
+for (const target of ["signed-out", "student", "other-admin"] as const) {
+  test(`Back ของแท็บผู้ดูแลไม่คืนข้อมูลเดิมเมื่ออีกแท็บเป็น ${target}`, async ({ browser }, info) => {
+    const context = await browser.newContext({
+      ...info.project.use,
+      baseURL: "http://localhost:3101",
+      storageState: "tests/.auth/manager.json",
+    });
+    try {
+      const page = await context.newPage();
+      await page.goto("/admin");
+      await expect(page.getByRole("heading", { name: "วันนี้มีอะไรต้องจัดการ?", exact: true })).toBeVisible();
+      await page.getByRole("link", { name: "ข้อมูลวิชาการ", exact: true }).click();
+      await expect(page.getByRole("heading", { name: "หลักสูตรและการเปิดสอน", exact: true })).toBeVisible();
+      // Change only this synthetic browser context, without revoking shared fixtures.
+      await context.clearCookies();
+      if (target !== "signed-out") {
+        const state = JSON.parse(await readFile(`tests/.auth/${target === "student" ? "student" : "admin"}.json`, "utf8"));
+        await context.addCookies(state.cookies);
+      }
+      const otherTab = await context.newPage();
+      const identity = await otherTab.goto("http://localhost:3101/api/me");
+      expect(identity!.status()).toBe(target === "signed-out" ? 401 : 200);
+      if (target !== "signed-out") expect((await identity!.json()).account.role).toBe(target === "student" ? "student" : "admin");
+      await page.goBack();
+      if (target === "student") {
+        await expect(page.getByRole("heading", { name: "ยังเข้าใช้งานส่วนนี้ไม่ได้", exact: true })).toBeVisible();
+      } else if (target === "signed-out") {
+        await expect(page).toHaveURL(/\/sign-in$/);
+      } else {
+        await expect(page.getByText("fixture-admin@aps-tests.invalid", { exact: true })).toBeVisible();
+      }
+      if (target !== "other-admin")
+        await expect(page.getByRole("heading", { name: "วันนี้มีอะไรต้องจัดการ?", exact: true })).toHaveCount(0);
+      await expect(page.getByText("fixture-manager@aps-tests.invalid", { exact: true })).toHaveCount(0);
+      await page.reload();
+      await expect(page.getByText("fixture-manager@aps-tests.invalid", { exact: true })).toHaveCount(0);
+    } finally {
+      await context.close();
+    }
+  });
+}
+
+test("ตรวจ session ขัดข้องต้องซ่อนข้อมูล และตรวจซ้ำบัญชีเดิมไม่ทำร่างหาย", async ({ browser }, info) => {
+  const context = await browser.newContext({ ...info.project.use, baseURL: "http://localhost:3101", storageState: "tests/.auth/manager.json" });
+  try {
+    const page = await context.newPage();
+    let unavailable = true;
+    let sessionChecks = 0;
+    await page.route("**/api/me", async (route) => {
+      sessionChecks++;
+      if (unavailable) await route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ error: { code: "FIXTURE_UNAVAILABLE" } }) });
+      else await route.continue();
+    });
+    await page.goto("/admin/accounts");
+    await expect(page.getByText("ตรวจสอบบัญชีไม่สำเร็จ กรุณาลองอีกครั้ง", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "จัดการบัญชีและสิทธิ์", exact: true })).not.toBeVisible();
+    unavailable = false;
+    await page.getByRole("button", { name: "ลองตรวจบัญชีอีกครั้ง", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "จัดการบัญชีและสิทธิ์", exact: true })).toBeVisible();
+    await page.getByLabel("อีเมล Google", { exact: true }).fill("unsaved-session-check@aps-tests.invalid");
+    const before = sessionChecks;
+    const other = await context.newPage();
+    await other.goto("/sign-in");
+    await page.bringToFront();
+    // Headless contexts do not consistently generate an OS focus event.
+    // Dispatch the browser event explicitly; still require a real HTTP recheck
+    // and verify that the unsaved form survives, without relaxing assertions.
+    await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+    await expect.poll(() => sessionChecks).toBeGreaterThan(before);
+    await expect(page.getByLabel("อีเมล Google", { exact: true })).toBeVisible();
+    await expect(page.getByLabel("อีเมล Google", { exact: true })).toHaveValue("unsaved-session-check@aps-tests.invalid");
+  } finally {
+    await context.close();
+  }
+});
 
 test("ออกจากบัญชีเดิมก่อนเปลี่ยน Google และไม่กลับใช้ข้อมูลเดิมเมื่อยกเลิก", async ({
   browser,

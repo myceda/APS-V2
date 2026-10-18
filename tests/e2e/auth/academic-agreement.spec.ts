@@ -22,7 +22,7 @@ test("ร่าง CS2565 แสดง S/U ตามผู้ใช้และ 
   await expect(page.getByRole("combobox", { name: "การเทียบเกณฑ์ GPA", exact: true })).toHaveValue("raw");
   await expect(page.getByRole("combobox", { name: "ขอบเขต GPA เฉพาะด้าน", exact: true })).toHaveValue("all_specific");
   await expect(page.getByLabel("รหัสวิชาที่รับรอง S*/U* เทียบ S/U คั่นด้วยจุลภาค", { exact: true })).toHaveValue("511100");
-  await page.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/grade-policy/admin-${info.project.name}.png`, fullPage: true });
+  await page.screenshot({ path: info.outputPath(`grade-policy/admin-${info.project.name}.png`), fullPage: true });
   await page.getByRole("button", { name: "รายวิชา", exact: true }).click();
   const search = page.getByLabel("ค้นหารหัสหรือชื่อวิชา", { exact: true });
   for (const code of ["517392", "517393"]) {
@@ -37,5 +37,5 @@ test("ร่าง CS2565 แสดง S/U ตามผู้ใช้และ 
   await expect(page.getByLabel("รหัสวิชาก่อน คั่นด้วยจุลภาค", { exact: true })).toHaveValue("517211, 517212");
   await expect(page.getByLabel("เอกสารระบุให้เรียนพร้อมวิชาก่อนได้", { exact: true })).not.toBeChecked();
   await expect(page.getByLabel("เงื่อนไขเพิ่มเติมที่ยังไม่ยืนยัน", { exact: true })).toHaveValue(/ไม่รองรับข้อยกเว้นเรียนพร้อมสิบสัปดาห์/);
-  await page.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/grade-policy/courses-${info.project.name}.png`, fullPage: true });
+  await page.screenshot({ path: info.outputPath(`grade-policy/courses-${info.project.name}.png`), fullPage: true });
 });

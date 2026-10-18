@@ -1,6 +1,6 @@
 import "server-only";
 import ExcelJS from "exceljs";
-import { COURSE_COLUMNS, parseCsv } from "@/modules/curriculum/csv";
+import { COURSE_COLUMNS, parseCsvRows } from "@/modules/curriculum/csv";
 import { parseCourse } from "@/modules/curriculum/validation";
 import type { Course } from "@/modules/curriculum/types";
 import { AccessError } from "@/modules/accounts/errors";
@@ -8,9 +8,9 @@ export async function previewCourseImport(
   content: Uint8Array,
   extension: string,
 ) {
-  let rows: string[][];
+  let rows: { row: number; values: string[] }[];
   if (extension === "csv")
-    rows = parseCsv(new TextDecoder("utf-8", { fatal: true }).decode(content));
+    rows = parseCsvRows(new TextDecoder("utf-8", { fatal: true }).decode(content));
   else if (extension === "xlsx") {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(
@@ -26,9 +26,8 @@ export async function previewCourseImport(
         "Excel ต้องมีแผ่นงานแรกไม่เกิน 2,000 รายการและ 20 คอลัมน์",
       );
     rows = [];
-    sheet.eachRow((row) =>
-      rows.push(
-        Array.from({ length: COURSE_COLUMNS.length }, (_, i) => {
+    sheet.eachRow((row, rowNumber) => {
+      const values = Array.from({ length: Math.max(row.cellCount, COURSE_COLUMNS.length) }, (_, i) => {
           const cell = row.getCell(i + 1);
           if (cell.type === ExcelJS.ValueType.Formula)
             throw new AccessError(
@@ -37,17 +36,17 @@ export async function previewCourseImport(
               "ใช้ค่าข้อมูลโดยตรง ไม่รองรับสูตร Excel ในแม่แบบนำเข้า",
             );
           return cell.text;
-        }),
-      ),
-    );
+        });
+      if (values.some(value => value.trim())) rows.push({ row: rowNumber, values });
+    });
   } else
     throw new AccessError(
       422,
       "IMPORT_EXTENSION",
       "รองรับ CSV UTF-8 และ Excel .xlsx ตามแม่แบบ",
     );
-  const header = rows.shift()?.map((s) => s.trim());
-  if (!header || COURSE_COLUMNS.some((name, i) => header[i] !== name))
+  const header = rows.shift()?.values.map((s) => s.trim());
+  if (!header || header.length !== COURSE_COLUMNS.length || COURSE_COLUMNS.some((name, i) => header[i] !== name))
     throw new AccessError(
       422,
       "IMPORT_HEADERS",
@@ -64,7 +63,7 @@ export async function previewCourseImport(
       throw new Error("ค่าจริง/เท็จใช้ true/false หรือ 1/0");
     return ["true", "1"].includes(value);
   };
-  for (const [index, values] of rows.entries()) {
+  for (const { row, values } of rows) {
     try {
       if (values.length !== COURSE_COLUMNS.length)
         throw new Error("จำนวนคอลัมน์ไม่ตรงแม่แบบ");
@@ -93,10 +92,10 @@ export async function previewCourseImport(
       if (seen.has(course.code))
         throw new Error(`รหัส ${course.code} ซ้ำในไฟล์`);
       seen.add(course.code);
-      preview.push({ row: index + 2, course, error: null });
+      preview.push({ row, course, error: null });
     } catch (error) {
       preview.push({
-        row: index + 2,
+        row,
         course: null,
         error: error instanceof Error ? error.message : "อ่านแถวไม่ได้",
       });

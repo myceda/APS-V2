@@ -5,6 +5,8 @@
 /playwright-report/
 /test-results/
 /test-results-auth/
+/test-results-plans/
+/test-results-simulation/
 /playwright-report-auth/
 *.tsbuildinfo
 next-env.d.ts
@@ -17,3 +19,5 @@ next-env.d.ts
 *.pdf
 /src/generated/
 /tests/.auth/
+/test-results-admin-audit/
+/test-results-admin-history/

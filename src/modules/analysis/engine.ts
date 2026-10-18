@@ -1,7 +1,7 @@
 import type { Attempt, TranscriptPayload } from "@/modules/transcript/types";
 import type { Course, Dataset, StudyTrack } from "@/modules/curriculum/types";
 
-export const ENGINE_VERSION = "aps-v2-analysis-2026-10-17-v3";
+export const ENGINE_VERSION = "aps-v2-analysis-2026-10-18-v6";
 export const GRADE_POINTS: Record<string, number> = {
   A: 4,
   "B+": 3.5,
@@ -207,11 +207,11 @@ export function passedForPrerequisites(
   const passed = new Set<string>();
   const ordered = chronological(rows);
   for (const course of dataset.courses) {
+    if (course.grading === "unknown") continue;
     const attempts = ordered.filter(
       (r) =>
         r.courseCode === course.code &&
-        r.kind !== "transfer" &&
-        r.credits === course.credits,
+        r.kind !== "transfer",
     );
     if (attempts.some((r) => effectiveGrade(r, dataset)?.endsWith("*"))) continue;
     const assessed = attempts.filter(
@@ -219,10 +219,17 @@ export function passedForPrerequisites(
         effectiveGrade(r, dataset) != null &&
         (effectiveGrade(r, dataset)! in GRADE_POINTS || ["S", "U"].includes(effectiveGrade(r, dataset)!)),
     );
+    const validPass = (row: Attempt) =>
+      row.credits === course.credits &&
+      !(course.grading === "su" && row.grade != null && row.grade in GRADE_POINTS) &&
+      isPassed(effectiveGrade(row, dataset));
+    const latestAssessment = assessed.at(-1);
+    // Select the latest assessment before validating its credits/grading. Filtering
+    // invalid newer data first would silently restore an older passing result.
     if (
       dataset.policy.prerequisitePass === "any_pass"
-        ? assessed.some((r) => isPassed(effectiveGrade(r, dataset)))
-        : isPassed(assessed.at(-1) ? effectiveGrade(assessed.at(-1)!, dataset) : null)
+        ? assessed.some(validPass)
+        : Boolean(latestAssessment && validPass(latestAssessment))
     )
       passed.add(course.code);
   }

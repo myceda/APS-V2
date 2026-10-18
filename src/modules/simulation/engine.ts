@@ -89,6 +89,8 @@ export function simulate(
     forbidden = new Map<string, Set<number>>();
   const seen = new Set<string>();
   for (const event of events) {
+    if (!event || typeof event !== "object")
+      throw new Error("ข้อมูลเหตุการณ์จำลองไม่ถูกต้อง");
     const course = dataset.courses.find(
       (c) =>
         c.code === event.courseCode &&
@@ -150,7 +152,7 @@ export function simulate(
     if (
       course.grading === "su"
         ? !["S", "U"].includes(grade ?? "")
-        : grade == null || !(grade in GRADE_POINTS)
+        : typeof grade !== "string" || !Object.hasOwn(GRADE_POINTS, grade)
     )
       throw new Error("เกรดจำลองไม่ตรงชนิดเกรดรายวิชา");
   }
@@ -163,6 +165,13 @@ export function simulate(
     forbidden,
     events,
   );
+  for (const event of events.filter(e => e.action !== "drop")) {
+    const applied = changed.terms.some(t => termKey(t.term) === termKey(event.term) && t.courses.some(c => c.code === event.courseCode));
+    if (!applied)
+      changed.limitations.push(
+        `${event.courseCode} ${event.term.year}/${event.term.semester}: ไม่ได้ใช้เหตุการณ์${event.action === "add" ? "เพิ่มวิชา/เกรดสมมติ" : "ไม่ผ่าน"}ในภาคที่ขอ วิชาที่จัดในภาคอื่นใช้สมมติฐานของแผนอัตโนมัติ ต้องตรวจเหตุผลก่อนใช้ผล`,
+      );
+  }
   changed.assumptions.push(
     ...offeringAssumptions.map(
       (a) =>

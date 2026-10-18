@@ -3,6 +3,7 @@ import type { AccountContext } from "@/modules/accounts/types";
 import { SignOut } from "./auth-actions";
 import styles from "./account-shell.module.css";
 import { demoEnabled, DEMO_NOTICE } from "@/modules/demo/config";
+import { AccountSessionGuard } from "./account-session-guard";
 
 export function AccountShell({
   account,
@@ -12,7 +13,7 @@ export function AccountShell({
   children: React.ReactNode;
 }) {
   const demo = demoEnabled();
-  return (
+  const shell = (
     <div className={styles.shell}>
       {demo && <p className={styles.demoNotice} role="note">{DEMO_NOTICE}</p>}
       <a href="#account-content">ข้ามไปเนื้อหาหลัก</a>
@@ -47,6 +48,11 @@ export function AccountShell({
       </main>
     </div>
   );
+  return account ? (
+    <AccountSessionGuard accountId={account.accountId} role={account.role}>
+      {shell}
+    </AccountSessionGuard>
+  ) : shell;
 }
 
 export function AccountProblem({ message }: { message: string }) {

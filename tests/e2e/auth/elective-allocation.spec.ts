@@ -36,6 +36,6 @@ test("นักศึกษาเห็นวิชาเลือกเฉพ�
     await expect(page.getByText(/เฉพาะด้านเลือก · 9\/9/)).toBeVisible();
     await expect(page.getByText(/เลือกเสรี · 12\/6/)).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    await page.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/category-agreement/allocation-${info.project.name}.png`, fullPage: true });
+    await page.screenshot({ path: info.outputPath(`category-agreement/allocation-${info.project.name}.png`), fullPage: true });
   } finally { await context.close(); }
 });

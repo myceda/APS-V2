@@ -40,7 +40,7 @@ test("ผู้ดูแลตรวจ 517465 และเก็บประก
   await expect(confirmed).toBeChecked();
   await expect(page.getByRole("combobox", { name: "เปิดสอน 517465 ภาค 2", exact: true })).toHaveValue("unknown");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/category-agreement/admin-${info.project.name}.png`, fullPage: true });
+  await page.screenshot({ path: info.outputPath(`category-agreement/admin-${info.project.name}.png`), fullPage: true });
   await page.getByLabel("ปี พ.ศ.", { exact: true }).fill("2570");
   await expect(term).toHaveValue("unknown");
 });

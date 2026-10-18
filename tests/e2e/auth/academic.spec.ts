@@ -197,7 +197,7 @@ test("นักศึกษา PDF ถึงยืนยัน วิเคร�
     await expect(page.getByText("คำนวณจากผลการเรียนที่ยืนยันแล้ว", { exact: true })).toBeVisible();
     await expect(page.getByText("แสดงสองตำแหน่ง; การเทียบเกณฑ์ใช้ค่าก่อนปัด", { exact: true })).toBeVisible();
     await expect(page.getByText("เกรดเฉลี่ยวิชาเฉพาะ", { exact: true })).toBeVisible();
-    await page.screenshot({ path: `C:/Users/MyLuna/aps-v2-doc/deliverables/evidence/grade-policy/student-${info.project.name}.png`, fullPage: true });
+    await page.screenshot({ path: info.outputPath(`grade-policy/student-${info.project.name}.png`), fullPage: true });
 
     await page
       .getByRole("combobox", { name: "สายที่ดูผล", exact: true })
