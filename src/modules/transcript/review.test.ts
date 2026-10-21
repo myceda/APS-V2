@@ -1,10 +1,35 @@
 import { describe, expect, it } from "vitest";
 import { extractPdf } from "@/server/pdf-extraction";
 import { parsePayload, transcriptIssues } from "./validation";
-import { parsePage, type TextLine } from "./layout";
+import { parseHeader, parsePage, type TextLine } from "./layout";
 import { syntheticTranscript } from "../../../tests/support/synthetic-transcript";
 
 describe("PDF review integrity", () => {
+  it("reads the complete identity and both course rows from the supplied demonstration PDF", async () => {
+    const payload = await extractPdf(syntheticTranscript("6509000000", "B", [
+      { code: "517101", name: "Synthetic Computing" },
+      { code: "511108", name: "Synthetic Calculus" },
+    ]));
+    expect(payload.header.studentCode.value).toBe("6509000000");
+    expect(payload.header.studentName.value).toBe("Synthetic Student");
+    expect(payload.header.program.value).toBe("Computer Science");
+    expect(payload.header.trackState).toBe("not_selected");
+    expect(payload.attempts.map(row => [row.courseCode, row.credits, row.grade, row.year, row.semester]))
+      .toEqual([["517101", 3, "B", 2568, 1], ["511108", 3, "B", 2568, 1]]);
+    expect(transcriptIssues(payload, null)).toEqual([]);
+  });
+
+  it.each([
+    ["Name: Synthetic Student", "Synthetic Student"],
+    ["Name: Synthetic Faculty", "Synthetic Faculty"],
+    ["Name: Synthetic Student Student ID: 6509000000", "Synthetic Student"],
+    ["Name: Synthetic Student Faculty: Science", "Synthetic Student"],
+    ["ชื่อนักศึกษา: ทดสอบ ระบบ คณะวิทยาศาสตร์", "ทดสอบ ระบบ"],
+  ])("only ends a name at a labelled field: %s", (text, expected) => {
+    const header = parseHeader([{ y: 760, items: [{ x: 30, width: 500, text }] }]);
+    expect(header.studentName.value).toBe(expected);
+  });
+
   it("preserves unreadable state and raw evidence when an unrelated row is edited", async () => {
     const original = await extractPdf(syntheticTranscript("6509999999"));
     original.header.faculty = { value: null, state: "unreadable", sourcePage: 1, raw: "Faculty:" };

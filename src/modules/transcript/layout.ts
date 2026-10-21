@@ -147,7 +147,7 @@ export function parseHeader(lines: TextLine[]): TranscriptHeader {
     /(?:รหัสนักศึกษา|เลขประจำตัวนักศึกษา|Student\s*(?:ID|No\.?))\s*[:：]?\s*(\d{7,14})/i,
   ]);
   const studentName = find([
-    /(?:ชื่อ\s*[-–]?\s*นามสกุล|ชื่อ\s*นักศึกษา|Name)\s*[:：]?\s*(.+?)(?=\s+(?:รหัส|คณะ|Faculty|Student)|$)/i,
+    /(?:ชื่อ\s*[-–]?\s*นามสกุล|ชื่อ\s*นักศึกษา|Name)\s*[:：]?\s*(.+?)(?=\s+(?:รหัส|คณะ|Faculty\s*[:：]|Student\s*(?:ID|No\.?)\s*[:：])|$)/i,
   ]);
   const faculty = find([
     /คณะ\s*[:：]?\s*(.+?)(?=\s+(?:ภาควิชา|สาขาวิชา|ระดับ|Department)|$)/,

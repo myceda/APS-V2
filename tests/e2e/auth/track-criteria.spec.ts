@@ -18,10 +18,10 @@ test("ผู้ดูแลเก็บฉบับเกณฑ์ นักศ�
   try {
     await studentPage.goto("/student");
     await studentPage.getByLabel("เลือกใบรายงานผลการศึกษา PDF").setInputFiles(`tests/.auth/criteria-${info.project.name}.pdf`);
-    await studentPage.getByRole("button", { name: "อ่าน PDF เป็นร่าง", exact: true }).click();
-    await expect(studentPage.getByRole("button", { name: "ยืนยันข้อมูลชุดนี้", exact: true })).toBeVisible();
+    await studentPage.getByRole("button", { name: "อ่านข้อมูลจาก PDF", exact: true }).click();
+    await expect(studentPage.getByRole("button", { name: "ยืนยันผลการเรียน", exact: true })).toBeVisible();
     await studentPage.getByLabel("ฉันตรวจข้อมูลสรุปและจุดที่แจ้งกับต้นฉบับแล้ว และยืนยันว่าเป็นใบผลการเรียนของฉัน", { exact: true }).check();
-    await studentPage.getByRole("button", { name: "ยืนยันข้อมูลชุดนี้", exact: true }).click();
+    await studentPage.getByRole("button", { name: "ยืนยันผลการเรียน", exact: true }).click();
     const studentPanel = studentPage.getByRole("region", { name: "สิทธิ์เลือกสายเบื้องต้น" });
     await expect(studentPanel.getByRole("heading", { name: "โครงงานวิจัย — รอข้อมูลจากผู้ดูแล", exact: true })).toBeVisible();
     await expect(studentPanel.getByText("การอนุมัติจากภาควิชา: ยังไม่มีหลักฐานยืนยันใน APS", { exact: true })).toBeVisible();

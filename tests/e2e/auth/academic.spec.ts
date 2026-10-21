@@ -169,13 +169,13 @@ test("นักศึกษา PDF ถึงยืนยัน วิเคร�
   try {
     await page.goto("/student");
     await expect(
-      page.getByRole("heading", { name: "เริ่มจากผลการเรียนของคุณ", exact: true }),
+      page.getByRole("heading", { name: "ผลการเรียน", exact: true }),
     ).toBeVisible();
     await page
       .getByLabel("เลือกใบรายงานผลการศึกษา PDF")
       .setInputFiles(`tests/.auth/academic-${info.project.name}.pdf`);
     await page
-      .getByRole("button", { name: "อ่าน PDF เป็นร่าง", exact: true })
+      .getByRole("button", { name: "อ่านข้อมูลจาก PDF", exact: true })
       .click();
     await expect(
       page.getByRole("heading", { name: "ตรวจข้อมูลก่อนเริ่มวางแผน", exact: true }),
@@ -185,12 +185,18 @@ test("นักศึกษา PDF ถึงยืนยัน วิเคร�
         "ฉันตรวจข้อมูลสรุปและจุดที่แจ้งกับต้นฉบับแล้ว และยืนยันว่าเป็นใบผลการเรียนของฉัน",
       )
       .check();
+    let releaseCalculation = () => {};
+    const calculationGate = new Promise<void>(resolve => { releaseCalculation = resolve; });
+    await page.route("**/api/student/analysis", async route => { await calculationGate; await route.continue(); });
     await page
-      .getByRole("button", { name: "ยืนยันข้อมูลชุดนี้", exact: true })
+      .getByRole("button", { name: "ยืนยันผลการเรียน", exact: true })
       .click();
+    await page.getByRole("button", { name: "ความก้าวหน้าตามหลักสูตร", exact: true }).click();
+    releaseCalculation();
     await expect(
       page.getByRole("heading", { name: "ความก้าวหน้าตามหมวด", exact: true }),
     ).toBeVisible();
+    await page.getByRole("button", { name: "ภาพรวม", exact: true }).click();
     await expect(
       page.getByRole("combobox", { name: "สายที่ดูผล", exact: true }),
     ).toHaveValue("project");
@@ -217,16 +223,15 @@ test("นักศึกษา PDF ถึงยืนยัน วิเคร�
         exact: true,
       }),
     ).toBeVisible();
-    const courseDetails = page.getByText("101002 · Synthetic Course 2 (3)", {
-      exact: true,
-    });
+    const courseDetails = page.getByRole("button", { name: /^101002 · Synthetic Course 2/ });
+    await expect(courseDetails).toBeVisible();
     await courseDetails.focus();
-    await page.keyboard.press("Enter");
-    await expect(page.getByText("วิชาที่ต่อเนื่อง: 101003")).toBeVisible();
-    await page.keyboard.press("Enter");
-    await expect(page.getByText("วิชาที่ต่อเนื่อง: 101003")).not.toBeVisible();
     await expect(courseDetails).toBeFocused();
     await page.keyboard.press("Enter");
+    const panel = page.getByRole("complementary", { name: "รายละเอียดวิชาในแผน", exact: true });
+    await expect(panel).toBeFocused();
+    await expect(panel.getByText("วิชาที่ต่อเนื่อง: 101003")).toBeVisible();
+    await expect(courseDetails).toHaveAttribute("aria-pressed", "true");
     await test.info().attach("แผนรายเทอม", {
       body: await page.screenshot({ fullPage: true }),
       contentType: "image/png",
@@ -278,13 +283,14 @@ test("นักศึกษา PDF ถึงยืนยัน วิเคร�
       .getByRole("button", { name: "ผลการเรียน", exact: true })
       .click();
     await page
-      .getByRole("button", { name: "สร้างร่างแก้ไขจากผลการเรียนที่ยืนยันแล้ว", exact: true })
+      .getByRole("button", { name: "แก้ไขผลการเรียน", exact: true })
       .click();
     await expect(
       page.getByRole("heading", { name: "ตรวจข้อมูลก่อนเริ่มวางแผน", exact: true }),
     ).toBeVisible();
+    page.once("dialog", dialog => dialog.accept());
     await page
-      .getByRole("button", { name: "ยกเลิกร่างนี้", exact: true })
+      .getByRole("button", { name: "ยกเลิกการแก้ไข", exact: true })
       .click();
     await expect(
       page.getByText("ยกเลิกการแก้ไขแล้ว ผลการเรียนเดิมยังอยู่", { exact: true }),

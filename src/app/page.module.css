@@ -78,3 +78,16 @@
 .step { border-radius:22px; }
 .step:nth-child(2) .stepNumber { background:#d8f6e9; color:#146c50; }
 .step:nth-child(3) .stepNumber { background:#ffe2df; color:#9b4037; }
+.welcomeCard { background: var(--surface); border-color: var(--border); border-radius: 16px; }
+.primaryLink { box-shadow: none; border-radius: 8px; }
+.step, .scope { border-radius: 12px; }
+.tracks li { color: var(--primary-dark); }
+.status { color: var(--primary-dark); border-color: var(--border); }
+.status span { background: var(--primary); }
+.productPreview { margin: 24px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: #f7fbfa; }
+.previewHeader { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; background: var(--primary-soft); padding: 16px; font-size: 14px; }
+.previewHeader span { color: var(--muted); font-size: 12px; }
+.previewRow { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 12px; margin: 0 16px; padding: 16px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.previewRow span { color: var(--muted); }
+.productPreview p { padding: 16px; font-size: 12px; }
+.availabilityNote { border-color: var(--border); color: var(--muted); }

@@ -71,14 +71,14 @@ export async function fingerprint(m: DemoManifest, inside: boolean): Promise<Fin
     ["PrivateDocument","ownerAccountId",accounts],["TranscriptDraft","ownerAccountId",accounts],["DraftCourseAttempt","draftId",drafts],["TranscriptRevision","ownerAccountId",accounts],
     ["StudentAcademicState","enrollmentId",enrollments],["AnalysisRun","ownerAccountId",accounts],["SimulationScenario","ownerAccountId",accounts],
   ];
-  const result: Fingerprint = {};
-  for(const [table,column,ids] of rules) {
-    if(inside && table === "Session") continue; // Renewing a demo session is intentionally not business mutation.
+  // These reads are independent. Keep the same table coverage, count and row
+  // hashes while avoiding serial round trips on a growing local test database.
+  const entries = await Promise.all(rules.filter(([table]) => !(inside && table === "Session")).map(async ([table,column,ids]) => {
     const query = `SELECT count(*)::int AS count, md5(COALESCE(string_agg(md5(to_jsonb(r)::text), '' ORDER BY md5(to_jsonb(r)::text)),'')) AS hash FROM "${table}" r WHERE ${inside ? "" : "NOT "}COALESCE(r."${column}" = ANY($1::uuid[]), false)`;
     const values = await database.$queryRawUnsafe<{count:number;hash:string}[]>(query,ids);
-    result[table]=values[0];
-  }
-  return result;
+    return [table,values[0]] as const;
+  }));
+  return Object.fromEntries(entries);
 }
 
 async function recipeHashes() {

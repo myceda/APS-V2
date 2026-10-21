@@ -1,4 +1,6 @@
 "use client";
+
+import { publicationReadiness } from "@/modules/curriculum/publication-readiness";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { HistoryQuery } from "@/modules/curriculum/history";
 import {
@@ -13,7 +15,9 @@ import {
 import { csvCell, COURSE_COLUMNS } from "@/modules/curriculum/csv";
 import { parseCourse, validateDataset } from "@/modules/curriculum/validation";
 import styles from "./academic-ui.module.css";
+import { useUnsavedChanges } from "./use-unsaved-changes";
 type State = DatasetHistory;
+const datasetStatusNames = { draft: "ร่าง", published: "เผยแพร่แล้ว", withdrawn: "ยกเลิกใช้" };
 type Preview = {
   rows: { row: number; course: Course | null; error: string | null }[];
   valid: boolean;
@@ -37,6 +41,9 @@ const emptyCourse = (): Course => ({
   requiresConsent: false,
   source: "",
 });
+class RequestError extends Error {
+  constructor(message: string, readonly status: number) { super(message); }
+}
 async function api<T>(body?: unknown, url = "/api/admin/academic", signal?: AbortSignal): Promise<T> {
   const response = await fetch(url, {
     method: body ? "POST" : "GET",
@@ -47,10 +54,11 @@ async function api<T>(body?: unknown, url = "/api/admin/academic", signal?: Abor
   });
   const output = await response.json();
   if (!response.ok)
-    throw new Error(output.error?.message || "ทำรายการไม่สำเร็จ");
+    throw new RequestError(output.error?.message || "ทำรายการไม่สำเร็จ", response.status);
   return output;
 }
 export function AcademicManager({ initial }: { initial: State }) {
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const [state, setState] = useState(initial),
     [versionId, setVersionId] = useState(initial.selectedVersionId ?? ""),
     [dataset, setDataset] = useState<Dataset | null>(null);
@@ -69,7 +77,20 @@ export function AcademicManager({ initial }: { initial: State }) {
     [recurring, setRecurring] = useState(false),
     [offeringSource, setOfferingSource] = useState("");
   const [preview, setPreview] = useState<Preview | null>(null);
+  const [conflict, setConflict] = useState(false);
   const editable = dataset?.status === "draft" && !busy;
+  useUnsavedChanges(dirty);
+  function openVersionSelection() {
+    const selection = document.getElementById("academic-version-selection");
+    const input = document.getElementById("academic-dataset-select") as HTMLSelectElement | null;
+    if (input && !input.disabled) input.focus({ preventScroll: true });
+    else selection?.focus({ preventScroll: true });
+    selection?.scrollIntoView({ block: "start" });
+  }
+  function openWorkTab(index: number) {
+    setTab(index);
+    document.getElementById("academic-work-tabs")?.focus();
+  }
   useEffect(() => {
     const id = initial.datasets[0]?.id;
     if (!id) return;
@@ -87,10 +108,14 @@ export function AcademicManager({ initial }: { initial: State }) {
     setBusy(label);
     setError("");
     setSuccess("");
+    setConflict(false);
     try {
       await action();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "ทำรายการไม่สำเร็จ");
+      setConflict(e instanceof RequestError && e.status === 409);
+      setError(e instanceof TypeError || e instanceof SyntaxError
+        ? "เชื่อมต่อหรืออ่านคำตอบจากระบบไม่ได้ ข้อมูลที่กรอกยังอยู่ กรุณาลองอีกครั้ง"
+        : e instanceof Error ? e.message : "ทำรายการไม่สำเร็จ");
     } finally {
       locked.current = false;
       setBusy("");
@@ -165,6 +190,19 @@ export function AcademicManager({ initial }: { initial: State }) {
     } catch (e) {
       setError((e as Error).message);
     }
+  }
+  function removeCourse(course: Course) {
+    if (!dataset || !editable) return;
+    const dependants = dataset.courses.filter(item => item.prerequisite.courses.includes(course.code));
+    if (dependants.length || dataset.offerings.some(item => item.courseCode === course.code) || dataset.policy.starGradeCourses?.includes(course.code)) {
+      setError(`ยังลบ ${course.code} ไม่ได้: ตรวจวิชาที่อ้างเป็นเงื่อนไข (${dependants.map(item => item.code).join(", ") || "ไม่มี"}) รายการเปิดสอน และรายการ S*/U* ในเงื่อนไขการเรียนก่อน`);
+      return;
+    }
+    if (!window.confirm(`ลบ ${course.code} · ${course.name} ออกจากร่างนี้? ฉบับอื่นไม่เปลี่ยน และต้องกดบันทึกร่างจึงมีผล`)) return;
+    modify(d => ({ ...d, courses: d.courses.filter(item => item.code !== course.code) }));
+    if (editingCode === course.code) { setForm(emptyCourse()); setEditingCode(null); }
+    setError("");
+    setSuccess(`ลบ ${course.code} จากร่างบนหน้าจอแล้ว ยังไม่บันทึก หากต้องการคืนให้กดยกเลิกการแก้ไขที่ยังไม่บันทึก`);
   }
   function setOffering(
     code: string,
@@ -260,6 +298,23 @@ export function AcademicManager({ initial }: { initial: State }) {
           </p>
         </div>
       </div>
+      <ol className={`${styles.journey} ${styles.journeyNavigation}`} aria-label="ขั้นตอนจัดเตรียมหลักสูตร">
+        <li aria-current={!dataset ? "step" : undefined}><button type="button" onClick={openVersionSelection}>1 เลือกฉบับ</button></li>
+        <li aria-current={dataset && tab !== 4 ? "step" : undefined}><button type="button" disabled={!dataset || Boolean(busy)} onClick={() => openWorkTab(0)}>2 แก้ข้อมูลและตรวจปัญหา</button></li>
+        <li aria-current={dataset && tab === 4 ? "step" : undefined}><button type="button" disabled={!dataset || Boolean(busy)} onClick={() => openWorkTab(4)}>3 ตรวจความพร้อมและเผยแพร่</button></li>
+      </ol>
+      <section className={styles.nextStep} aria-labelledby="admin-next-step">
+        <div>
+          <span className={styles.eyebrow}>เริ่มจัดเตรียมข้อมูล</span>
+          <h2 id="admin-next-step">{!dataset ? "เลือกหลักสูตรและเปิดชุดข้อมูลด้านล่าง" : dataset.status === "withdrawn" ? "ฉบับนี้ยกเลิกใช้แล้ว ประวัติยังอยู่" : dataset.status === "published" ? "ฉบับนี้เผยแพร่แล้ว เริ่มแก้ด้วยสำเนาร่างใหม่" : dirty ? "มีการแก้ไขที่ยังไม่บันทึก" : "เตรียมข้อมูลให้นักศึกษาใช้วางแผน"}</h2>
+          <p>{dataset?.status === "withdrawn" ? "ฉบับนี้ไม่ถูกใช้สร้างแผนใหม่ หากต้องการนำข้อมูลกลับมาใช้ ให้สร้างสำเนาเป็นร่างใหม่ ตรวจและเผยแพร่ตามขั้นตอน" : dataset?.status === "published" ? "หากต้องการแก้ไข ให้กดสร้างสำเนาเป็นร่างใหม่ นักศึกษายังใช้ฉบับเดิมได้ระหว่างที่คุณแก้" : "เริ่มจากนำเข้ารายวิชาหรือแก้รายการที่มีอยู่ บันทึกงาน แล้วตรวจการเปิดสอนและวิธีคำนวณก่อนเผยแพร่ให้นักศึกษาใช้"}</p>
+        </div>
+        {dataset?.status === "draft" && <div className={styles.actions}>
+          <button className={styles.primary} disabled={Boolean(busy)} onClick={() => openWorkTab(3)}>เริ่มนำเข้าไฟล์รายวิชา</button>
+          <button className={styles.secondary} disabled={Boolean(busy)} onClick={() => openWorkTab(2)}>ตรวจการเปิดสอน</button>
+          <button className={styles.secondary} disabled={Boolean(busy)} onClick={() => openWorkTab(4)}>ไปตรวจความพร้อม</button>
+        </div>}
+      </section>
       <div role="status" aria-live="polite">
         {busy && <p className={styles.note}>{busy}…</p>}
         {success && <p className={styles.success}>{success}</p>}
@@ -269,8 +324,10 @@ export function AcademicManager({ initial }: { initial: State }) {
           {error}
         </p>
       )}
-      <section className={styles.card}>
-        <h2>เลือกหลักสูตร</h2>
+      {conflict && <p className={styles.note}>ข้อมูลที่แก้ยังอยู่ในแท็บนี้ อย่ารีเฟรชก่อนตรวจทาน <a href="/admin/academic" target="_blank" rel="noreferrer">เปิดฉบับล่าสุดในแท็บใหม่</a> เพื่อเลือกฉบับเดิม เทียบและย้ายเฉพาะส่วนที่ต้องการแก้ แล้วบันทึกจากฉบับล่าสุด ระบบจะไม่เขียนทับข้อมูลจากอีกแท็บให้อัตโนมัติ</p>}
+      <section className={styles.card} id="academic-version-selection" tabIndex={-1} aria-labelledby="academic-version-heading">
+        <h2 id="academic-version-heading">เลือกหลักสูตร</h2>
+        {dirty && <p className={styles.note}>มีร่างที่ยังไม่บันทึก กรุณาบันทึกร่างข้อมูลก่อนเปลี่ยนฉบับ</p>}
         <div className={styles.form}>
           <label className={styles.field}>
             หลักสูตรที่ดูแล
@@ -281,7 +338,7 @@ export function AcademicManager({ initial }: { initial: State }) {
             >
               {state.versions.map((v) => (
                 <option key={v.id} value={v.id}>
-                  {v.curriculumCode} · {v.code}
+                  {v.curriculumCode.startsWith("CS2565-DEMO-") ? "วิทยาการคอมพิวเตอร์ 2565 · ชุดฝึกใช้งาน" : `${v.curriculumCode} · ${v.code}`}
                 </option>
               ))}
             </select>
@@ -289,18 +346,19 @@ export function AcademicManager({ initial }: { initial: State }) {
           <label className={styles.field}>
             ชุดข้อมูลที่เปิดดู
             <select
+              id="academic-dataset-select"
               value={dataset?.id ?? ""}
               disabled={Boolean(busy) || dirty}
               onChange={(e) => { const id = e.target.value; void run("กำลังโหลดฉบับข้อมูล", () => openDataset(id)); }}
             >
               <option value="">ยังไม่เลือก</option>
-              {dataset && !state.datasets.some(d => d.id === dataset.id) && <option value={dataset.id}>ฉบับ {dataset.version} · {dataset.status === "published" ? "เผยแพร่แล้ว" : "ร่าง"} · เปิดอยู่</option>}
+              {dataset && !state.datasets.some(d => d.id === dataset.id) && <option value={dataset.id}>ฉบับ {dataset.version} · {datasetStatusNames[dataset.status]} · เปิดอยู่</option>}
               {state.datasets
                 .filter((d) => d.curriculumVersionId === versionId)
                 .map((d) => (
                   <option key={d.id} value={d.id}>
                     ฉบับ {d.version} ·{" "}
-                    {d.status === "published" ? "เผยแพร่แล้ว" : "ร่าง"}
+                    {datasetStatusNames[d.status]}
                     {" · "}{new Date(d.createdAt).toLocaleDateString("th-TH")}
                   </option>
                 ))}
@@ -371,7 +429,7 @@ export function AcademicManager({ initial }: { initial: State }) {
                 <h2>ชุดข้อมูลฉบับ {dataset.version}</h2>
                 <p>
                   {dataset.courses.length} รายวิชา ·{" "}
-                  {dataset.status === "published"
+                  {dataset.status === "withdrawn" ? "ฉบับยกเลิกใช้ อ่านได้อย่างเดียว" : dataset.status === "published"
                     ? "ฉบับเผยแพร่ อ่านได้อย่างเดียว"
                     : "ร่างที่แก้ไขได้"}
                 </p>
@@ -379,9 +437,7 @@ export function AcademicManager({ initial }: { initial: State }) {
               <span className={styles.badge}>
                 {dirty
                   ? "มีการแก้ที่ยังไม่บันทึก"
-                  : dataset.status === "published"
-                    ? "เผยแพร่แล้ว"
-                    : "ยังไม่เผยแพร่"}
+                  : dataset.status === "draft" ? "ยังไม่เผยแพร่" : datasetStatusNames[dataset.status]}
               </span>
             </div>
             <label className={styles.field}>
@@ -421,6 +477,14 @@ export function AcademicManager({ initial }: { initial: State }) {
               >
                 บันทึกร่างข้อมูล
               </button>
+              {dataset.status !== "withdrawn" && <button type="button" className={styles.secondary} disabled={Boolean(busy) || dirty} onClick={() => {
+                if (!window.confirm(`ยกเลิกใช้ฉบับ ${dataset.version}? เก็บรายวิชาและประวัติเดิมไว้ ระบบจะใช้ฉบับเผยแพร่อื่นที่ยังใช้งานได้ หรือแจ้งว่าไม่มีหลักสูตรพร้อมวิเคราะห์`)) return;
+                void run("กำลังยกเลิกใช้ฉบับ", async () => { await api({ action: "withdraw", id: dataset.id, expectedVersion: dataset.editVersion }); await refresh(dataset.id); setSuccess("ยกเลิกใช้ฉบับแล้ว ข้อมูลและประวัติเดิมยังอยู่"); });
+              }}>{dataset.status === "draft" ? "ยกเลิกร่างฉบับนี้" : "ยกเลิกใช้ฉบับนี้"}</button>}
+              <button type="button" className={styles.secondary} disabled={!editable || !dirty} onClick={() => {
+                if (!dataset || !window.confirm("ทิ้งการแก้ไขทั้งหมดที่ยังไม่บันทึก แล้วอ่านฉบับนี้ล่าสุดจากระบบ?")) return;
+                void run("กำลังอ่านร่างล่าสุด", async () => { await openDataset(dataset.id); setDirty(false); setSuccess("ยกเลิกการแก้ไขที่ยังไม่บันทึกแล้ว โหลดฉบับล่าสุดจากระบบ"); });
+              }}>ยกเลิกการแก้ไขที่ยังไม่บันทึก</button>
               <button
                 className={styles.secondary}
                 hidden={tab !== 4}
@@ -448,7 +512,7 @@ export function AcademicManager({ initial }: { initial: State }) {
               </button>
             </div>
           </section>
-          <nav className={styles.tabs} aria-label="จัดข้อมูลวิชาการ">
+          <nav className={styles.tabs} aria-label="จัดข้อมูลวิชาการ" id="academic-work-tabs" tabIndex={-1}>
             {[
               "รายวิชา",
               "เงื่อนไขการเรียน",
@@ -467,6 +531,19 @@ export function AcademicManager({ initial }: { initial: State }) {
             ))}
           </nav>
           {tab === 4 && <section className={styles.card}><h2>ตรวจความพร้อมก่อนเผยแพร่</h2><p>เมื่อเผยแพร่ นักศึกษาจะใช้ข้อมูลชุดนี้คำนวณแผน ฉบับที่เผยแพร่แล้วแก้ทับไม่ได้</p><ul><li>รายวิชา {dataset.courses.length} วิชา</li><li>รายการเปิดสอน {dataset.offerings.length} รายการ</li><li>ข้อมูลที่ยังต้องยืนยัน {dataset.unresolved.length} รายการ</li></ul>{!dataset.offerings.length && <p className={styles.error}>ยังไม่มีข้อมูลเปิดสอน แผนอาจจัดวิชาไม่ได้ กรุณาเตรียมข้อมูลหรือให้นักศึกษาระบุสมมติฐานแยกจากข้อมูลจริง</p>}{validateDataset(dataset).length > 0 && <ul className={styles.error}>{validateDataset(dataset).map((message,index)=><li key={index}>{message}</li>)}</ul>}<p>{dirty ? "มีข้อมูลที่ยังไม่บันทึก กรุณาบันทึกร่างก่อนเผยแพร่" : "ตรวจรายการข้างต้น แล้วใช้ปุ่มตรวจและเผยแพร่ฉบับด้านบน"}</p></section>}
+          {tab === 4 && (
+            <section className={styles.card} aria-label="ความสามารถที่ยังมีข้อจำกัด">
+              <h3>เผยแพร่แล้วคำนวณส่วนใดได้บ้าง</h3>
+              <p>ใช้ CS2565 เป็นข้อมูลตั้งต้น ข้อมูลเพิ่มเติมเป็นหน้าที่ผู้ดูแลบันทึกพร้อมแหล่งที่มา การเผยแพร่ไม่ได้ยืนยันกฎที่ยังขาด และไม่ได้อนุมัติจบหรือลงทะเบียน</p>
+              <p>{publicationReadiness(dataset).capabilities.confirmedGpa
+                ? "GPA: คำนวณตามนโยบายที่บันทึกไว้ ไม่ใช่การรับรองผลจากมหาวิทยาลัย"
+                : "GPA: แสดงได้เฉพาะผลตรวจเบื้องต้น ยังมีนโยบายคำนวณที่ไม่ยืนยัน"}</p>
+              <ul>{publicationReadiness(dataset).limitations.map((item, index) => (
+                <li key={index}><strong>{item.rule}</strong><br />ยังไม่ยืนยัน: {item.affects}</li>
+              ))}</ul>
+              <p>ผลสรุปการศึกษา: ยังไม่รับรอง แม้ไม่มีรายการค้างในช่องนี้</p>
+            </section>
+          )}
           {tab === 0 && (
             <section className={styles.card}>
               <h2>
@@ -694,6 +771,7 @@ export function AcademicManager({ initial }: { initial: State }) {
                   </button>
                 </div>
               </form>
+              <div className={styles.form}>
               <label className={styles.field}>
                 ค้นหารหัสหรือชื่อวิชา
                 <input
@@ -701,6 +779,9 @@ export function AcademicManager({ initial }: { initial: State }) {
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </label>
+              <label className={styles.field}>กรองหมวดรายวิชา<select value={categoryFilter} onChange={event => setCategoryFilter(event.target.value)}><option value="all">ทุกหมวด</option>{Object.entries(CATEGORY_NAMES).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+              </div>
+              <p className={styles.muted} role="status">พบ {dataset.courses.filter(course => `${course.code} ${course.name}`.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()) && (categoryFilter === "all" || course.category === categoryFilter)).length} รายวิชา · หลักสูตรฉบับ {dataset.version}</p>
               <div className={styles.tableWrap}>
                 <table className={styles.table}>
                   <thead>
@@ -713,7 +794,7 @@ export function AcademicManager({ initial }: { initial: State }) {
                   </thead>
                   <tbody>
                     {dataset.courses
-                      .filter((c) => `${c.code} ${c.name}`.includes(search))
+                      .filter((c) => `${c.code} ${c.name}`.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()) && (categoryFilter === "all" || c.category === categoryFilter))
                       .map((c) => (
                         <tr key={c.code}>
                           <td>
@@ -740,6 +821,7 @@ export function AcademicManager({ initial }: { initial: State }) {
                             >
                               แก้ {c.code}
                             </button>
+                            <button type="button" className={styles.secondary} disabled={!editable} onClick={() => removeCourse(c)}>ลบ {c.code} จากร่าง</button>
                           </td>
                         </tr>
                       ))}
@@ -818,7 +900,7 @@ export function AcademicManager({ initial }: { initial: State }) {
                   />
                 </label>
                 <label className={styles.field}>
-                  นโยบาย GPA เรียนซ้ำ
+                  วิธีคิด GPA เมื่อเรียนซ้ำ
                   <select
                     value={dataset.policy.repeat}
                     disabled={!editable}
@@ -980,7 +1062,7 @@ export function AcademicManager({ initial }: { initial: State }) {
                   />
                 </label>
                 <label className={styles.field}>
-                  แหล่งนโยบาย
+                  ที่มาของเกณฑ์คำนวณ
                   <input
                     value={dataset.policy.source}
                     disabled={!editable}
@@ -1169,6 +1251,11 @@ export function AcademicManager({ initial }: { initial: State }) {
                                 </select>
                                 {offering && (
                                   <>
+                                    <button type="button" className={styles.secondary} disabled={!editable} aria-label={`ลบการเปิดสอน ${c.code} ปี ${offering.year} ภาค ${semester}`} onClick={() => {
+                                      if (!window.confirm(`ลบรายการเปิดสอน ${c.code} ปี ${offering.year || "คาดเปิดซ้ำ"} ภาค ${semester} จากร่าง? การลบไม่ใช่การระบุว่าไม่เปิดสอน ระบบจะพิจารณาข้อมูลที่เหลือ ต้องบันทึกร่างจึงมีผล`)) return;
+                                      modify(d => ({ ...d, offerings: d.offerings.filter(o => !(o.courseCode === c.code && o.year === offering.year && o.semester === semester)) }));
+                                      setSuccess("ลบรายการเปิดสอนจากร่างแล้ว ยังไม่บันทึก");
+                                    }}>ลบรายการนี้จากร่าง</button>
                                     <span className={styles.muted}>
                                       {offering.confidence === "confirmed"
                                         ? "ยืนยันจากแหล่ง"
@@ -1272,6 +1359,7 @@ export function AcademicManager({ initial }: { initial: State }) {
               </form>
               {preview && (
                 <>
+                  {!preview.valid && <p role="alert" className={styles.error}>ยังนำเข้าไฟล์นี้ไม่ได้ กรุณาแก้แถวที่แจ้งปัญหาใน Excel หรือไฟล์ CSV แล้วเลือกไฟล์ที่แก้แล้วมาตรวจอีกครั้ง</p>}
                   <p>
                     {preview.accepted}/{preview.total} แถวอ่านได้
                     ยังไม่ได้บันทึกหรือเผยแพร่

@@ -32,10 +32,10 @@ test.describe("ผู้ดูแลหลัก", () => {
       page.getByRole("form", { name: "ข้อมูลบัญชี" }).getByRole("alert"),
     ).toContainText("มีในระบบแล้ว");
     await expect(page.getByLabel("อีเมล Google")).toHaveValue(email);
-    await page
-      .getByRole("button", { name: `แก้ไขบัญชี ${email}`, exact: true })
-      .click();
-    await page.getByLabel("สถานะบัญชี").selectOption("inactive");
+    await page.getByRole("button", { name: `เตรียมระงับบัญชี ${email}`, exact: true }).click();
+    await expect(page.getByLabel("สถานะบัญชี")).toHaveValue("inactive");
+    const pending = await request.get("/api/admin/accounts");
+    expect((await pending.json()).accounts.find((account: { email: string }) => account.email === email).status).toBe("active");
     await page.getByRole("button", { name: "บันทึกการแก้ไข" }).click();
     const row = page
       .getByRole("listitem")
@@ -54,7 +54,10 @@ test.describe("ผู้ดูแลหลัก", () => {
       ),
     ).toBe(true);
     await test.info().attach("account-manager", {
-      body: await page.screenshot({ fullPage: true }),
+      // Capture the account whose behavior was verified. The shared synthetic
+      // database grows between runs; a full-page bitmap of every account can
+      // exceed Chromium's capture limits, independently of these assertions.
+      body: await row.screenshot(),
       contentType: "image/png",
     });
   });
@@ -100,12 +103,12 @@ test.describe("นักศึกษา", () => {
   }) => {
     await page.goto("/student");
     await expect(
-      page.getByRole("heading", { name: "เริ่มจากผลการเรียนของคุณ" }),
+      page.getByRole("heading", { name: "ผลการเรียน", exact: true }),
     ).toBeVisible();
     await expect(
       page.getByText(/รหัสนักศึกษา.*ยังไม่ทราบสาย/),
     ).toBeVisible();
-    await expect(page.getByRole("link", { name: "จัดการบัญชี" })).toHaveCount(
+    await expect(page.getByRole("link", { name: "บัญชีและสิทธิ์ผู้ใช้" })).toHaveCount(
       0,
     );
     expect((await request.get("/api/admin/accounts")).status()).toBe(403);
@@ -126,7 +129,7 @@ test.describe("ผู้ดูแลหลักสูตร", () => {
     await expect(
       page.getByRole("heading", { name: "หลักสูตรที่ได้รับมอบหมาย" }),
     ).toBeVisible();
-    await expect(page.getByRole("listitem")).toContainText("CS2565");
+    await expect(page.getByRole("heading", { name: "หลักสูตรที่ได้รับมอบหมาย" }).locator("..").getByRole("listitem")).toContainText("CS2565");
     await expect(page.getByRole("link", { name: "จัดการบัญชี" })).toHaveCount(
       0,
     );

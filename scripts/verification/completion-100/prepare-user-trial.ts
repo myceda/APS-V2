@@ -1,0 +1,15 @@
+import { spawnSync } from "node:child_process";
+import { readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { previewCourseImport } from "../../../src/server/course-import";
+const root = fileURLToPath(new URL("../../../", import.meta.url));
+const docs = path.resolve(root, "../aps-v2-doc/deliverables/completion-100");
+const valid = await previewCourseImport(await readFile(path.join(docs, "administrator-valid.csv")), "csv");
+const invalid = await previewCourseImport(await readFile(path.join(docs, "administrator-with-error.csv")), "csv");
+if (valid.rows.some(r => r.error) || invalid.rows.filter(r => r.error).length !== 1) throw new Error("User trial import fixtures do not match the documented expectations");
+const run = `c100-users-${Date.now()}`;
+const result = spawnSync(process.execPath, ["--conditions=react-server", "--import", "tsx", "scripts/verification/round-12/prepare.ts", "--run", run], { cwd: root, stdio: "inherit", windowsHide: true });
+if (result.status !== 0) throw new Error("Trial preparation failed; no successful handoff recorded");
+await writeFile(path.join(docs, "user-trial-ready.json"), JSON.stringify({ run, preparedAt: new Date().toISOString(), inputPdf: path.join(root, "storage/demo", run, "rehearsal-input.pdf"), command: `npm.cmd run demo:open -- --run ${run} --case not-selected,admin`, csvValidation: { validRows: valid.rows.length, deliberateInvalidRows: invalid.rows.filter(r => r.error).length }, status: "prepared_not_observed", google: "not_tested", participants: "not_observed", warning: "Synthetic data in local aps_v2_test; no real account roles changed" }, null, 2) + "\n");
+console.log("User trial kit prepared, CSV validation verified; no participants observed");

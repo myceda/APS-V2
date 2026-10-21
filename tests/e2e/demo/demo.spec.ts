@@ -11,14 +11,14 @@ for(const key of DEMO_CASES)test(`ชุด ${key} มีป้ายสาธ�
   const context=await browser.newContext({storageState:path.join(directory,"sessions",`${key}.json`),baseURL:"http://localhost:3102",viewport:info.project.use.viewport});
   try{
     const page=await context.newPage();await page.goto(key==="admin"?"/admin":"/student");
-    await expect(page.getByText(DEMO_NOTICE,{exact:true})).toBeVisible();await expect(page.getByText("บัญชีสาธิต",{exact:false}).filter({has:page.locator("strong")})).toContainText(`${run}.${key}@aps-demo.invalid`);
+    await expect(page.getByText(DEMO_NOTICE,{exact:true})).toBeVisible();await expect(page.getByText("กำลังทดลองในบทบาท",{exact:false}).filter({has:page.locator("strong")})).toContainText(key === "admin" ? "ผู้ดูแล" : "นักศึกษา");
     const me=await (await context.request.get("/api/me")).json();expect(me.account.email).toBe(`${run}.${key}@aps-demo.invalid`);expect(me.account.canManageAccounts).toBe(false);
     if(key==="admin"){
       await page.goto("/admin/academic");await expect(page.getByRole("heading",{name:"หลักสูตรและการเปิดสอน",exact:true})).toBeVisible();
       await page.goto("/admin/track-criteria");await expect(page.getByText(/ข้อมูลสาธิต APS รอบ 2/).first()).toBeVisible();
     }else if(key==="unknown-track"){
       await expect(page.getByRole("heading",{name:"ตรวจข้อมูลก่อนเริ่มวางแผน",exact:true})).toBeVisible();
-      await expect(page.getByRole("button",{name:"ยืนยันข้อมูลชุดนี้",exact:true})).toBeDisabled();
+      await expect(page.getByRole("button",{name:"ยืนยันผลการเรียน",exact:true})).toBeDisabled();
       const analysis=await context.request.post("/api/student/analysis",{headers:{origin:"http://localhost:3102"},data:{}});expect(analysis.status()).toBe(422);
     }else{
       await page.getByRole("button",{name:"ภาพรวม",exact:true}).click();

@@ -17,7 +17,7 @@ export default async function StudentPage() {
     return <AccountProblem message={error instanceof AccessError ? error.message : "โหลดข้อมูลไม่สำเร็จ กรุณาลองอีกครั้ง"} />;
   }
   return (
-    <AccountShell account={result.account}>
+    <AccountShell account={result.account} studentInitialView={workspace.drafts.length || !workspace.revision ? "transcript" : "overview"}>
       <StudentWorkspace initial={workspace} />
     </AccountShell>
   );

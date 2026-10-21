@@ -45,7 +45,7 @@ export async function mutateCriteria(context: AccountContext, value: unknown) {
     try { parsed = parseCriteria(input.criteria); } catch (e) { invalid(e instanceof Error ? e.message : "ข้อมูลไม่ถูกต้อง"); }
     await scope(context, parsed.curriculumVersionId);
   }
-  if (!["create", "save", "copy", "publish", "withdraw"].includes(action)) invalid("คำสั่งไม่รองรับ");
+  if (!["create", "save", "copy", "publish", "withdraw", "cancel"].includes(action)) invalid("คำสั่งไม่รองรับ");
   const id = action === "create" ? null : text(input.id, 100);
   const prior = id ? await db.trackCriteria.findUnique({ where: { id } }) : null;
   if (id && !prior) throw new AccessError(404, "CRITERIA_NOT_FOUND", "ไม่พบเกณฑ์");
@@ -105,7 +105,7 @@ export async function mutateCriteria(context: AccountContext, value: unknown) {
         const published = await tx.trackCriteria.update({ where: { id: row.id }, data: { status: "published", editVersion: { increment: 1 } } });
         await event(published, input.replacesId ? `publish_replacing:${input.replacesId}` : action); return criteriaView(published);
       }
-      if (row.status !== "published") throw conflict();
+      if (row.status !== (action === "cancel" ? "draft" : "published")) throw conflict();
       const withdrawn = await tx.trackCriteria.update({ where: { id: row.id }, data: { status: "withdrawn", editVersion: { increment: 1 } } });
       await event(withdrawn, action); return criteriaView(withdrawn);
     }, { timeout: 15_000 });

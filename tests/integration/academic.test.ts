@@ -22,6 +22,9 @@ import {
   runAnalysis,
   runScenario,
   studentWorkspace,
+  withdrawDataset,
+  selectTranscriptRevision,
+  getDataset,
 } from "@/server/academic";
 import { syntheticTranscript } from "../support/synthetic-transcript";
 import { academicDataset } from "../support/academic-fixtures";
@@ -117,10 +120,53 @@ afterAll(async () => {
     where: { accountAccessId: { in: owners } },
   });
   await database.enrollmentRequest.deleteMany({where:{accountAccessId:{in:owners}}});
+  await database.auditEvent.deleteMany({where:{targetAccountId:{in:owners}}});
   await database.accountAccess.deleteMany({ where: { id: { in: owners } } });
   await database.user.deleteMany({ where: { id: { in: userIds } } });
 });
 describe("academic services and HTTP boundaries", () => {
+  it("withdraws and reselects an owned confirmed revision without changing its payload or PDF", async () => {
+    const draft = await uploadTranscript(a, syntheticTranscript(a.enrollment!.studentCode)); documentIds.push(draft.documentId);
+    const confirmed = await confirmDraft(a, draft.id, draft.editVersion);
+    const original = await database.transcriptRevision.findUniqueOrThrow({ where: { id: confirmed.revisionId } });
+    await expect(selectTranscriptRevision(b, original.id, null)).rejects.toMatchObject({ status: 404 });
+    await expect(selectTranscriptRevision(admin, original.id, null)).rejects.toMatchObject({ status: 403 });
+    await expect(selectTranscriptRevision(a, "invalid", original.id)).rejects.toMatchObject({ status: 422 });
+    await selectTranscriptRevision(a, null, original.id);
+    const withdrawn = await studentWorkspace(a);
+    expect(withdrawn.revision).toBeNull(); expect(withdrawn.analysis).toBeNull();
+    expect(withdrawn.revisionHistory.map(item => item.id)).toContain(original.id);
+    await expect(runAnalysis(a, parameters)).rejects.toMatchObject({ code: "CONFIRMED_TRANSCRIPT_REQUIRED" });
+    await expect(selectTranscriptRevision(a, original.id, original.id)).rejects.toMatchObject({ status: 409 });
+    await selectTranscriptRevision(a, original.id, null);
+    expect((await studentWorkspace(a)).revision?.id).toBe(original.id);
+    expect(await database.transcriptRevision.findUniqueOrThrow({ where: { id: original.id } })).toEqual(original);
+    expect((await ownDocument(a, draft.documentId)).id).toBe(draft.documentId);
+    expect(await database.auditEvent.count({ where: { actorAccountId: a.accountId, action: { endsWith: original.id } } })).toBe(2);
+  });
+  it("withdraws a dataset with scope and version checks while retaining courses and publication history", async () => {
+    const draft = await createDataset(admin, versionId); datasetIds.push(draft.id);
+    const saved = await saveDataset(admin, draft.id, { expectedVersion: draft.editVersion, dataset: academicDataset(draft) });
+    await publishDataset(admin, saved.id, saved.editVersion);
+    const published = await getDataset(admin, saved.id);
+    await expect(withdrawDataset(a, published.id, published.editVersion)).rejects.toMatchObject({ status: 403 });
+    await expect(withdrawDataset({ ...admin, curriculumIds: [] }, published.id, published.editVersion)).rejects.toMatchObject({ status: 403 });
+    await expect(withdrawDataset(admin, published.id, published.editVersion - 1)).rejects.toMatchObject({ status: 409 });
+    const retired = await withdrawDataset(admin, published.id, published.editVersion);
+    expect(retired.status).toBe("withdrawn");
+    expect(retired.courses).toEqual(published.courses); expect(retired.offerings).toEqual(published.offerings);
+    expect((await database.academicDataset.findUniqueOrThrow({ where: { id: retired.id } })).publishedAt).not.toBeNull();
+    await expect(saveDataset(admin, retired.id, { expectedVersion: retired.editVersion, dataset: retired })).rejects.toMatchObject({ code: "DATASET_IMMUTABLE" });
+    await expect(publishDataset(admin, retired.id, retired.editVersion)).rejects.toMatchObject({ status: 409 });
+    const copy = await createDataset(admin, versionId, retired.id); datasetIds.push(copy.id);
+    expect(copy.status).toBe("draft"); expect(copy.courses).toEqual(retired.courses);
+    expect(await database.auditEvent.count({ where: { actorAccountId: admin.accountId, action: `withdraw_academic_dataset:${retired.id}` } })).toBe(1);
+  });
+  it("withdraws an unused draft without deleting it", async () => {
+    const draft = await createDataset(admin, versionId); datasetIds.push(draft.id);
+    expect((await withdrawDataset(admin, draft.id, draft.editVersion)).status).toBe("withdrawn");
+    expect(await database.academicDataset.count({ where: { id: draft.id } })).toBe(1);
+  });
   it("rejects student admin access and grants outside the assigned curriculum", async () => {
     await expect(createDataset(a, versionId)).rejects.toMatchObject({
       status: 403,

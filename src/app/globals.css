@@ -1,12 +1,12 @@
 :root {
-  --background: #f8f9fd;
+  --background: #f3f7f7;
   --surface: #ffffff;
-  --text: #17233e;
-  --muted: #53627a;
-  --primary: #5345c9;
-  --primary-dark: #4034a5;
-  --primary-soft: #eeecff;
-  --border: #dfe3ef;
+  --text: #18343b;
+  --muted: #4b636a;
+  --primary: #087e83;
+  --primary-dark: #065d62;
+  --primary-soft: #e5f4f2;
+  --border: #d4e1e1;
   --focus: #9a3412;
   --radius: 20px;
   --space-1: 4px;
@@ -26,7 +26,7 @@ body {
   color: var(--text);
   font-family: var(--font-thai), "Noto Sans Thai", sans-serif;
   font-size: 16px;
-  line-height: 1.75;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 a { color: inherit; text-decoration-thickness: 2px; text-underline-offset: 5px; }

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { createAuthClient } from "better-auth/react";
 import styles from "./account-shell.module.css";
+import { BEFORE_LEAVE } from "./use-unsaved-changes";
 
 const authClient = createAuthClient();
 
@@ -80,6 +81,7 @@ export function SignOut() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   async function signOut() {
+    if (!window.dispatchEvent(new Event(BEFORE_LEAVE, { cancelable: true }))) return;
     setBusy(true);
     setError("");
     try {

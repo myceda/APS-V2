@@ -10,6 +10,7 @@ import {
   listDatasets,
   publishDataset,
   saveDataset,
+  withdrawDataset,
 } from "@/server/academic";
 import { integer, record, text } from "@/modules/curriculum/validation";
 import { AccessError } from "@/modules/accounts/errors";
@@ -47,6 +48,7 @@ export async function POST(request: Request) {
         await saveDataset(account, text(input.id, 100), input),
         { headers: privateHeaders },
       );
+    if (input.action === "withdraw") return Response.json(await withdrawDataset(account, text(input.id, 100), integer(input.expectedVersion, 1, 1_000_000)), { headers: privateHeaders });
     if (input.action === "publish")
       return Response.json(
         await publishDataset(

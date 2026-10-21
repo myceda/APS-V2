@@ -20,18 +20,19 @@ test("ยังไม่เลือกสายสลับสองแผน�
     await page.getByRole("button", { name: "แผนการเรียน", exact: true }).click();
     const select = page.getByRole("combobox", { name: "สายที่ดูผล", exact: true });
     await expect(select.locator("option")).toHaveCount(2);
+    await page.getByRole("button", { name: "เปรียบเทียบสองสาย", exact: true }).click();
     const criteria = page.getByRole("region", { name: "สิทธิ์เลือกสายเบื้องต้น" });
     await expect(criteria.getByRole("heading", { name: "โครงงานวิจัย — ผ่านเกณฑ์เบื้องต้น", exact: true })).toBeVisible();
     await expect(criteria.getByRole("heading", { name: "สหกิจศึกษา — รอเจ้าหน้าที่ตรวจเงื่อนไขเพิ่มเติม", exact: true })).toBeVisible();
     await expect(criteria.getByText("การอนุมัติจากภาควิชา: ยังไม่มีหลักฐานยืนยันใน APS", { exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "แผนการเรียน", exact: true }).click();
     for (const [track, title] of [["project", "โครงงานวิจัย"], ["cooperative", "สหกิจศึกษา"]]) {
       await select.selectOption(track);
       await expect(page.getByRole("heading", { name: `แผนการเรียน · ${title}`, exact: true })).toBeVisible();
       await expect(page.getByText(/เป็นทางเลือก ยังไม่เปลี่ยนสายจริง/)).toBeVisible();
-      const summary = page.locator("summary").filter({ hasText: /^517121 ·/ }).first();
-      if (!await summary.evaluate(s => (s.parentElement as HTMLDetailsElement).open)) await summary.click();
+      await page.getByRole("button", { name: /^517121 ·/ }).click();
       await expect(page.getByText(/แหล่งเปิดสอน: ข้อมูลทดสอบรอบ 5/).first()).toBeVisible();
-      await expect(page.getByRole("heading", { name: "วิชาที่ยังจัดไม่ได้", exact: true })).toBeVisible();
+      await expect(page.locator("summary").filter({ hasText: /^วิชาที่ยังจัดไม่ได้/ })).toBeVisible();
       await evidence(page, `alternative-${track}`, info);
     }
   } finally { await context.close(); }
@@ -56,7 +57,7 @@ for (const [key, title] of [["project", "โครงงานวิจัย"],
 test("ข้อมูลสายกำกวมคงเป็นร่าง ไม่ยืนยันหรือสร้างแผนให้เอง", async ({ browser }, info) => {
   const { page, context, fixture } = await open(browser, "unknown", info);
   try {
-    await expect(page.getByRole("button", { name: "ยืนยันข้อมูลชุดนี้", exact: true })).toBeDisabled();
+    await expect(page.getByRole("button", { name: "ยืนยันผลการเรียน", exact: true })).toBeDisabled();
     await expect(page.getByRole("combobox", { name: "สายที่ดูผล", exact: true })).toHaveCount(0);
     const own = fixture.manifest.accounts.find((a: { key: string }) => a.key === "unknown");
     const response = await page.request.post(`/api/student/transcripts/${own.draftId}/confirm`, { headers: { origin: "http://localhost:3101" }, data: { expectedVersion: 1, reviewed: true } });
@@ -69,10 +70,11 @@ for (const key of ["absent", "wrong-cohort", "wrong-round", "expired"]) {
   test(`${key}: รอเกณฑ์โดยยังเปิดแผนสองทางเลือก`, async ({ browser }, info) => {
     const { page, context } = await open(browser, key, info);
     try {
-      await page.getByRole("button", { name: "แผนการเรียน", exact: true }).click();
+      await page.getByRole("button", { name: "ภาพรวม", exact: true }).click();
       const region = page.getByRole("region", { name: "สิทธิ์เลือกสายเบื้องต้น" });
       await expect(region.getByRole("heading", { name: "โครงงานวิจัย — รอข้อมูลจากผู้ดูแล", exact: true })).toBeVisible();
       await expect(region.getByRole("heading", { name: "สหกิจศึกษา — รอข้อมูลจากผู้ดูแล", exact: true })).toBeVisible();
+      await page.getByRole("button", { name: "แผนการเรียน", exact: true }).click();
       const select = page.getByRole("combobox", { name: "สายที่ดูผล", exact: true });
       await expect(select.locator("option")).toHaveCount(2);
       await select.selectOption("cooperative");
@@ -85,10 +87,11 @@ for (const [key, status] of [["failed", "ยังไม่ผ่านเกณ
   test(`${key}: แยกสถานะเกณฑ์และยังดูแผนได้`, async ({ browser }, info) => {
     const { page, context } = await open(browser, key, info);
     try {
-      await page.getByRole("button", { name: "แผนการเรียน", exact: true }).click();
+      await page.getByRole("button", { name: "ภาพรวม", exact: true }).click();
       const result = await (await page.request.get("/api/student/track-criteria?year=2569&semester=1")).json();
       expect(result.results.every((r: { status: string; approval: string }) => r.status === (key === "failed" ? "not_met" : "insufficient_data") && r.approval === "not_verified")).toBe(true);
       await expect(page.getByRole("region", { name: "สิทธิ์เลือกสายเบื้องต้น" }).getByRole("heading", { name: `โครงงานวิจัย — ${status}`, exact: true })).toBeVisible();
+      await page.getByRole("button", { name: "แผนการเรียน", exact: true }).click();
       await expect(page.getByRole("combobox", { name: "สายที่ดูผล", exact: true }).locator("option")).toHaveCount(2);
       await evidence(page, key, info);
     } finally { await context.close(); }

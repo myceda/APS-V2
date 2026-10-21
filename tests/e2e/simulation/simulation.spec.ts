@@ -50,8 +50,11 @@ for (const track of ["project", "cooperative"]) for (const scenario of scenarios
       const criteriaAfter = await (await context.request.get("/api/student/track-criteria?year=2569&semester=1")).json();
       expect(realAfter.revision).toEqual(realBefore.revision);
       expect(criteriaAfter.results).toEqual(criteriaBefore.results);
+      await page.getByRole("button", { name: "ภาพรวม", exact: true }).click();
       await page.getByRole("region", { name: "สิทธิ์เลือกสายเบื้องต้น" }).getByRole("button", { name: "ตรวจเกณฑ์ล่าสุดอีกครั้ง", exact: true }).click();
       await expect(page.getByRole("heading", { name: "โครงงานวิจัย — ยังไม่ผ่านเกณฑ์เบื้องต้น", exact: true })).toBeVisible();
+      await page.getByRole("button", { name: "ลองปรับแผน", exact: true }).click();
+      await expect(page.getByText("เปรียบเทียบแล้ว ข้อมูลจริงยังคงเดิม", { exact: true })).toBeVisible();
       const name = `${scenario.id}-${track}-${info.project.name}`;
       await mkdir(`${f.directory}/images`, { recursive: true });
       await writeFile(`${f.directory}/${name}.json`, JSON.stringify({ scenario, track, actual, actualRevisionUnchanged: true, actualCriteriaUnchanged: true }, null, 2), { flag: "wx" });

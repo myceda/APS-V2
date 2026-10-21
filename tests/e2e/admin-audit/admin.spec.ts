@@ -1,5 +1,5 @@
 import { test, expect, type Page, type APIRequestContext } from "@playwright/test";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import type { Dataset } from "../../../src/modules/curriculum/types";
 import type { AdminFixture } from "../../../scripts/verification/round-7/fixtures";
 
@@ -100,13 +100,13 @@ test("forms-and-correction", async ({ page, request }) => {
   await page.getByLabel("หน่วยกิตขั้นต่ำทั้งหมด", { exact: true }).fill("6");
   await page.getByLabel("GPA ขั้นต่ำ", { exact: true }).fill("2.25");
   await page.getByLabel("คะแนนเกรดสูงสุดที่อาจเรียนซ้ำได้", { exact: true }).fill("1.5");
-  for (const [label, value] of [["นโยบาย GPA เรียนซ้ำ", "latest_numeric"], ["การปัด GPA เพื่อแสดงผล", "half_up_2"], ["การจัดหมวดวิชาเลือก", "specific_then_free_earliest_pass"], ["การเทียบเกณฑ์ GPA", "raw"], ["ขอบเขต GPA เฉพาะด้าน", "all_specific"], ["สิทธิ์วิชาต่อเนื่องเมื่อเรียนซ้ำ", "latest_assessed"]])
+  for (const [label, value] of [["วิธีคิด GPA เมื่อเรียนซ้ำ", "latest_numeric"], ["การปัด GPA เพื่อแสดงผล", "half_up_2"], ["การจัดหมวดวิชาเลือก", "specific_then_free_earliest_pass"], ["การเทียบเกณฑ์ GPA", "raw"], ["ขอบเขต GPA เฉพาะด้าน", "all_specific"], ["สิทธิ์วิชาต่อเนื่องเมื่อเรียนซ้ำ", "latest_assessed"]])
     await page.getByRole("combobox", { name: label, exact: true }).selectOption(value);
   await page.getByLabel("รหัสวิชาที่รับรอง S*/U* เทียบ S/U คั่นด้วยจุลภาค", { exact: true }).fill("R7002");
   await page.getByLabel("เพดานหน่วยกิตภาคปกติ", { exact: true }).fill("18");
   await page.getByLabel("เพดานฤดูร้อน", { exact: true }).fill("6");
   await page.getByLabel("ขั้นต่ำทั่วไปภาคปกติ (ว่าง = ยังไม่ยืนยัน)", { exact: true }).fill("0");
-  await page.getByLabel("แหล่งนโยบาย", { exact: true }).fill(source);
+  await page.getByLabel("ที่มาของเกณฑ์คำนวณ", { exact: true }).fill(source);
   await page.getByLabel("ขั้นต่ำหมวด 3", { exact: true }).fill("3");
   await page.getByLabel("แหล่งหมวด 3", { exact: true }).fill(source);
   const actual = await save(page);
@@ -167,6 +167,42 @@ test("offerings-two-years-three-terms", async ({ page, request }) => {
   evidence("offerings", { expected: matrix, preservedYears: [0, 2568, 2571], before, actual });
 });
 
+test("remove-draft-rows-and-withdraw-with-history", async ({ page, request }) => {
+  const draft = await fresh(request);
+  const course = { ...draft.courses[0], code: "R7999", name: "Synthetic removable course", prerequisite: { mode: "all", courses: ["R7001"], concurrent: false, unresolved: null } };
+  const original: Dataset = await api(request, { action: "save", id: draft.id, expectedVersion: draft.editVersion, dataset: { ...draft, courses: [...draft.courses, course], offerings: [...draft.offerings, { courseCode: course.code, year: 2569, semester: 1, availability: "open", confidence: "planned", source }] } });
+  await choose(page, original);
+  await page.getByRole("button", { name: "ลบ R7001 จากร่าง", exact: true }).click();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText("ยังลบ R7001 ไม่ได้");
+  await page.getByRole("button", { name: "การเปิดสอน", exact: true }).click();
+  await page.getByLabel("ปี พ.ศ.", { exact: true }).fill("2569");
+  await page.getByLabel("ค้นหารายวิชาในตาราง", { exact: true }).fill("R7999");
+  page.once("dialog", dialog => dialog.accept());
+  await page.getByRole("button", { name: "ลบการเปิดสอน R7999 ปี 2569 ภาค 1", exact: true }).click();
+  await save(page);
+  const afterOffering = await (await request.get(`/api/admin/academic/${original.id}`)).json();
+  expect(afterOffering.offerings).toEqual(original.offerings.filter(item => item.courseCode !== "R7999"));
+  await page.getByRole("button", { name: "รายวิชา", exact: true }).click();
+  await page.getByLabel("ค้นหารหัสหรือชื่อวิชา", { exact: true }).fill("R7999");
+  page.once("dialog", dialog => dialog.accept());
+  await page.getByRole("button", { name: "ลบ R7999 จากร่าง", exact: true }).click();
+  await save(page);
+  const afterCourse = await (await request.get(`/api/admin/academic/${original.id}`)).json();
+  expect(afterCourse.courses).toEqual(original.courses.filter(item => item.code !== "R7999"));
+  await page.getByRole("button", { name: "ตรวจและเผยแพร่", exact: true }).click();
+  await page.getByRole("button", { name: "ตรวจและเผยแพร่ฉบับ", exact: true }).click();
+  await expect(page.getByText("ฉบับเผยแพร่ อ่านได้อย่างเดียว", { exact: false })).toBeVisible();
+  page.once("dialog", dialog => dialog.accept());
+  await page.getByRole("button", { name: "ยกเลิกใช้ฉบับนี้", exact: true }).click();
+  await expect(page.getByText("ยกเลิกใช้ฉบับแล้ว ข้อมูลและประวัติเดิมยังอยู่", { exact: true })).toBeVisible();
+  const withdrawn = await (await request.get(`/api/admin/academic/${original.id}`)).json();
+  expect(withdrawn.status).toBe("withdrawn"); expect(withdrawn.courses).toEqual(afterCourse.courses);
+  await expect(page.getByLabel("แหล่งข้อมูลหลักสูตร", { exact: true })).toBeDisabled();
+  mkdirSync("../aps-v2-doc/deliverables/crud-review/images", { recursive: true });
+  await page.getByRole("heading", { name: "ฉบับนี้ยกเลิกใช้แล้ว ประวัติยังอยู่", exact: true }).scrollIntoViewIfNeeded();
+  await page.screenshot({ scale: "css", path: `../aps-v2-doc/deliverables/crud-review/images/admin-withdrawn-${test.info().project.name}.png` });
+});
+
 test("publish-copy-history", async ({ page, request }) => {
   const d = await fresh(request); await choose(page, d);
   await page.getByRole("button", { name: "ตรวจและเผยแพร่", exact: true }).click();
@@ -205,7 +241,7 @@ test("scope-and-curriculum-switch", async ({ page, request, browser }) => {
     const denied = [];
     for (const body of [
       { action: "create", versionId: d.curriculumVersionId }, { action: "create", versionId: b.curriculumVersionId, copyId: d.id },
-      { action: "save", id: d.id, expectedVersion: d.editVersion, dataset: d }, { action: "publish", id: d.id, expectedVersion: d.editVersion },
+      { action: "save", id: d.id, expectedVersion: d.editVersion, dataset: d }, { action: "publish", id: d.id, expectedVersion: d.editVersion }, { action: "withdraw", id: d.id, expectedVersion: d.editVersion },
     ]) { const out = await api(outsider.request, body, 403); denied.push(out.error.code); }
     const r = await outsider.request.post("/api/admin/academic/import", { headers: { origin }, multipart: { datasetId: d.id, file: { name: "synthetic.csv", mimeType: "text/csv", buffer: readFileSync(f.imports.correctedCsv) } } });
     expect(r.status()).toBe(403);
@@ -226,6 +262,7 @@ test("two-windows-stale-save-and-publish", async ({ page, request, context }) =>
     await page.screenshot({ path: `${f.directory}/${test.info().project.name}-conflict-error.png`, fullPage: true });
     const actual = (await datasets(request)).find(x => x.id === d.id)!; expect(actual).toEqual(newer);
     await api(request, { action: "publish", id: d.id, expectedVersion: d.editVersion }, 409);
+    page.once("dialog", async dialog => { expect(dialog.type()).toBe("beforeunload"); await dialog.accept(); });
     await page.reload(); await page.getByRole("combobox", { name: "ชุดข้อมูลที่เปิดดู", exact: true }).selectOption(d.id);
     await expect(page.getByLabel("แหล่งข้อมูลหลักสูตร", { exact: true })).toHaveValue(newer.source);
     evidence("conflict", { expected: "stale window cannot overwrite or publish; reload shows newer work", before: d, actual, staleSaveStatus: 409, stalePublishStatus: 409 });

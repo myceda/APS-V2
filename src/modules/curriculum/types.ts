@@ -64,7 +64,7 @@ export interface Dataset {
   curriculumVersionId: string;
   version: number;
   editVersion: number;
-  status: "draft" | "published";
+  status: "draft" | "published" | "withdrawn";
   source: string;
   courses: Course[];
   groups: GroupRule[];
@@ -76,7 +76,7 @@ export interface DatasetSummary {
   id: string;
   curriculumVersionId: string;
   version: number;
-  status: "draft" | "published";
+  status: Dataset["status"];
   createdAt: string;
   publishedAt: string | null;
 }

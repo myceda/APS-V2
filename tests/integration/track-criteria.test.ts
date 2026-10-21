@@ -63,6 +63,17 @@ const complete = () => { const v = criteriaInput(versionId, datasetId); v.data.t
 const create = (criteria = complete()) => mutateCriteria(admin, { action: "create", criteria, reason: "Synthetic fixture only" });
 const command = (action: string, c: CriteriaView, extra = {}) => mutateCriteria(admin, { action, id: c.id, expectedEditVersion: c.editVersion, reason: "Synthetic change only", ...extra });
 describe("track criteria services, identity and transactions", () => {
+  it("cancels a draft with an audited reason while retaining its data and blocking stale changes", async () => {
+    const draft = await create();
+    const cancelled = await command("cancel", draft);
+    expect(cancelled.status).toBe("withdrawn"); expect(cancelled.data).toEqual(draft.data);
+    const history = await criteriaHistory(admin, draft.id);
+    expect(history.events.some(event => event.action === "cancel")).toBe(true);
+    await expect(command("cancel", draft)).rejects.toMatchObject({ status: 409 });
+    await expect(command("publish", cancelled)).rejects.toMatchObject({ status: 409 });
+    const copied = await command("copy", cancelled);
+    expect(copied.status).toBe("draft"); expect(copied.data).toEqual(cancelled.data);
+  });
   it("requires signed identity, origin and curriculum grants", async () => {
     expect((await studentRoute(new Request("http://localhost:3101/api/student/track-criteria?year=2569&semester=1"))).status).toBe(401);
     await expect(listCriteria(student)).rejects.toMatchObject({ status: 403 });

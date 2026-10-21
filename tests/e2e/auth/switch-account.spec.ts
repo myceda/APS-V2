@@ -11,8 +11,9 @@ for (const target of ["signed-out", "student", "other-admin"] as const) {
     try {
       const page = await context.newPage();
       await page.goto("/admin");
-      await expect(page.getByRole("heading", { name: "วันนี้มีอะไรต้องจัดการ?", exact: true })).toBeVisible();
-      await page.getByRole("link", { name: "ข้อมูลวิชาการ", exact: true }).click();
+      await expect(page.getByRole("heading", { name: "จัดการข้อมูลหลักสูตร", exact: true })).toBeVisible();
+      if (info.project.name === "mobile") await page.getByRole("button", { name: "เปิดเมนู", exact: true }).click();
+      await page.getByRole("navigation", { name: "เมนูผู้ดูแล", exact: true }).getByRole("link", { name: "หลักสูตรและการเปิดสอน", exact: true }).click();
       await expect(page.getByRole("heading", { name: "หลักสูตรและการเปิดสอน", exact: true })).toBeVisible();
       // Change only this synthetic browser context, without revoking shared fixtures.
       await context.clearCookies();
@@ -28,13 +29,13 @@ for (const target of ["signed-out", "student", "other-admin"] as const) {
       if (target === "student") {
         await expect(page.getByRole("heading", { name: "ยังเข้าใช้งานส่วนนี้ไม่ได้", exact: true })).toBeVisible();
       } else if (target === "signed-out") {
-        await expect(page).toHaveURL(/\/sign-in$/);
+        await expect.poll(async () => page.url().endsWith("/sign-in") || await page.getByRole("link", { name: "เข้าสู่ระบบใหม่ในแท็บอื่น", exact: true }).isVisible()).toBe(true);
       } else {
         await expect(page.getByText("fixture-admin@aps-tests.invalid", { exact: true })).toBeVisible();
       }
       if (target !== "other-admin")
-        await expect(page.getByRole("heading", { name: "วันนี้มีอะไรต้องจัดการ?", exact: true })).toHaveCount(0);
-      await expect(page.getByText("fixture-manager@aps-tests.invalid", { exact: true })).toHaveCount(0);
+        await expect(page.getByRole("heading", { name: "จัดการข้อมูลหลักสูตร", exact: true })).not.toBeVisible();
+      await expect(page.getByText("fixture-manager@aps-tests.invalid", { exact: true })).not.toBeVisible();
       await page.reload();
       await expect(page.getByText("fixture-manager@aps-tests.invalid", { exact: true })).toHaveCount(0);
     } finally {

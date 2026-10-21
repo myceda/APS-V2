@@ -18,11 +18,11 @@ async function workspace(ctx:BrowserContext) {return (await ctx.request.get("/ap
 async function upload(page:Page, bytes:Buffer) {
   await page.getByRole("button",{name:"ผลการเรียน",exact:true}).click();
   await page.getByLabel("เลือกใบรายงานผลการศึกษา PDF").setInputFiles({name:"transcript.pdf",mimeType:"application/pdf",buffer:bytes});
-  await page.getByRole("button",{name:"อ่าน PDF เป็นร่าง",exact:true}).click();
+  await page.getByRole("button",{name:"อ่านข้อมูลจาก PDF",exact:true}).click();
 }
 async function confirm(page:Page) {
   await page.getByRole("checkbox",{name:/ฉันตรวจข้อมูลสรุป/}).check();
-  await page.getByRole("button",{name:"ยืนยันข้อมูลชุดนี้",exact:true}).click();
+  await page.getByRole("button",{name:"ยืนยันผลการเรียน",exact:true}).click();
   await expect(page.getByText("ยืนยันผลการเรียนแล้ว",{exact:true})).toBeVisible();
 }
 function fieldEqual(e:unknown,a:unknown,sampleId:string,group:string,field:string,ordinal?:number) {
@@ -39,8 +39,15 @@ function agrees(e:TranscriptPayload,a:TranscriptPayload,id:string) {
   const summaries=(p:TranscriptPayload)=>p.summaries.flatMap(s=>Object.entries(s.fields).filter(([key])=>key!=="raw").map(([key,value])=>JSON.stringify([s.sourcePage,s.year,s.semester,s.kind,key,value]))).sort();
   return JSON.stringify(summaries(e))===JSON.stringify(summaries(a));
 }
+async function openCourseReview(page:Page) {
+  await expect(page.locator("main > div[aria-busy]")).toHaveAttribute("aria-busy", "false");
+  const summary = page.getByText("รายวิชาและผลการเรียน", { exact: true });
+  await expect(summary).toBeVisible();
+  if (!await summary.locator("..").evaluate(element => (element as HTMLDetailsElement).open)) await summary.click();
+  await expect(page.getByLabel("รหัสแถว 1", { exact: true })).toBeVisible();
+}
 async function openOriginal(page:Page,draft:DraftView,bytes:Buffer,filename:string) {
-  await page.getByText("ดูและแก้รายละเอียดทุกรายวิชา",{exact:true}).click();
+  await openCourseReview(page);
   const row=draft.attempts.find(r=>r.sourcePage>1) || draft.attempts[0];
   const link=page.getByRole("link",{name:`หน้า ${row.sourcePage}`,exact:true}).last();
   const popupPromise=page.waitForEvent("popup");
@@ -93,19 +100,19 @@ test("@mobile synthetic: edit source page reconfirm cancel and block invalid dat
     expect(draft.pages).toBe(2);
     expect(draft.attempts.length).toBe(7);
     expect(draft.attempts.every((row:Record<string,unknown>,i:number)=>Object.entries(golden.rows[i]).every(([key,value])=>row[key]===value))).toBe(true);
-    await page.getByText("ดูและแก้รายละเอียดทุกรายวิชา",{exact:true}).click();
+    await openCourseReview(page);
     await page.getByLabel("ปีแถว 1",{exact:true}).fill("");
-    await expect(page.getByRole("button",{name:"ยืนยันข้อมูลชุดนี้",exact:true})).toBeDisabled();
-    await page.getByRole("button",{name:"บันทึกการแก้ร่าง",exact:true}).click();
+    await expect(page.getByRole("button",{name:"ยืนยันผลการเรียน",exact:true})).toBeDisabled();
+    await page.getByRole("button",{name:"บันทึกข้อมูลที่แก้ไข",exact:true}).click();
     await expect(page.getByText("บันทึกร่างแล้ว ยังไม่เปลี่ยนข้อมูลยืนยัน",{exact:true})).toBeVisible();
     const invalid=(await workspace(ctx)).drafts[0];
     const denied=await ctx.request.post(`/api/student/transcripts/${invalid.id}/confirm`,{headers:{origin:"http://localhost:3103"},data:{expectedVersion:invalid.editVersion}});
     expect(denied.status()).toBe(422);
     expect((await denied.json()).error.code).toBe("TRANSCRIPT_REVIEW_REQUIRED");
-    await page.reload();await page.getByText("ดูและแก้รายละเอียดทุกรายวิชา",{exact:true}).click();
+    await page.reload();await openCourseReview(page);
     await page.getByLabel("ปีแถว 1",{exact:true}).fill("2568");
     await page.getByLabel("ชื่อแถว 1",{exact:true}).fill("Reviewed Withdrawn Attempt");
-    await page.getByRole("button",{name:"บันทึกการแก้ร่าง",exact:true}).click();
+    await page.getByRole("button",{name:"บันทึกข้อมูลที่แก้ไข",exact:true}).click();
     await expect(page.getByText("บันทึกร่างแล้ว ยังไม่เปลี่ยนข้อมูลยืนยัน",{exact:true})).toBeVisible();
     await page.reload();
     const saved=(await workspace(ctx)).drafts[0];
@@ -114,22 +121,24 @@ test("@mobile synthetic: edit source page reconfirm cancel and block invalid dat
     expect(saved.header.campus.state).toBe("not_present");
     expect(saved.issues.filter((issue:{severity:string})=>issue.severity==="blocking").length).toBe(0);
     if(info.project.name==="desktop")await openOriginal(page,saved,bytes,"synthetic-original.png");
-    else await page.getByText("ดูและแก้รายละเอียดทุกรายวิชา",{exact:true}).click();
+    else await openCourseReview(page);
     await page.getByLabel("ชื่อแถว 1",{exact:true}).scrollIntoViewIfNeeded();
     await page.screenshot({path:path.join(directory,`synthetic-${info.project.name}-review.png`)});
     await confirm(page);
     await expect.poll(async()=>Boolean((await workspace(ctx)).analysis)).toBe(true);
     const confirmed=await workspace(ctx);
     expect(confirmed.analysis.result.audits.every((audit:{unmapped:string[]})=>audit.unmapped.includes("999999"))).toBe(true);
+    await page.locator("summary").filter({ hasText: /^ข้อจำกัดของผลชุดนี้/ }).click();
     await expect(page.getByText("ยังไม่จัดหมวด: 999999",{exact:true})).toBeVisible();
     await page.getByRole("button",{name:"ผลการเรียน",exact:true}).click();
-    await page.getByRole("button",{name:"สร้างร่างแก้ไขจากผลการเรียนที่ยืนยันแล้ว",exact:true}).click();
+    await page.getByRole("button",{name:"แก้ไขผลการเรียน",exact:true}).click();
     await expect(page.getByRole("heading",{name:"ตรวจข้อมูลก่อนเริ่มวางแผน",exact:true})).toBeVisible();
-    await page.getByRole("button",{name:"ยกเลิกร่างนี้",exact:true}).click();
+    page.once("dialog", dialog => dialog.accept());
+    await page.getByRole("button",{name:"ยกเลิกการแก้ไข",exact:true}).click();
     await expect(page.getByText("ยกเลิกการแก้ไขแล้ว ผลการเรียนเดิมยังอยู่",{exact:true})).toBeVisible();
     expect((await workspace(ctx)).revision.id===confirmed.revision.id).toBe(true);
-    await page.getByRole("button",{name:"สร้างร่างแก้ไขจากผลการเรียนที่ยืนยันแล้ว",exact:true}).click();
-    await page.getByText("ดูและแก้รายละเอียดทุกรายวิชา",{exact:true}).click();
+    await page.getByRole("button",{name:"แก้ไขผลการเรียน",exact:true}).click();
+    await openCourseReview(page);
     await page.getByLabel("ชื่อแถว 2",{exact:true}).fill("Reviewed Repeated Attempt");
     await confirm(page);
     const revised=await workspace(ctx);
@@ -160,7 +169,7 @@ test("@mobile rejected files show Thai errors and do not mutate records",async({
       await expect(page.getByRole("alert").filter({hasText:phrase})).toBeVisible();
       const after=await workspace(ctx);
       expect(JSON.stringify(after)===JSON.stringify(before)).toBe(true);
-      expect(await page.getByRole("button",{name:"ยืนยันข้อมูลชุดนี้",exact:true}).count()).toBe(0);
+      expect(await page.getByRole("button",{name:"ยืนยันผลการเรียน",exact:true}).count()).toBe(0);
       await page.screenshot({path:path.join(directory,`negative-${info.project.name}-${code}.png`)});
     }
   }finally{await ctx.close();}

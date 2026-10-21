@@ -4,48 +4,49 @@ import { SignOut } from "./auth-actions";
 import styles from "./account-shell.module.css";
 import { demoEnabled, DEMO_NOTICE } from "@/modules/demo/config";
 import { AccountSessionGuard } from "./account-session-guard";
+import { ContentStartLink } from "./content-start-link";
+import { WorkspaceNavigation } from "./workspace-navigation";
+import type { StudentView } from "./student-navigation";
 
 export function AccountShell({
   account,
   children,
+  studentInitialView,
 }: {
   account?: AccountContext;
   children: React.ReactNode;
+  studentInitialView?: StudentView;
 }) {
   const demo = demoEnabled();
+  const home = account?.role === "admin" ? "/admin" : account?.role === "student" ? "/student" : "/";
   const shell = (
-    <div className={styles.shell}>
+    <div className={`${styles.shell} ${account ? styles.authenticated : ""}`}>
       {demo && <p className={styles.demoNotice} role="note">{DEMO_NOTICE}</p>}
-      <a href="#account-content">ข้ามไปเนื้อหาหลัก</a>
+      <ContentStartLink className={styles.skipLink}>ข้ามไปเนื้อหาหลัก</ContentStartLink>
       <header className={styles.header}>
-        <Link className={styles.brand} href="/">
+        <Link className={styles.brand} href={home}>
           APS
         </Link>
         <nav className={styles.nav} aria-label="เมนูบัญชี">
-          <Link href="/">หน้าเริ่มต้น</Link>
-          {account?.role === "student" && (
-            <Link href="/student">ผลการเรียนและแผน</Link>
-          )}
-          {account?.role === "admin" && (
-            <Link href="/admin">หลักสูตรของฉัน</Link>
-          )}
-          {account?.role === "admin" && (
-            <Link href="/admin/academic">ข้อมูลวิชาการ</Link>
-          )}
-          {account?.canManageAccounts && (
-            <Link href="/admin/accounts">จัดการบัญชี</Link>
-          )}
+          <Link href={home}>หน้าเริ่มต้น</Link>
+          {account && <span className={styles.roleLabel}>{account.role === "student" ? "วางแผนการเรียน" : "จัดการข้อมูลวิชาการ"}</span>}
           {account && <SignOut />}
         </nav>
       </header>
+      <div className={account ? styles.workspaceLayout : undefined}>
+      {account && <WorkspaceNavigation role={account.role} canManageAccounts={account.canManageAccounts} initialView={studentInitialView} />}
+      <div className={styles.workspaceContent}>
       {account && (
         <p className={styles.signedInIdentity}>
-          {demo ? "บัญชีสาธิต" : "บัญชี Google ที่เข้าสู่ระบบ"}: <strong>{account.email}</strong>
+          {demo ? "กำลังทดลองในบทบาท" : "บัญชี Google ที่เข้าสู่ระบบ"}: <strong>{demo ? account.role === "student" ? "นักศึกษา" : "ผู้ดูแล" : account.email}</strong>
         </p>
       )}
       <main id="account-content" tabIndex={-1}>
         {children}
       </main>
+      <footer className={styles.footer}><ContentStartLink>กลับขึ้นด้านบน</ContentStartLink></footer>
+      </div>
+      </div>
     </div>
   );
   return account ? (

@@ -30,12 +30,15 @@ export async function openDemo(run: string, keys: DemoCase[], options: {headless
     const sessions=await demoSessions(manifest,keys);
     const directory=path.join(runDirectory(run),"sessions"); await mkdir(directory,{recursive:true});
     controller.signal.throwIfAborted();
-    browser=await chromium.launch({headless:options.headless ?? false});
+    const headless = options.headless ?? false;
+    browser=await chromium.launch({headless,args:headless ? [] : ["--start-maximized"]});
     controller.signal.throwIfAborted();
     const liveBrowser=browser, contexts:BrowserContext[]=[];
     for(const key of keys) {
       await writeFile(path.join(directory,`${key}.json`),JSON.stringify(sessions[key]),{mode:0o600});
-      const context=await liveBrowser.newContext({storageState:sessions[key],viewport:{width:1440,height:1000}});
+      // Use the real window size. A fixed 1440x1000 viewport can extend below
+      // a laptop display even when the page reports that it reached its end.
+      const context=await liveBrowser.newContext({storageState:sessions[key],viewport:null});
       contexts.push(context);
       const page=await context.newPage();
       await page.goto(`${DEMO_ORIGIN}/${key==="admin"?"admin":"student"}`);

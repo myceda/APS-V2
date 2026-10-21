@@ -1,4 +1,5 @@
 "use client";
+import { useUnsavedChanges } from "./use-unsaved-changes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { listCriteria, criteriaHistory, cohortRecord } from "@/server/track-criteria";
@@ -35,6 +36,7 @@ export function TrackCriteriaManager({ initial }: { initial: State }) {
   const [yearsText, setYearsText] = useState("");
   const [state, setState] = useState(initial), [selected, setSelected] = useState<CriteriaView | null>(null), [form, setForm] = useState<CriteriaInput | null>(null);
   const [page, setPage] = useState("list"), [dirty, setDirty] = useState(false), [busy, setBusy] = useState(false), [error, setError] = useState(""), [success, setSuccess] = useState("");
+  useUnsavedChanges(dirty);
   const [filter, setFilter] = useState({ version: "", cohort: "", term: "", track: "" }), [reason, setReason] = useState(""), [replacesId, setReplacesId] = useState("");
   const [history, setHistory] = useState<Awaited<ReturnType<typeof criteriaHistory>> | null>(null);
   const [studentCode, setStudentCode] = useState(""), [cohort, setCohort] = useState<Awaited<ReturnType<typeof cohortRecord>> | null>(null), [admissionYear, setAdmissionYear] = useState(""), [cohortSource, setCohortSource] = useState("");
@@ -110,6 +112,7 @@ export function TrackCriteriaManager({ initial }: { initial: State }) {
         {!locked && <button className={styles.primary} disabled={busy || !reason.trim()} onClick={() => void perform(save)}>บันทึกร่างเกณฑ์</button>}
         <button className={styles.secondary} onClick={() => setPage(page === "review" ? "edit" : "review")}>{page === "review" ? "กลับฟอร์ม" : "ตรวจทานเกณฑ์"}</button>
         {selected && <button className={styles.secondary} disabled={busy || !reason.trim() || dirty} onClick={() => void perform(async () => { const c = await api<CriteriaView>({ action: "copy", id: selected.id, expectedEditVersion: selected.editVersion, reason }); setState(await api()); open(c); setSuccess("คัดลอกเป็นร่างแล้ว เปลี่ยนรุ่นหรือรอบต้องยืนยันเกณฑ์ใหม่"); })}>คัดลอกเป็นร่างใหม่</button>}
+        {selected?.status === "draft" && <button className={styles.secondary} disabled={busy || dirty || !reason.trim()} onClick={() => void perform(async () => { if (!window.confirm("ยกเลิกร่างเกณฑ์ฉบับนี้โดยเก็บข้อมูลและประวัติไว้?")) return; const c = await api<CriteriaView>({ action: "cancel", id: selected.id, expectedEditVersion: selected.editVersion, reason }); setState(await api()); setSelected(c); setForm(c); setSuccess("ยกเลิกร่างเกณฑ์แล้ว ข้อมูลและประวัติยังอยู่"); })}>ยกเลิกร่างเกณฑ์ฉบับนี้</button>}
         {page === "review" && !locked && <button className={styles.primary} disabled={busy || dirty || !selected || issues.length > 0 || !reason.trim()} onClick={() => void perform(async () => { if (!window.confirm("ยืนยันเผยแพร่เกณฑ์ตามขอบเขตและหลักฐานที่ตรวจแล้ว? การเผยแพร่ไม่ใช่การอนุมัติรายบุคคล")) return; const c = await api<CriteriaView>({ action: "publish", id: selected!.id, expectedEditVersion: selected!.editVersion, reason, replacesId: replacesId || undefined, expectedReplacedEditVersion: state.items.find(c => c.id === replacesId)?.editVersion }); setState(await api()); setSelected(c); setForm(c); setSuccess("เผยแพร่เกณฑ์แล้ว ไม่ได้อนุมัติสิทธิ์รายบุคคล"); })}>เผยแพร่เกณฑ์</button>}
         {selected?.status === "published" && <button className={styles.secondary} disabled={busy || !reason.trim()} onClick={() => void perform(async () => { if (!window.confirm("ยกเลิกใช้เกณฑ์ฉบับนี้และเก็บประวัติไว้?")) return; const c = await api<CriteriaView>({ action: "withdraw", id: selected.id, expectedEditVersion: selected.editVersion, reason }); setState(await api()); setSelected(c); setForm(c); setSuccess("ยกเลิกใช้แล้ว ประวัติยังอยู่"); })}>ยกเลิกใช้เกณฑ์</button>}
       </div>{dirty && <p className={styles.note}>มีการแก้ไขที่ยังไม่บันทึก ต้องบันทึกและตรวจทานก่อนเผยแพร่</p>}

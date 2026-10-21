@@ -1,4 +1,11 @@
 import styles from "./page.module.css";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { requireAccount } from "@/server/account-context";
+import { AccessError } from "@/modules/accounts/errors";
+import { AccountProblem } from "@/components/account-shell";
+
+export const dynamic = "force-dynamic";
 
 const steps = [
   {
@@ -21,72 +28,24 @@ const steps = [
 ];
 
 function PlanIllustration() {
-  return (
-    <svg
-      viewBox="0 0 360 220"
-      fill="none"
-      aria-hidden="true"
-      className={styles.illustration}
-    >
-      <rect
-        x="26"
-        y="25"
-        width="140"
-        height="168"
-        rx="15"
-        fill="white"
-        stroke="#c5d4ef"
-        strokeWidth="2"
-      />
-      <rect x="45" y="45" width="64" height="9" rx="4.5" fill="#1d4ed8" />
-      <rect x="45" y="63" width="92" height="5" rx="2.5" fill="#dbe3ee" />
-      {[90, 119, 148].map((y) => (
-        <g key={y}>
-          <rect x="45" y={y} width="14" height="14" rx="4" fill="#edf3ff" />
-          <path
-            d={`M49 ${y + 7}l3 3 4-5`}
-            stroke="#1d4ed8"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <rect
-            x="68"
-            y={y + 3}
-            width="64"
-            height="5"
-            rx="2.5"
-            fill="#c5d4ef"
-          />
-        </g>
-      ))}
-      <path
-        d="M177 110h31m-7-7 7 7-7 7"
-        stroke="#7792bc"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <rect
-        x="220"
-        y="48"
-        width="113"
-        height="124"
-        rx="14"
-        fill="white"
-        stroke="#c5d4ef"
-        strokeWidth="2"
-      />
-      <rect x="235" y="63" width="40" height="6" rx="3" fill="#1d4ed8" />
-      <rect x="235" y="83" width="82" height="27" rx="7" fill="#edf3ff" />
-      <rect x="245" y="94" width="52" height="5" rx="2.5" fill="#9ab6ea" />
-      <rect x="235" y="120" width="82" height="27" rx="7" fill="#f6f8fc" />
-      <rect x="245" y="131" width="43" height="5" rx="2.5" fill="#c5d4ef" />
-    </svg>
-  );
+  return <div className={styles.productPreview} aria-label="ตัวอย่างขั้นตอนใน APS">
+    <div className={styles.previewHeader}><strong>ผลการเรียน → แผนของคุณ</strong><span>ตัวอย่างหน้าจอ</span></div>
+    <div className={styles.previewRow}><span>ความก้าวหน้า</span><strong>เห็นหมวดที่ยังขาด</strong></div>
+    <div className={styles.previewRow}><span>แผนรายเทอม</span><strong>เห็นวิชาที่ควรเรียนต่อ</strong></div>
+    <div className={styles.previewRow}><span>ลองปรับแผน</span><strong>เห็นผลก่อนตัดสินใจ</strong></div>
+    <p>แยกผลการเรียนจริงจากผลคาดการณ์ทุกขั้นตอน</p>
+  </div>;
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  let account;
+  try {
+    account = await requireAccount(await headers());
+  } catch (error) {
+    if (!(error instanceof AccessError && error.status === 401))
+      return <AccountProblem message="ตรวจสอบบัญชีไม่สำเร็จ กรุณาลองเปิดหน้าอีกครั้ง" />;
+  }
+  if (account) redirect(account.role === "admin" ? "/admin" : "/student");
   return (
     <>
       <a className={styles.skipLink} href="#main-content">

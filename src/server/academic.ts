@@ -21,6 +21,7 @@ import {
   validateDataset,
 } from "@/modules/curriculum/validation";
 import seed from "@/modules/curriculum/data/cs2565.json";
+import { publicationReadiness } from "@/modules/curriculum/publication-readiness";
 import { blankDraft } from "@/modules/curriculum/blank-draft";
 import type { DraftView, TranscriptPayload } from "@/modules/transcript/types";
 import {
@@ -412,6 +413,23 @@ export async function reviseTranscript(context: AccountContext) {
   });
   return getDraft(context, row.id);
 }
+export async function selectTranscriptRevision(context: AccountContext, revisionId: string | null, expectedRevisionId: string | null) {
+  const enrollment = requireStudent(context);
+  try { if (revisionId !== null) historyId(revisionId); if (expectedRevisionId !== null) historyId(expectedRevisionId); if (revisionId === null && expectedRevisionId === null) throw new Error("ไม่มีฉบับผลการเรียนปัจจุบันให้ยกเลิกใช้"); } catch (error) { validation(error); }
+  return transaction(async db => {
+    await db.$queryRaw`SELECT id FROM "AccountAccess" WHERE id = ${context.accountId}::uuid FOR UPDATE`;
+    const account = await db.accountAccess.findUnique({ where: { id: context.accountId } });
+    if (!account || account.status !== "active" || account.role !== "student" || account.authUserId !== context.authUserId) throw new AccessError(403, "ACCOUNT_INACTIVE", "บัญชีนี้ไม่มีสิทธิ์จัดการผลการเรียน");
+    if (revisionId) {
+      const revision = await db.transcriptRevision.findFirst({ where: { id: revisionId, ownerAccountId: context.accountId, enrollmentId: enrollment.id } });
+      if (!revision) throw notFound();
+    }
+    const changed = await db.studentAcademicState.updateMany({ where: { enrollmentId: enrollment.id, currentRevisionId: expectedRevisionId }, data: { currentRevisionId: revisionId } });
+    if (changed.count !== 1) throw conflict();
+    await db.auditEvent.create({ data: { actorAccountId: context.accountId, targetAccountId: context.accountId, action: `${revisionId ? "select_transcript_revision" : "withdraw_transcript_revision"}:${revisionId ?? expectedRevisionId}`, changedFields: ["currentRevisionId"] } });
+    return { currentRevisionId: revisionId };
+  });
+}
 export async function ownDocument(context: AccountContext, id: string) {
   requireStudentAccount(context);
   const document = await getDatabase().privateDocument.findFirst({
@@ -617,16 +635,20 @@ export async function publishDataset(
   return {
     published: true,
     limitations: dataset.unresolved,
-    capabilities: {
-      diagnosticGpa: true,
-      confirmedGpa:
-        dataset.policy.repeat !== "unconfirmed" &&
-        dataset.policy.rounding !== "unconfirmed" &&
-        dataset.policy.gpaComparison === "raw" &&
-        dataset.policy.specificGpaBasis === "all_specific",
-      fullAcademicConclusion: false,
-    },
+    capabilities: publicationReadiness(dataset).capabilities,
   };
+}
+export async function withdrawDataset(context: AccountContext, id: string, expectedVersion: number) {
+  if (context.role !== "admin") throw new AccessError(403, "ADMIN_REQUIRED", "เฉพาะผู้ดูแลหลักสูตร");
+  try { historyId(id); integer(expectedVersion, 1, 1_000_000); } catch (error) { validation(error); }
+  const existing = await datasetForAdmin(context, id);
+  if (!["draft", "published"].includes(existing.status)) throw conflict();
+  await transaction(async db => {
+    const changed = await db.academicDataset.updateMany({ where: { id, editVersion: expectedVersion, status: existing.status }, data: { status: "withdrawn", editVersion: { increment: 1 } } });
+    if (changed.count !== 1) throw conflict();
+    await db.auditEvent.create({ data: { actorAccountId: context.accountId, targetAccountId: context.accountId, action: `withdraw_academic_dataset:${id}`, changedFields: ["status"] } });
+  });
+  return getDataset(context, id);
 }
 export interface AcademicResult {
   engineVersion: string;
@@ -638,6 +660,9 @@ export interface AcademicResult {
   audits: ReturnType<typeof auditTranscript>[];
   plans: ReturnType<typeof makePlan>[];
   catalogue: Dataset["courses"];
+  // Optional for previously stored AnalysisRun JSON; never infer its old policy
+  // from the latest dataset when displaying historical results.
+  policy?: Dataset["policy"];
 }
 async function analysisMatchesEnrollment(result: AcademicResult, enrollment: EnrollmentContext) {
   if (enrollment.trackState === "unknown" || result.trackState !== enrollment.trackState) return false;
@@ -728,6 +753,7 @@ export async function runAnalysis(context: AccountContext, value: unknown) {
     parameters,
     trackState: enrollment.trackState,
     catalogue: dataset.courses,
+    policy: dataset.policy,
     audits: tracks.map((t) => auditTranscript(payload, dataset, t)),
     plans: tracks.map((t) =>
       makePlan(
@@ -845,7 +871,7 @@ export async function studentWorkspace(context: AccountContext) {
       include: { attempts: { orderBy: { ordinal: "asc" } } },
       orderBy: { createdAt: "desc" }, take: 5,
     });
-    return { enrollment: null, drafts: drafts.map(draftView), revision: null, dataset: null, analysis: null };
+    return { enrollment: null, drafts: drafts.map(draftView), revision: null, revisionHistory: [], dataset: null, analysis: null };
   }
   const [drafts, state, dataset, analysis] = await Promise.all([
     database.transcriptDraft.findMany({
@@ -880,6 +906,7 @@ export async function studentWorkspace(context: AccountContext) {
   ]);
   return {
     enrollment,
+    revisionHistory: await database.transcriptRevision.findMany({ where: { ownerAccountId: context.accountId, enrollmentId: enrollment.id }, select: { id: true, confirmedAt: true }, orderBy: { confirmedAt: "desc" }, take: 30 }).then(rows => rows.map(row => ({ id: row.id, confirmedAt: row.confirmedAt.toISOString() }))),
     drafts: drafts.map(draftView),
     revision: state?.currentRevision
       ? {
@@ -890,7 +917,7 @@ export async function studentWorkspace(context: AccountContext) {
         }
       : null,
     dataset,
-    analysis: analysis
+    analysis: analysis && state?.currentRevision
       ? {
           id: analysis.id,
           result: analysis.result as unknown as AcademicResult,

@@ -44,7 +44,8 @@
     "test:e2e:simulation": "npm run db:migrate:test && node --conditions=react-server --import tsx scripts/verification/round-6/prepare-browser.ts && playwright test --config playwright.simulation.config.ts && node --conditions=react-server --import tsx scripts/verification/round-6/check-browser.ts",
     "test:e2e:admin-history": "npm run db:migrate:test && node --conditions=react-server --import tsx scripts/verification/admin-history/prepare-browser.ts && playwright test --config playwright.admin-history.config.ts && node --conditions=react-server --import tsx scripts/verification/admin-history/check-browser.ts",
     "test:e2e:admin": "npm run db:migrate:test && node --conditions=react-server --import tsx scripts/verification/round-7/prepare-browser.ts && playwright test --config playwright.admin-audit.config.ts && node --conditions=react-server --import tsx scripts/verification/round-7/check-browser.ts",
-    "test:e2e:plans": "npm run db:migrate:test && node --conditions=react-server --import tsx scripts/verification/round-5/prepare-browser.ts && playwright test --config playwright.plans.config.ts && node --conditions=react-server --import tsx scripts/verification/round-5/check-browser.ts"
+    "test:e2e:plans": "npm run db:migrate:test && node --conditions=react-server --import tsx scripts/verification/round-5/prepare-browser.ts && playwright test --config playwright.plans.config.ts && node --conditions=react-server --import tsx scripts/verification/round-5/check-browser.ts",
+    "test:e2e:ui-recovery": "npm run db:migrate:test && node --conditions=react-server --import tsx scripts/verification/round-9/prepare-browser.ts && playwright test --config playwright.ui-recovery.config.ts && node scripts/verification/round-9/summarize.mjs"
   },
   "dependencies": {
     "@better-auth/prisma-adapter": "1.7.7",

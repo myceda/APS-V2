@@ -99,7 +99,7 @@ export function parsePolicy(value: unknown): AcademicPolicy {
       !Number.isFinite(p.retakeCeiling))
   )
     throw new Error("เพดานเกรดเรียนซ้ำไม่ถูกต้อง");
-  if (typeof p.gpaMinimum !== "number" || p.gpaMinimum < 0 || p.gpaMinimum > 4)
+  if (typeof p.gpaMinimum !== "number" || !Number.isFinite(p.gpaMinimum) || p.gpaMinimum < 0 || p.gpaMinimum > 4)
     throw new Error("เกณฑ์ GPA ไม่ถูกต้อง");
   if (p.starGradeCourses !== undefined &&
       (!Array.isArray(p.starGradeCourses) || p.starGradeCourses.length > 100 ||

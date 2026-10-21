@@ -212,14 +212,18 @@ export function AccountManager({
               {account.canManageAccounts ? (
                 <span className={styles.muted}>ล็อกสิทธิ์บัญชีหลัก</span>
               ) : (
-                <button
+                <><button
                   className={styles.button}
                   aria-label={`แก้ไขบัญชี ${account.email}`}
                   onClick={() => edit(account)}
                   disabled={busy}
                 >
                   แก้ไข
-                </button>
+                </button><button type="button" className={styles.button} disabled={busy} aria-label={`${account.status === "active" ? "เตรียมระงับบัญชี" : "เตรียมเปิดใช้งานบัญชี"} ${account.email}`} onClick={() => {
+                  edit(account);
+                  setField("status", account.status === "active" ? "inactive" : "active");
+                  setSuccess("เตรียมเปลี่ยนสถานะในฟอร์มแล้ว ตรวจข้อมูลและกดบันทึกการแก้ไขเพื่อให้มีผล");
+                }}>{account.status === "active" ? "เตรียมระงับบัญชี" : "เตรียมเปิดใช้งานบัญชี"}</button></>
               )}
             </li>
           ))}

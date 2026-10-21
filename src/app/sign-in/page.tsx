@@ -34,6 +34,11 @@ export default async function SignInPage({
         )}
         <GoogleSignIn ready={ready} />
         <p className={styles.loginHelp}>เข้าใช้ครั้งแรกได้ทันที อัปโหลดใบผลการเรียน แล้วตรวจข้อมูลก่อนเริ่มวางแผน</p>
+        <ol className={styles.loginJourney} aria-label="หลังเข้าสู่ระบบ">
+          <li>เตรียมผลการเรียน PDF</li>
+          <li>ตรวจและยืนยันข้อมูล</li>
+          <li>ดูความก้าวหน้าและแผนรายเทอม</li>
+        </ol>
         <details className={styles.help}><summary>เลือกบัญชีหรือเข้าสู่ระบบไม่ได้?</summary><p>เลือก “ใช้บัญชีอื่น” บนหน้า Google หากไม่พบบัญชีของคุณ ใช้อีเมลหลักของบัญชี ไม่ใช่อีเมลสำรอง หาก Google ปฏิเสธ ให้แจ้งข้อความบนหน้านั้นแก่ผู้ดูแล โดยไม่ส่งรหัสผ่านหรือรหัสยืนยัน</p></details>
       </section>
     </AccountShell>

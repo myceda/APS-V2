@@ -1,18 +1,24 @@
 "use client";
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { studentWorkspace, AcademicResult } from "@/server/academic";
 import type { DraftView } from "@/modules/transcript/types";
 import { GRADES } from "@/modules/transcript/types";
 import { transcriptIssues } from "@/modules/transcript/validation";
 import {
-  CATEGORY_NAMES,
   TRACK_NAMES,
   type StudyTrack,
 } from "@/modules/curriculum/types";
 import { sameParameters, type PlanningParameters } from "@/modules/planning/engine";
 import type { simulate, ScenarioEvent } from "@/modules/simulation/engine";
 import { StudentTrackCriteria } from "./student-track-criteria";
-import { RelatedDependencies } from "./related-dependencies";
+import { useSearchParams } from "next/navigation";
+import { navigateStudent, STUDENT_VIEWS, studentView } from "./student-navigation";
+import { useUnsavedChanges } from "./use-unsaved-changes";
+import { StudentProgress } from "./student-progress";
+import { StudentTrackComparison } from "./student-track-comparison";
+import { StudentPlanner } from "./student-planner";
+import { termName } from "./student-presenters";
+import { ConfirmedTranscript } from "./confirmed-transcript";
 import styles from "./academic-ui.module.css";
 type Workspace = Awaited<ReturnType<typeof studentWorkspace>>;
 const headerNames = {
@@ -23,17 +29,9 @@ const headerNames = {
   degree: "ระดับการศึกษา",
   program: "สาขาวิชา",
 };
-const statusNames = {
-  passed: "ผ่านแล้ว",
-  failed: "ยังไม่ผ่าน",
-  pending: "รอผล",
-  missing: "ยังต้องเรียน",
-  unknown: "ข้อมูลไม่พอ",
-};
-const termName = (term: { year: number; semester: number } | null) =>
-  term
-    ? `${term.year}/${term.semester}${term.semester === 3 ? " (ฤดูร้อน)" : ""}`
-    : "ยังคาดไม่ได้";
+class RequestError extends Error {
+  constructor(message: string, readonly status: number) { super(message); }
+}
 async function request<T>(
   url: string,
   body?: unknown,
@@ -48,12 +46,18 @@ async function request<T>(
   });
   const result = await response.json();
   if (!response.ok)
-    throw new Error(result.error?.message || "ทำรายการไม่สำเร็จ กรุณาลองใหม่");
+    throw new RequestError(result.error?.message || "ทำรายการไม่สำเร็จ กรุณาลองใหม่", response.status);
   return result;
 }
 export function StudentWorkspace({ initial }: { initial: Workspace }) {
-  const [workspace, setWorkspace] = useState(initial),
-    [tab, setTab] = useState(initial.revision ? 1 : 0);
+  const [workspace, setWorkspace] = useState(initial);
+  const searchParams = useSearchParams();
+  const currentView = studentView(searchParams.get("view"), initial.drafts.length || !initial.revision ? "transcript" : "overview");
+  const tab = currentView.tab;
+  const workspaceHeading = useRef<HTMLHeadingElement>(null);
+  function setTab(index: number) {
+    navigateStudent(STUDENT_VIEWS.find(view => view.tab === index)?.id ?? "overview");
+  }
   const [draft, setDraft] = useState<DraftView | null>(
       initial.drafts[0] ?? null,
     ),
@@ -61,6 +65,8 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
   const [busy, setBusy] = useState(""),
     [error, setError] = useState(""),
     [success, setSuccess] = useState("");
+  const [conflict, setConflict] = useState(false);
+  useUnsavedChanges(draftDirty);
   const [reviewed, setReviewed] = useState(false),
     [onlyProblems, setOnlyProblems] = useState(false);
   const [parameters, setParameters] = useState<PlanningParameters>(
@@ -95,20 +101,48 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
   const stale = Boolean(
     workspace.analysis?.stale || parametersDirty || parametersDiffer,
   );
+  const nextStep = draft ? 1 : !workspace.revision ? 0 : !analysis || stale ? 2 : 3;
+  const pendingTarget = useRef<string | null>(null);
+  function focusSection(id: string) {
+    const element = document.getElementById(id);
+    if (!element) return;
+    element.focus({ preventScroll: true });
+    element.scrollIntoView({ block: "start", behavior: "instant" });
+  }
+  useEffect(() => {
+    if (pendingTarget.current) {
+      focusSection(pendingTarget.current);
+      pendingTarget.current = null;
+    }
+    else workspaceHeading.current?.focus({ preventScroll: true });
+  }, [tab]);
+  function openSection(index: number, id: string) {
+    if (tab === index) focusSection(id);
+    else { pendingTarget.current = id; setTab(index); }
+  }
+  function openTab(index: number) {
+    openSection(index, index === 2 ? "student-plan" : "student-work-tabs");
+  }
   async function perform(label: string, work: () => Promise<void>) {
     if (busy) return;
     setBusy(label);
     setError("");
     setSuccess("");
+    setConflict(false);
     try {
       await work();
     } catch (error) {
-      setError(error instanceof Error ? error.message : "ทำรายการไม่สำเร็จ");
+      setConflict(error instanceof RequestError && error.status === 409);
+      if (error instanceof RequestError && error.status === 409) setComparison(null);
+      setError(error instanceof TypeError || error instanceof SyntaxError
+        ? "เชื่อมต่อหรืออ่านคำตอบจากระบบไม่ได้ ข้อมูลที่กรอกยังอยู่ กรุณาลองอีกครั้ง"
+        : error instanceof Error ? error.message : "ทำรายการไม่สำเร็จ");
     } finally {
       setBusy("");
     }
   }
   async function reload() {
+    setComparison(null);
     const fresh = await request<Workspace>("/api/student/transcripts");
     setWorkspace(fresh);
     return fresh;
@@ -138,7 +172,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
     setDraftDirty(false);
     return updated;
   }
-  async function calculate() {
+  async function calculate(navigate = true) {
     const output = await request<{ id: string; result: AcademicResult }>(
       "/api/student/analysis",
       parameters,
@@ -151,7 +185,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
     );
     setEventCode("");
     setComparison(null);
-    setTab(1);
+    if (navigate) setTab(1);
   }
   function changeParameters(change: Partial<PlanningParameters>) {
     setParameters((previous) => ({ ...previous, ...change }));
@@ -177,24 +211,16 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
       setDraftDirty(false);
       setReviewed(false);
       await reload();
-      setSuccess("อ่านเป็นร่างแล้ว กรุณาตรวจส่วนหัวและรายการที่แจ้งก่อนยืนยัน");
+      setSuccess("อ่านข้อมูลแล้ว กรุณาตรวจชื่อ รหัสนักศึกษา และรายวิชาก่อนยืนยัน");
+      openSection(0, "transcript-review");
     });
   }
   return (
     <div className={styles.workspace} aria-busy={Boolean(busy)}>
-      <div className={styles.hero}>
+      <div className={styles.workspaceHeading}>
         <div>
-          <span className={styles.eyebrow}>
-            CS2565 · ติดตามและวางแผนการเรียน
-          </span>
-          <h1>
-            {workspace.revision
-              ? "ดูความก้าวหน้า แล้ววางแผนก้าวต่อไป"
-              : "เริ่มจากผลการเรียนของคุณ"}
-          </h1>
-          <p>
-            ตรวจข้อมูลจาก PDF ก่อนยืนยัน แผนและการจำลองใช้ข้อมูลที่ยืนยันแล้ว
-          </p>
+          <span className={styles.eyebrow}>APS · วางแผนจากข้อมูลของคุณ</span>
+          <h1 ref={workspaceHeading} tabIndex={-1}>{currentView.label}</h1>
         </div>
         <span className={styles.badge}>
           {workspace.revision
@@ -202,8 +228,26 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
             : "ยังไม่มีผลการเรียนยืนยัน"}
         </span>
       </div>
-      {workspace.enrollment && <p className={styles.muted}>รหัสนักศึกษา {workspace.enrollment.studentCode} · {workspace.enrollment.curriculumCode} · {workspace.enrollment.trackState === "selected" ? workspace.enrollment.trackName : workspace.enrollment.trackState === "not_selected" ? "ยังไม่เลือกสาย" : "ยังไม่ทราบสาย"} · {workspace.enrollment.confirmationSource === "student_confirmed" ? "ข้อมูลที่คุณยืนยันจากเอกสาร" : "ข้อมูลที่ผู้ดูแลตรวจแล้ว"}</p>}
-      {!workspace.enrollment && <ol className={styles.journey} aria-label="เริ่มใช้งานครั้งแรก"><li aria-current="step">1 อัปโหลด PDF</li><li>2 ตรวจข้อมูล</li><li>3 ดูแผนของคุณ</li></ol>}
+      {(tab === 0 || tab === 1) && <section className={styles.nextStep} aria-labelledby="student-next-step">
+        <div>
+          <span className={styles.eyebrow}>ขั้นตอนถัดไป</span>
+          <h2 id="student-next-step">{draft ? "ตรวจข้อมูลที่อ่านจาก PDF" : !workspace.revision ? "นำเข้าผลการเรียนเพื่อเริ่มวางแผน" : !workspace.dataset ? "รอข้อมูลหลักสูตรจากผู้ดูแล" : !analysis || stale ? "คำนวณแผนจากข้อมูลที่ยืนยันแล้ว" : "เปิดแผนการเรียนของคุณ"}</h2>
+          <p>{draft ? "เทียบชื่อ รหัสนักศึกษา และรายวิชากับต้นฉบับ แก้จุดที่ผิด แล้วทำเครื่องหมายตรวจทานก่อนยืนยัน" : !workspace.revision ? "เลือกไฟล์ PDF แล้วกดอ่านเป็นร่าง คุณจะได้ตรวจและแก้ข้อมูลก่อนนำไปคำนวณ" : !workspace.dataset ? "ผลการเรียนของคุณยังอยู่ แต่ระบบยังสร้างแผนไม่ได้จนกว่าผู้ดูแลจะเผยแพร่ข้อมูลหลักสูตรที่ตรงกัน" : !analysis || stale ? "ตรวจภาคเริ่มต้นและภาระเรียน แล้วคำนวณก่อนเปิดแผน ผลเดิมยังเก็บไว้" : "ดูรายวิชาที่แนะนำในแต่ละภาค เปรียบเทียบสายที่มีให้เลือก แล้วลองปรับแผนโดยไม่เปลี่ยนประวัติจริง"}</p>
+        </div>
+        {draft ? <a className={styles.primary} href="#transcript-review" onClick={event => { event.preventDefault(); openSection(0, "transcript-review"); }}>ไปตรวจข้อมูล</a>
+          : !workspace.revision ? <a className={styles.primary} href="#transcript-upload" onClick={event => { event.preventDefault(); openSection(0, "transcript-upload"); }}>เริ่มอัปโหลด PDF</a>
+          : !workspace.dataset ? <span className={styles.badge}>ยังสร้างแผนไม่ได้ · ข้อมูลหลักสูตรไม่พร้อม</span>
+          : !analysis || stale ? <button className={styles.primary} onClick={() => openTab(1)}>ตรวจเงื่อนไขและคำนวณแผน</button>
+          : <button className={styles.primary} onClick={() => openTab(2)}>เปิดแผนรายภาค</button>}
+      </section>}
+      {tab === 0 && workspace.revision && !draft && <div className={styles.actions}>
+        <button className={styles.secondary} onClick={() => openSection(0, "confirmed-transcript")}>ดูข้อมูลผลการเรียน</button>
+        <button className={styles.secondary} onClick={() => openSection(0, "transcript-upload")}>อัปโหลดผลการเรียนฉบับใหม่</button>
+      </div>}
+      {tab === 0 && <ol className={styles.journey} aria-label="ลำดับการวางแผน">
+        {["อัปโหลด PDF", "ตรวจและยืนยัน", "คำนวณแผน", "ดูแผนและลองปรับ"].map((name, index) => <li key={name} aria-current={nextStep === index ? "step" : undefined}>{index + 1} {name}</li>)}
+      </ol>}
+      {workspace.enrollment && <p className={styles.muted}>รหัสนักศึกษา {workspace.enrollment.studentCode} · {workspace.enrollment.curriculumCode.startsWith("CS2565-DEMO-") ? "วิทยาการคอมพิวเตอร์ 2565 (ตัวอย่าง)" : workspace.enrollment.curriculumCode} · {workspace.enrollment.trackState === "selected" ? workspace.enrollment.trackName : workspace.enrollment.trackState === "not_selected" ? "ยังไม่เลือกสาย" : "ยังไม่ทราบสาย"} · {workspace.enrollment.confirmationSource === "student_confirmed" ? "ข้อมูลที่คุณยืนยันจากเอกสาร" : "ข้อมูลที่ผู้ดูแลตรวจแล้ว"}</p>}
       <div role="status" aria-live="polite">
         {busy && <p className={styles.note}>{busy}…</p>}
         {success && <p className={styles.success}>{success}</p>}
@@ -213,13 +257,9 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
           {error}
         </p>
       )}
-      <nav className={styles.tabs} aria-label="ขั้นตอนวางแผนการเรียน">
-        {[
-          "ผลการเรียน",
-          "ภาพรวม",
-          "แผนการเรียน",
-          "ลองปรับแผน",
-        ].map((name, index) => (
+      {conflict && <p className={styles.note}>ข้อมูลที่แก้ยังอยู่ในแท็บนี้ อย่ารีเฟรชก่อนตรวจทาน <a href="/student" target="_blank" rel="noreferrer">เปิดฉบับล่าสุดในแท็บใหม่</a> เพื่อเทียบและย้ายเฉพาะส่วนที่ต้องการแก้ แล้วบันทึกจากฉบับล่าสุด ระบบจะไม่เขียนทับข้อมูลจากอีกแท็บให้อัตโนมัติ</p>}
+      <nav className={styles.tabs} aria-label="ขั้นตอนวางแผนการเรียน" id="student-work-tabs" tabIndex={-1}>
+        {STUDENT_VIEWS.map(({ label: name, tab: index }) => (
           <button
             type="button"
             key={name}
@@ -243,11 +283,12 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
       )}
       {tab === 0 && (
         <>
-          <section className={styles.card}>
+          {workspace.revision && !draft && <ConfirmedTranscript payload={workspace.revision.payload} confirmedAt={workspace.revision.confirmedAt} />}
+          <section className={styles.card} id="transcript-upload" tabIndex={-1}>
             <h2>นำเข้าใบรายงานผลการศึกษา</h2>
             <p className={styles.muted}>
-              ใช้ PDF ที่มีชั้นข้อความจากทะเบียน ไม่เกิน 10 MB / 30 หน้า
-              ระบบยังไม่รองรับไฟล์สแกน
+              ใช้ไฟล์ PDF จากทะเบียนที่เลือกหรือคัดลอกข้อความได้ ขนาดไม่เกิน 10 MB และไม่เกิน 30 หน้า
+              ยังใช้ไฟล์รูปถ่ายหรือไฟล์สแกนไม่ได้
             </p>
             <form onSubmit={upload}>
               <label className={styles.upload}>
@@ -265,15 +306,15 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
                   className={styles.primary}
                   disabled={Boolean(busy) || draftDirty}
                 >
-                  อ่าน PDF เป็นร่าง
+                  อ่านข้อมูลจาก PDF
                 </button>
               </div>
             </form>
             {workspace.revision && (
               <>
                 <p className={styles.note}>
-                  มีผลการเรียนที่ยืนยันแล้วแล้ว
-                  การนำเข้าร่างใหม่จะคงผลเดิมจนกว่าจะยืนยันใหม่สำเร็จ
+                  มีผลการเรียนที่บันทึกไว้แล้ว
+                  หากอัปโหลดไฟล์ใหม่ ผลเดิมจะยังอยู่จนกว่าคุณจะตรวจและยืนยันข้อมูลใหม่
                 </p>
                 <button
                   className={styles.secondary}
@@ -288,13 +329,27 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
                       setDraftDirty(false);
                       setReviewed(false);
                       await reload();
+                      openSection(0, "transcript-review");
                     })
                   }
                 >
-                  สร้างร่างแก้ไขจากผลการเรียนที่ยืนยันแล้ว
+                  แก้ไขผลการเรียน
                 </button>
               </>
             )}
+            {!!workspace.revisionHistory.length && <section className={styles.note} aria-label="ประวัติฉบับผลการเรียน">
+              <h2>ประวัติฉบับผลการเรียน</h2>
+              <p>แสดงประวัติ 30 ฉบับล่าสุด การยกเลิกใช้หยุดนำฉบับปัจจุบันไปคำนวณ ไม่ลบ PDF หรือประวัติเดิม</p>
+              {draft && <p>กรุณายืนยันหรือยกเลิกร่างที่เปิดอยู่ก่อนเปลี่ยนฉบับผลการเรียน</p>}
+              {workspace.revisionHistory.map(item => <p key={item.id}>{new Date(item.confirmedAt).toLocaleString("th-TH")} · {item.id === workspace.revision?.id ? "ฉบับปัจจุบัน" : <button type="button" className={styles.secondary} disabled={Boolean(busy) || Boolean(draft)} onClick={() => {
+                if (!window.confirm("ใช้ผลการเรียนฉบับนี้เป็นฉบับปัจจุบันอีกครั้ง? ต้องตรวจและคำนวณแผนใหม่ ผลเดิมยังเก็บอยู่")) return;
+                void perform("กำลังเลือกฉบับผลการเรียน", async () => { await request("/api/student/transcripts", { action: "select_revision", revisionId: item.id, expectedRevisionId: workspace.revision?.id ?? null }); await reload(); setComparison(null); setSuccess("เลือกฉบับผลการเรียนแล้ว กรุณาตรวจข้อมูลและคำนวณแผนใหม่"); });
+              }}>ใช้ฉบับนี้อีกครั้ง</button>}</p>)}
+              {workspace.revision && <button type="button" className={styles.secondary} disabled={Boolean(busy) || Boolean(draft)} onClick={() => {
+                if (!window.confirm("ยกเลิกใช้ผลการเรียนฉบับปัจจุบัน? จะหยุดแสดงผลวิเคราะห์จนกว่าจะเลือกหรือยืนยันฉบับใหม่ ประวัติและ PDF ยังอยู่")) return;
+                void perform("กำลังยกเลิกใช้ผลการเรียน", async () => { await request("/api/student/transcripts", { action: "select_revision", revisionId: null, expectedRevisionId: workspace.revision!.id }); await reload(); setComparison(null); setSuccess("ยกเลิกใช้ผลการเรียนแล้ว ประวัติเดิมยังอยู่"); });
+              }}>ยกเลิกใช้ผลการเรียนฉบับปัจจุบัน</button>}
+            </section>}
             {workspace.drafts.length > 1 && (
               <label className={styles.field}>
                 เลือกร่างที่ต้องตรวจ
@@ -320,7 +375,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
             )}
           </section>
           {draft && (
-            <section className={styles.card}>
+            <section className={styles.card} id="transcript-review" tabIndex={-1}>
               <h2>ตรวจข้อมูลก่อนเริ่มวางแผน</h2>
               {!workspace.enrollment && <p className={styles.note}>หลักสูตรที่ใช้วิเคราะห์: วิทยาการคอมพิวเตอร์ พ.ศ. 2565 (CS2565) ตรวจชื่อและรหัสนักศึกษาให้ตรงกับเอกสารก่อนยืนยัน ข้อมูลนี้เป็นข้อมูลที่คุณยืนยันเอง</p>}
               <p>
@@ -358,9 +413,9 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
               )}
               <details
                 className={styles.detail}
-                open={issues.some((i) => i.field)}
+                open
               >
-                <summary>ข้อมูลส่วนหัวที่ PDF รายงาน</summary>
+                <summary>ข้อมูลนักศึกษาจาก PDF</summary>
                 <div className={styles.form}>
                   {Object.entries(headerNames).map(([key, name]) => (
                     <label key={key} className={styles.field}>
@@ -432,8 +487,8 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
                   ตรวจให้ตรงกับใบผลการเรียนของคุณ ข้อมูลนี้ไม่เปลี่ยนบัญชี Google หรือสิทธิ์ผู้ใช้
                 </p>
               </details>
-              <details className={styles.detail}>
-                <summary>ดูและแก้รายละเอียดทุกรายวิชา</summary>
+              <details className={styles.detail} open>
+                <summary>รายวิชาและผลการเรียน</summary>
                 <label className={styles.check}>
                   <input
                     type="checkbox"
@@ -682,6 +737,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
                 ฉันตรวจข้อมูลสรุปและจุดที่แจ้งกับต้นฉบับแล้ว
                 และยืนยันว่าเป็นใบผลการเรียนของฉัน
               </label>
+              {!reviewed && <p className={styles.muted}>เมื่อตรวจครบแล้ว ให้ทำเครื่องหมายด้านบนเพื่อเปิดปุ่มยืนยันข้อมูล</p>}
               <div className={styles.actions}>
                 <button
                   className={styles.secondary}
@@ -694,7 +750,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
                     })
                   }
                 >
-                  บันทึกการแก้ร่าง
+                  บันทึกข้อมูลที่แก้ไข
                 </button>
                 <button
                   className={styles.primary}
@@ -705,6 +761,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
                   }
                   onClick={() =>
                     void perform("กำลังยืนยันผลการเรียน", async () => {
+                      const confirmationUrl = window.location.href;
                       const current = await saveCurrent();
                       if (!current) return;
                       await request(
@@ -718,7 +775,8 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
                       setSuccess("ยืนยันผลการเรียนแล้ว");
                       if (fresh.dataset) {
                         try {
-                          await calculate();
+                          await calculate(false);
+                          if (window.location.href === confirmationUrl) setTab(1);
                         } catch (e) {
                           setError(
                             `ยืนยันแล้ว แต่ยังวิเคราะห์ต่อไม่ได้: ${e instanceof Error ? e.message : "กรุณาลองใหม่"}`,
@@ -728,13 +786,14 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
                     })
                   }
                 >
-                  ยืนยันข้อมูลชุดนี้
+                  ยืนยันผลการเรียน
                 </button>
                 <button
                   className={styles.secondary}
                   disabled={Boolean(busy)}
                   onClick={() =>
                     void perform("กำลังยกเลิกร่าง", async () => {
+                      if (!window.confirm("ยกเลิกและนำร่างนี้ออกจากรายการร่าง? ผลการเรียนที่ยืนยันแล้วและประวัติเดิมยังเก็บอยู่")) return;
                       await request(
                         `/api/student/transcripts/${draft.id}`,
                         { expectedVersion: draft.editVersion },
@@ -743,17 +802,22 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
                       setDraft(null);
                       setDraftDirty(false);
                       await reload();
-                      setSuccess("ยกเลิกการแก้ไขแล้ว ผลการเรียนเดิมยังอยู่");
+                      setSuccess(draft.baseRevisionId ? "ยกเลิกการแก้ไขแล้ว ผลการเรียนเดิมยังอยู่" : "ลบร่างนำเข้าออกจากรายการแล้ว ยังไม่เปลี่ยนผลการเรียนที่ยืนยัน");
                     })
                   }
                 >
-                  ยกเลิกร่างนี้
+                  {draft.baseRevisionId ? "ยกเลิกการแก้ไข" : "ลบร่างนำเข้านี้"}
                 </button>
               </div>
             </section>
           )}
         </>
       )}
+      {tab !== 0 && !analysis && <section className={styles.card} aria-label="สถานะแผนการเรียน">
+        <h2>ยังไม่มีแผนการเรียนให้แสดง</h2>
+        <p>{!workspace.revision ? "ยังไม่ได้ยืนยันผลการเรียน เริ่มจากอัปโหลด PDF ตรวจข้อมูล แล้วกดยืนยัน" : !workspace.dataset ? "ยังไม่มีข้อมูลหลักสูตรเผยแพร่ที่ตรงกับคุณ กรุณาติดต่อผู้ดูแลเพื่อเตรียมรายวิชาและการเปิดสอน" : "มีผลการเรียนแล้ว ตรวจเงื่อนไขด้านล่างและกดคำนวณแผนการเรียน"}</p>
+        {!workspace.revision && <button className={styles.primary} onClick={() => setTab(0)}>กลับไปนำเข้าและยืนยันผลการเรียน</button>}
+      </section>}
       {tab !== 0 && (
         <details className={styles.card} open={!analysis || stale}>
           <summary className={styles.parameterSummary}>
@@ -826,7 +890,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
               />
             </label>
             <label className={styles.field}>
-              เกรดสมมติของวิชาตัวเลข
+              เกรดที่ลองใช้กับวิชา A–F
               <select
                 value={parameters.targetGrade}
                 onChange={(e) =>
@@ -839,7 +903,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
               </select>
             </label>
             <label className={styles.field}>
-              ช่วงค้นหาแผน (ภาค)
+              วางแผนล่วงหน้ากี่ภาค
               <input
                 type="number"
                 min="1"
@@ -869,7 +933,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
           )}
           <button
             className={styles.primary}
-            disabled={Boolean(busy) || !workspace.revision}
+            disabled={Boolean(busy) || !workspace.revision || !workspace.dataset}
             onClick={() =>
               void perform("กำลังวิเคราะห์และสร้างแผน", async () => {
                 await calculate();
@@ -879,7 +943,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
               })
             }
           >
-            คำนวณความก้าวหน้าและแผนใหม่
+            คำนวณแผนการเรียน
           </button>
           {!workspace.revision && (
             <p className={styles.note}>
@@ -888,7 +952,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
           )}
         </details>
       )}
-      {analysis && audit && tab !== 0 && (
+      {analysis && audit && tab !== 0 && tab !== 5 && (
         <div className={styles.actions}>
           <label className={styles.field}>
             สายที่ดูผล
@@ -913,7 +977,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
           </p>
         </div>
       )}
-      {tab !== 0 && workspace.enrollment && <StudentTrackCriteria key={`${parameters.currentTerm.year}/${parameters.currentTerm.semester}/${workspace.revision?.id}`} year={parameters.currentTerm.year} semester={parameters.currentTerm.semester} revisionId={workspace.revision?.id} />}
+
       {tab === 1 && audit && (
         <>
           <div className={styles.metrics}>
@@ -953,6 +1017,14 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
             </div>
           </div>
           <p className={styles.note}>{audit.graduation === "requirements_not_met" ? "ยังขาดรายวิชา หน่วยกิต หมวด หรือ GPA/GPAX ตามเกณฑ์ที่ระบบตรวจได้" : audit.graduation === "not_evaluated" ? "ยังสรุปเงื่อนไขการเรียนไม่ได้ ต้องตรวจข้อมูลและกฎที่ค้าง" : "ครบเงื่อนไขการเรียนที่ระบบตรวจได้ ยังต้องตรวจเงื่อนไขอื่นและการอนุมัติจากมหาวิทยาลัย"}</p>
+          <p className={styles.note}>
+            <strong>สถานภาพตามข้อบังคับมหาวิทยาลัย: ยังไม่ยืนยัน</strong><br />
+            APS แสดงความเสี่ยงเพื่อช่วยวางแผนเท่านั้น ไม่ตัดสินการพ้นสภาพ
+            และไม่สรุปจำนวนครั้งรอพินิจจากประวัติที่อาจไม่ครบ กรุณาตรวจสถานภาพกับทะเบียน
+          </p>
+          <p className={styles.muted}>
+            ที่มานโยบายที่ใช้คำนวณครั้งนี้: {analysis?.policy?.source || "ผลเดิมยังไม่ได้เก็บที่มานโยบาย กรุณาคำนวณใหม่เพื่อดูรายละเอียด"}
+          </p>
           {audit.recovery?.length > 0 && (
             <section className={styles.card}>
               <h2>ตัวเลือกฟื้น GPAX ที่ควรตรวจสิทธิ์เรียนซ้ำ</h2>
@@ -1012,174 +1084,26 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
               </p>
             </section>
           )}
-          <section className={styles.card}>
-            <h2>ความก้าวหน้าตามหมวด</h2>
-            {audit.groups.map((g) => (
-              <div className={styles.progress} key={g.category}>
-                <p>
-                  {CATEGORY_NAMES[g.category]} · {g.earned}/{g.minimum} ·{" "}
-                  {g.status === "unknown"
-                    ? "ข้อมูลไม่พอ"
-                    : g.remaining
-                      ? `ขาด ${g.remaining} หน่วยกิต`
-                      : "ครบขั้นต่ำ"}
-                </p>
-                <progress
-                  aria-label={CATEGORY_NAMES[g.category]}
-                  value={Math.min(g.earned, g.minimum)}
-                  max={g.minimum || 1}
-                />
-              </div>
-            ))}
-            <p className={styles.note}>
-              ความเสี่ยงภายใน APS เป็นข้อมูลช่วยวางแผน
-              ไม่ใช่การจำแนกสถานภาพหรืออนุมัติสำเร็จการศึกษาของมหาวิทยาลัย
-            </p>
-          </section>
-          <section className={styles.card}>
-            <h2>รายวิชาและจุดที่ต้องติดตาม</h2>
-            <div className={styles.tableWrap}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th>รายวิชา</th>
-                    <th>หมวด</th>
-                    <th>ผล</th>
-                    <th>เกรดล่าสุด</th>
-                    <th>เหตุผล</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {audit.courses
-                    .filter((c) => c.status !== "passed" || c.reasons.length)
-                    .map((c) => (
-                      <tr key={c.code}>
-                        <td>
-                          {c.code} · {c.name}
-                        </td>
-                        <td>{CATEGORY_NAMES[c.category]}</td>
-                        <td>{statusNames[c.status]}</td>
-                        <td>{c.latestGrade ?? "—"}</td>
-                        <td>
-                          {c.reasons.join("; ") ||
-                            "ตรวจร่วมกับแผนและเงื่อนไขรายวิชา"}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
+          <div className={styles.overviewLinks}>
+            <button type="button" className={styles.secondary} onClick={() => setTab(4)}>ดูรายวิชาที่ยังขาดและความก้าวหน้า</button>
+            <button type="button" className={styles.secondary} onClick={() => setTab(5)}>เปรียบเทียบเส้นทางการศึกษา</button>
+          </div>
           {audit.warnings.length > 0 && (
-            <section className={styles.card}>
-              <h2>ข้อจำกัดของผลชุดนี้</h2>
+            <details className={`${styles.card} ${styles.detail}`}>
+              <summary>ข้อจำกัดของผลชุดนี้ · {audit.warnings.length} รายการ</summary>
               <ul className={styles.list}>
                 {audit.warnings.map((w) => (
                   <li key={w}>{w}</li>
                 ))}
               </ul>
-            </section>
+            </details>
           )}
         </>
       )}
-      {tab === 2 && plan && audit && analysis && (
-        <section className={styles.card}>
-          <h2>แผนการเรียน · {TRACK_NAMES[plan.track]}</h2>
-          <p className={styles.note}>
-            ภาคคาดจบ: {termName(plan.graduationTerm)} ·{" "}
-            {plan.basis === "alternative"
-              ? "เป็นทางเลือก ยังไม่เปลี่ยนสายจริง"
-              : "ภายใต้ข้อมูลและสมมติฐานชุดนี้"}
-          </p>
-          <details className={styles.detail}>
-            <summary>สมมติฐานและเหตุผลที่ยังคาดจบไม่ได้</summary>
-            <ul className={styles.list}>
-              {[...plan.assumptions, ...plan.limitations].map((w, i) => (
-                <li key={i}>{w}</li>
-              ))}
-            </ul>
-          </details>
-          {!plan.terms.some((t) => t.courses.length) && (
-            <p className={styles.note}>
-              ยังไม่มีภาคที่จัดรายวิชาได้
-              ตรวจข้อมูลเปิดสอนและเหตุผลของวิชาที่ติดก่อน
-              หรือสร้างแผนภายใต้สมมติฐานที่ระบุ
-            </p>
-          )}
-          <div className={styles.plans}>
-            {plan.terms
-              .filter((t) => t.courses.length)
-              .map((t) => (
-                <article className={styles.term} key={termName(t.term)}>
-                  <h3>{termName(t.term)}</h3>
-                  <p className={styles.muted}>
-                    {t.credits} หน่วยกิต · GPAX สมมติ{" "}
-                    {t.projectedGpax?.toFixed(2) ?? "—"}
-                  </p>
-                  {t.courses.length === 0 ? (
-                    <p>ยังจัดวิชาในภาคนี้ไม่ได้</p>
-                  ) : (
-                    t.courses.map((c) => (
-                      <details className={styles.course} key={c.code}>
-                        <summary>
-                          {c.code} · {c.name} ({c.credits})
-                        </summary>
-                        <p>เกรดสมมติ {c.grade}</p>
-                        {c.assumptions.map((a) => (
-                          <p className={styles.note} key={a}>
-                            {a}
-                          </p>
-                        ))}
-                        <ul className={styles.list}>
-                          {c.reasons.map((r) => (
-                            <li key={r}>{r}</li>
-                          ))}
-                        </ul>
-                        {analysis.catalogue.find(
-                          (item) => item.code === c.code,
-                        ) && (
-                          <RelatedDependencies
-                            course={
-                              analysis.catalogue.find(
-                                (item) => item.code === c.code,
-                              )!
-                            }
-                            catalogue={analysis.catalogue}
-                            results={audit.courses}
-                          />
-                        )}
-                      </details>
-                    ))
-                  )}
-                </article>
-              ))}
-          </div>
-          {plan.blocked.length > 0 && (
-            <>
-              <h3>วิชาที่ยังจัดไม่ได้</h3>
-              <ul className={styles.list}>
-                {plan.blocked.map((c) => (
-                  <li key={c.code}>
-                    {c.code}: {c.reasons.join("; ")}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-          <details className={styles.detail}>
-            <summary>ดูสรุปรายปี</summary>
-            {[...new Set(plan.terms.map((t) => t.term.year))].map((year) => (
-              <p key={year}>
-                ปี {year}:{" "}
-                {plan.terms
-                  .filter((t) => t.term.year === year)
-                  .reduce((sum, t) => sum + t.credits, 0)}{" "}
-                หน่วยกิต จากภาคในแผนชุดเดียวกัน
-              </p>
-            ))}
-          </details>
-        </section>
-      )}
+      {tab === 4 && audit && analysis && <StudentProgress key={audit.track} audit={audit} catalogue={analysis.catalogue} />}
+      {tab === 5 && analysis && <StudentTrackComparison analysis={analysis} stale={stale} onOpen={selected => { setTrack(selected); setComparison(null); setTab(2); }} />}
+      {tab === 2 && plan && audit && analysis && <StudentPlanner key={plan.track} plan={plan} audit={audit} catalogue={analysis.catalogue} />}
+      {(tab === 1 || tab === 5) && workspace.enrollment && <StudentTrackCriteria key={`${parameters.currentTerm.year}/${parameters.currentTerm.semester}/${workspace.revision?.id}`} year={parameters.currentTerm.year} semester={parameters.currentTerm.semester} revisionId={workspace.revision?.id} />}
       {tab === 3 && analysis && plan && (
         <section className={styles.card}>
           <h2>ถ้าวิชานี้เปลี่ยน แผนจะเปลี่ยนอย่างไร</h2>
@@ -1348,7 +1272,7 @@ export function StudentWorkspace({ initial }: { initial: Workspace }) {
             <>
               <div className={styles.metrics}>
                 <div className={styles.metric}>
-                  <span>ภาคคาดจบฐาน</span>
+                  <span>ภาคจบตามแผนเดิม</span>
                   <strong>
                     {termName(comparison.baseline.graduationTerm)}
                   </strong>
